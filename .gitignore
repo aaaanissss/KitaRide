@@ -1,26 +1,27 @@
-# Ignore everything outside transit-app
-/*
-!transit-app/
-
-# Keep .gitignore and .git folder
-!/.gitignore
-!/.git/
-
-# Ignore common system files
-.DS_Store
-Thumbs.db
+# Logs
+logs
 *.log
-*.tmp
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# Ignore node_modules in transit-app
-transit-app/node_modules/
-transit-app/.vscode/
-transit-app/.env
-transit-app/.env.local
-transit-app/.env.production
+node_modules
+dist
+dist-ssr
+*.local
 
-# Ignore large data files
-transit-app/server/data/ktm/komuter_daily_od.json
-transit-app/server/uploads/*.jpg
-transit-app/server/uploads/attractions/*.jpg
-transit-app/server/uploads/attractions/*.png
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+
+*.env
