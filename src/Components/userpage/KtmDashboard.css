@@ -42,6 +42,12 @@ body.dashboard-body {
   margin: 1.25rem 0 1.75rem;
 }
 
+.ktm-subtext {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: #6b7280;
+}
+
 .filter-group {
   display: flex;
   flex-direction: column;
@@ -188,47 +194,50 @@ body.dashboard-body {
 }
 
 /* Hourly card header layout */
+/* Hourly header: keep title left, filters right */
 .ktm-card-header--hourly {
   display: flex;
-  align-items: flex-end;
   justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap; /* allows wrapping on small screens */
-}
-
-.ktm-card-header-main h2 {
-  margin-bottom: 0.25rem;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .ktm-card-header-controls {
-  min-width: 150px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-end;
+  flex-wrap: wrap; /* if screen is small, they wrap nicely */
+}
+
+.ktm-control {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
+  min-width: 200px; /* optional: keeps dropdowns same width */
 }
 
 .ktm-dow-label {
   font-size: 12px;
-  color: #555;
+  color: #6b7280;
 }
 
 .ktm-dow-select {
-  padding: 6px 10px;
-  border-radius: 6px;
-  border: 1px solid #d1d5db;
-  font-size: 14px;
+  height: 38px;
+  padding: 0 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
   background: #fff;
 }
 
-/* On smaller screens, let the dropdown go full width below the title */
+/* Mobile: stack nicely */
 @media (max-width: 768px) {
-  .ktm-card-header--hourly {
-    align-items: flex-start;
-  }
-
   .ktm-card-header-controls {
     width: 100%;
-    max-width: 220px;
+  }
+  .ktm-control {
+    flex: 1;
+    min-width: 180px;
   }
 }
 
@@ -333,4 +342,29 @@ body.dashboard-body {
   margin-left: 6px;
   color: #c0392b;
   font-size: 13px;
+}
+
+.ktm-card-header-controls {
+  display: flex;
+  gap: 14px;
+  align-items: flex-end;
+}
+
+.ktm-control {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ktm-dow-label {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.ktm-dow-select {
+  height: 38px;
+  padding: 0 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: white;
 }
