@@ -1,0 +1,26 @@
+# Ignore everything outside transit-app
+/*
+!transit-app/
+
+# Keep .gitignore and .git folder
+!/.gitignore
+!/.git/
+
+# Ignore common system files
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+
+# Ignore node_modules in transit-app
+transit-app/node_modules/
+transit-app/.vscode/
+transit-app/.env
+transit-app/.env.local
+transit-app/.env.production
+
+# Ignore large data files
+transit-app/server/data/ktm/komuter_daily_od.json
+transit-app/server/uploads/*.jpg
+transit-app/server/uploads/attractions/*.jpg
+transit-app/server/uploads/attractions/*.png
