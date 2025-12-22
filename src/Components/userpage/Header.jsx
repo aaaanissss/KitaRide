@@ -34,7 +34,7 @@ function Header() {
   return (
     <header className="header">
       <NavLink to="/" className="logo">
-        ALo
+        KitaRide
       </NavLink>
 
       <div className="header-right">

@@ -1,4 +1,3 @@
-// src/Components/ktm/KtmHourlyChart.jsx
 import { useEffect, useState } from "react";
 import {
   LineChart,
@@ -12,22 +11,24 @@ import {
 
 export default function KtmHourlyChart({ stationId, dow }) {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
+    // ✅ guard: don’t call API until stationId exists
+    if (!stationId) return;
+
     async function fetchHourly() {
       try {
         setLoading(true);
         setError("");
-        const res = await fetch(`/api/ktm/hourly?station=${stationId}&dow=${dow}`);
-        if (!res.ok) {
-          throw new Error(`HTTP ${res.status}`);
-        }
-        const json = await res.json();
 
+        const res = await fetch(`/api/ktm/hourly?station=${stationId}&dow=${dow}`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        const json = await res.json();
         const chartData = json.map((row) => ({
-          hour: `${row.hour.toString().padStart(2, "0")}:00`,
+          hour: `${String(row.hour).padStart(2, "0")}:00`,
           avg: row.avg_ridership,
         }));
 
@@ -43,6 +44,7 @@ export default function KtmHourlyChart({ stationId, dow }) {
     fetchHourly();
   }, [stationId, dow]);
 
+  if (!stationId) return <p className="ktm-status">Pick a station to view hourly pattern.</p>;
   if (loading) return <p className="ktm-status">Loading hourly pattern…</p>;
   if (error) return <p className="ktm-status ktm-status--error">{error}</p>;
   if (!data.length) return <p className="ktm-status">No hourly data available.</p>;

@@ -170,15 +170,16 @@ router.get('/test', (req, res) => {
 
 // --- Helper to load JSON files once ---
 function loadJson(relativePath) {
-  const fullPath = path.join(process.cwd(), 'transit-app', 'server', relativePath);
+  const fullPath = path.join(process.cwd(), relativePath);
   const raw = fs.readFileSync(fullPath, 'utf8');
   return JSON.parse(raw);
 }
 
 // --- Load KTM datasets ---
 const ktmStations   = loadJson('data/ktm/ktm_stations.json');
-const komuterHourly = loadJson('data/ktm/komuter_station_hour_profile.json');
-const ktmNext7      = loadJson('data/ktm/ktm_next7days_expected.json');
+const komuterHourly = loadJson('data/ktm/ktm_hourly_pattern_by_station_dow.json');
+const stationIdToName = new Map(ktmStations.map((s) => [s.id, s.name]));
+const ktmExpectedDaily = loadJson('data/ktm/ktm_expected_pattern_by_station.json');
 
 // build __dirname in ESM
 const __filename = fileURLToPath(import.meta.url);
@@ -483,42 +484,59 @@ router.get('/ktm/stations', (req, res) => {
   res.json(ktmStations);
 });
 
-// GET /api/ktm/next7days
-// KTM - Returns 7-day daily ridership forecast per station
-router.get('/ktm/next7days', (req, res) => {
-  try {
-    if (!Array.isArray(ktmNext7) || ktmNext7.length === 0) {
-      return res.status(503).json({
-        error: "KTM 7-day forecast not available",
-      });
-    }
-    res.json(ktmNext7);
-  } catch (err) {
-    console.error("Error serving ktmNext7:", err);
-    res.status(500).json({ error: "Failed to load KTM forecast" });
-  }
-});
-
 // GET /api/ktm/hourly?station=AG2&dow=1
 // dow: 0=Monday ... 6=Sunday (optional: if missing, return all 0-6)
-router.get('/ktm/hourly', (req, res) => {
+router.get("/ktm/hourly", (req, res) => {
   const { station, dow } = req.query;
 
   if (!station) {
-    return res.status(400).json({ error: 'station query parameter is required, e.g. ?station=AG2&dow=1' });
+    return res.status(400).json({
+      error: "station query parameter is required, e.g. ?station=KT16&dow=1",
+    });
   }
 
-  let filtered = komuterHourly.filter(row => row.origin_id === station);
-
-  if (dow !== undefined) {
-    const dowNum = Number(dow);
-    filtered = filtered.filter(row => row.dow === dowNum);
+  if (!Array.isArray(komuterHourly) || komuterHourly.length === 0) {
+    return res.status(503).json({
+      error: "KTM hourly pattern not available (JSON not loaded)",
+    });
   }
 
-  // Sort by hour 0-23
-  filtered.sort((a, b) => a.hour - b.hour);
+  const stationName = stationIdToName.get(station);
+  if (!stationName) {
+    return res.status(404).json({ error: `Unknown station id: ${station}` });
+  }
 
-  res.json(filtered);
+  const dowNum = dow !== undefined ? Number(dow) : undefined;
+  if (dow !== undefined && (Number.isNaN(dowNum) || dowNum < 0 || dowNum > 6)) {
+    return res.status(400).json({ error: "dow must be 0..6" });
+  }
+
+  // New JSON fields: station, expected_ridership
+  let filtered = komuterHourly.filter((row) => row.station === stationName);
+
+  if (dowNum !== undefined) {
+    filtered = filtered.filter((row) => row.dow === dowNum);
+  }
+
+  // Convert to what frontend expects: hour + avg_ridership
+  const mapped = filtered.map((row) => ({
+    hour: row.hour,
+    avg_ridership: row.expected_ridership,
+  }));
+
+  mapped.sort((a, b) => a.hour - b.hour);
+
+  // Guarantee 24 points when dow is provided
+  if (dowNum !== undefined) {
+    const byHour = new Map(mapped.map((r) => [r.hour, r]));
+    const full = [];
+    for (let h = 0; h < 24; h++) {
+      full.push(byHour.get(h) ?? { hour: h, avg_ridership: 0 });
+    }
+    return res.json(full);
+  }
+
+  res.json(mapped);
 });
 
 // ========== OLDDD LRT/MRT/MONORAIL NEXT-7-LINE ==========
@@ -584,6 +602,79 @@ router.get('/ridership/expected-pattern', (req, res) => {
   } catch (err) {
     console.error('Failed to load expected pattern JSON', err);
     res.status(500).json({ message: 'Failed to load expected pattern' });
+  }
+});
+
+// GET /api/ktm/expected-pattern?stationId=KT16&start_date=2025-12-23&end_date=2025-12-29
+router.get("/ktm/expected-pattern", (req, res) => {
+  try {
+    const { stationId, start_date, end_date } = req.query;
+
+    if (!Array.isArray(ktmExpectedDaily) || ktmExpectedDaily.length === 0) {
+      return res.status(503).json({ error: "KTM expected daily pattern not available" });
+    }
+
+    let records = ktmExpectedDaily;
+
+    if (stationId) {
+      records = records.filter((r) => r.station_id === stationId);
+    }
+
+    if (start_date) {
+      records = records.filter((r) => r.date >= start_date);
+    }
+    if (end_date) {
+      records = records.filter((r) => r.date <= end_date);
+    }
+
+    // keep sorted
+    records.sort((a, b) => (a.date < b.date ? -1 : 1));
+
+    res.json(records);
+  } catch (err) {
+    console.error("Failed to serve KTM expected-pattern", err);
+    res.status(500).json({ error: "Failed to load KTM expected pattern" });
+  }
+});
+
+// GET /api/ktm/next7days?station=KT16
+router.get("/ktm/next7days", (req, res) => {
+  try {
+    const { station } = req.query;
+
+    if (!station) {
+      return res.status(400).json({
+        error: "station query parameter is required, e.g. ?station=KT16",
+      });
+    }
+
+    if (!Array.isArray(ktmExpectedDaily) || ktmExpectedDaily.length === 0) {
+      return res.status(503).json({ error: "KTM expected pattern not available" });
+    }
+
+    // 1) filter to this station
+    let rows = ktmExpectedDaily
+      .filter((r) => r.station_id === station)
+      .sort((a, b) => String(a.date).localeCompare(String(b.date)));
+
+    if (rows.length === 0) return res.json([]);
+
+    // 2) same "future window" logic you used before
+    const todayStr = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+
+    let future = rows.filter((r) => String(r.date) >= todayStr);
+
+    // 3) fallback if no future rows
+    if (future.length === 0) {
+      future = rows.slice(-7);
+    } else {
+      future = future.slice(0, 7);
+    }
+
+    res.json(future);
+  } catch (err) {
+    console.error("Failed to load KTM next7days", err);
+    res.status(500).json({ error: "Failed to load KTM 7-day prediction" });
   }
 });
 

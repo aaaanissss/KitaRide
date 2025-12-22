@@ -3,6 +3,7 @@ import JourneyPlanner from "./JourneyPlanner.jsx";
 //import RidershipNext7Chart from "./RidershipNext7Chart.jsx";
 import HeatmapLayer from "./HeatmapLayer.jsx";
 import StationSidePanel from "./StationSidePanel.jsx";
+import WelcomeCard from "./WelcomeCard.jsx";
 import "../../Components/userpage/UserPage.css";
 import { MapContainer, TileLayer, Polyline, Marker, Popup, Circle, Tooltip } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -881,6 +882,9 @@ const loadPredictions = async () => {
 
   return (
     <>
+      {/* Welcome Card Overlay */}
+      <WelcomeCard />
+      
       {/* Fullscreen map area */}
       <main className="mapPage">
         <div className="mapWrapper">

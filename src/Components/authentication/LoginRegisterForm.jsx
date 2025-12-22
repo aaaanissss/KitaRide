@@ -92,6 +92,9 @@ export const LoginRegisterForm = () => {
       // ✅ Success
       localStorage.setItem('authToken', data.token);
       localStorage.setItem('authUser', JSON.stringify(data.user));
+      
+      // Set login timestamp for welcome card detection
+      localStorage.setItem('kitaRideCurrentLogin', Date.now().toString());
 
       // tell App.jsx that auth changed
       window.dispatchEvent(new Event("auth-changed"));

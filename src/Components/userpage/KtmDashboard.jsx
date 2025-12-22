@@ -28,13 +28,12 @@ export default function KtmDashboard() {
       const json = await res.json();
       setStations(json);
 
-      // default station if empty
-      if (json.length && !stationId) {
-        setStationId(json[0].id);
-      }
+      // set default station once stations load
+      setStationId((prev) => prev || (json[0]?.id ?? ""));
     }
     loadStations();
-  }, []); // run once
+  }, []);
+
 
   const selectedStation =
     stations.find((s) => s.id === stationId)?.name || stationId || "";
@@ -80,7 +79,7 @@ export default function KtmDashboard() {
               <h2>7-Day Daily Ridership Prediction – {selectedStation}</h2>
               <span className="ktm-tag">Machine Learning Prediction</span>
             </div>
-            <KtmNext7Chart stationName={selectedStation} />
+            <KtmNext7Chart stationId={stationId} stationName={selectedStation} />
           </section>
 
          {/* Hourly pattern card */}
@@ -111,9 +110,10 @@ export default function KtmDashboard() {
                 </div>
             </div>
             <KtmHourlyChart stationId={stationId} dow={dow} />
+            <p className="ktm-card-footer">
+              Model-estimated trips per hour (trained on Komuter OD data).
+            </p>
         </section>
-
-
 
           {/* Key insights card */}
           <section className="ktm-card">

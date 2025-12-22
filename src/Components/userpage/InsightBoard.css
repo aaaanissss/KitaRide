@@ -87,6 +87,10 @@
   backdrop-filter: blur(8px);
 }
 
+.insight-chart text {
+  font-size: 11px;
+}
+
 .insight-card h3 {
   font-size: 1.05rem;
   font-weight: 600;
@@ -267,4 +271,129 @@
     box-shadow 140ms ease-out,
     transform 140ms ease-out,
     border-color 140ms ease-out;
+}
+
+/* ====== ARTICLE MODE ADDITIONS ====== */
+
+.insights-lede {
+  margin: 0.4rem 0 0;
+  font-size: 0.98rem;
+  line-height: 1.55;
+  opacity: 0.95;
+  max-width: 75ch;
+}
+
+.insights-article-section > h2 {
+  margin-bottom: 0.75rem;
+}
+
+.insights-article-body {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+/* Paragraphs inside cards, news-style reading */
+.insights-paragraph {
+  margin: 0.15rem 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: #111827;
+}
+
+/* Pull quote like news articles */
+.insights-pull-quote {
+  margin: 0.8rem 0 0.4rem;
+  padding: 0.55rem 0 0.55rem 0.9rem;
+  border-left: 4px solid rgba(37, 99, 235, 0.9);
+  color: #1f2937;
+  background: rgba(239, 246, 255, 0.65);
+  border-radius: 0.6rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Details toggle button */
+.insights-details {
+  margin-top: 0.25rem;
+}
+
+.insights-details-toggle {
+  appearance: none;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background: rgba(248, 250, 252, 0.9);
+  color: #0f172a;
+  border-radius: 0.65rem;
+  padding: 0.45rem 0.65rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.insights-details-toggle:hover {
+  border-color: rgba(37, 99, 235, 0.35);
+}
+
+.insights-details-content {
+  margin-top: 0.6rem;
+}
+
+/* Holiday highlights 2-col */
+.insights-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .insights-two-col {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Small subhead inside card */
+.insights-minihead {
+  margin: 0.2rem 0 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6b7280;
+}
+
+/* Conclusion bullets */
+.insights-bullets {
+  margin: 0.25rem 0 0;
+  padding-left: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: #374151;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+/* ====== INTERPRETATION BOX (FYP-friendly) ====== */
+
+.insights-interpretation {
+  margin-top: 0.65rem;
+  padding: 0.7rem 0.8rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 251, 235, 0.9); /* amber-ish */
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.insights-interpretation-title {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #92400e; /* amber-800 */
+  margin-bottom: 0.25rem;
+}
+
+.insights-interpretation-body {
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: #1f2937;
 }
