@@ -1,0 +1,3782 @@
+[
+  {
+    "station_name":"Abdullah Hukum",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":1263.2950260552,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Abdullah Hukum",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":1265.3666475608,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Abdullah Hukum",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":1207.3358766304,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Abdullah Hukum",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":997.0840824359,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Abdullah Hukum",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":213.8220321676,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Abdullah Hukum",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":71.5263398546,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Abdullah Hukum",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":772.4167752456,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Angkasapuri",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":20.997914152,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Angkasapuri",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":21.6424747136,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Angkasapuri",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":21.9719848775,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Angkasapuri",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":23.065235492,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Angkasapuri",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":11.6758727314,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Angkasapuri",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":10.6329734922,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Angkasapuri",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":18.0634328864,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Bandar Tasek Selatan",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":2169.4405825363,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Bandar Tasek Selatan",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":2197.7391900877,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Bandar Tasek Selatan",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":2322.8446324547,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Bandar Tasek Selatan",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":3051.0713397736,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Bandar Tasek Selatan",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":2223.0469709826,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Bandar Tasek Selatan",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":2276.2531694983,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Bandar Tasek Selatan",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":2338.1999387867,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Bangi",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":1489.1563801799,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Bangi",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":1552.9995145616,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Bangi",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":1615.2613900264,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Bangi",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":1653.4723783477,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Bangi",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":917.5775122745,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Bangi",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":873.2883111495,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Bangi",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":1296.6676793653,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Bank Negara",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":1365.4713455371,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Bank Negara",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":1366.1788823018,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Bank Negara",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":1359.9349988283,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Bank Negara",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":1272.7239795751,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Bank Negara",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":747.6452732088,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Bank Negara",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":588.9222753774,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Bank Negara",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":1268.1360812533,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batang Benar",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":848.8729234119,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batang Benar",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":838.5062697766,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batang Benar",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":841.4663897158,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batang Benar",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":876.2249274504,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batang Benar",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":699.0004549046,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batang Benar",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":706.776419447,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batang Benar",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":848.7386161248,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batang Kali",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":704.7427349536,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batang Kali",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":739.6461118221,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batang Kali",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":791.6805445211,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batang Kali",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":809.1247272748,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batang Kali",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":548.0997628458,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batang Kali",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":549.2470661793,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batang Kali",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":690.9677464502,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batu Caves",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":2523.4168887147,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batu Caves",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":2486.1855385232,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batu Caves",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":2482.5423440788,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batu Caves",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":2762.6166054151,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batu Caves",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":2992.3651316503,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batu Caves",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":3273.4343738578,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batu Caves",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":2685.6675343958,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batu Kentonmen",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":62.3408216642,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batu Kentonmen",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":61.4153446621,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batu Kentonmen",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":62.6747629035,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batu Kentonmen",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":58.3905813478,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batu Kentonmen",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":45.7663582218,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batu Kentonmen",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":45.1912251236,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batu Kentonmen",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":62.4353441209,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batu Tiga",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":263.0536595821,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batu Tiga",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":260.7602362652,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batu Tiga",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":258.6048728908,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batu Tiga",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":251.868050901,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batu Tiga",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":66.1086325921,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batu Tiga",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":44.7781967754,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Batu Tiga",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":244.3614929109,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Bukit Badak",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":426.4415482086,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Bukit Badak",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":425.4055053585,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Bukit Badak",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":422.2254722809,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Bukit Badak",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":386.3681842985,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Bukit Badak",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":67.0602419776,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Bukit Badak",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":26.7811843846,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Bukit Badak",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":352.2578068594,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Jalan Kastam",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":113.0673714266,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Jalan Kastam",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":113.2558959992,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Jalan Kastam",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":113.0984901828,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Jalan Kastam",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":110.227336992,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Jalan Kastam",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":40.2481905356,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Jalan Kastam",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":7.2046730424,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Jalan Kastam",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":93.475341417,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Jalan Templer",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":52.8096974068,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Jalan Templer",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":49.9465594752,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Jalan Templer",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":49.6259851203,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Jalan Templer",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":42.6419987686,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Jalan Templer",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":23.2875817916,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Jalan Templer",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":6.7567924793,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Jalan Templer",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":46.3414145022,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"KL Sentral",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":10875.0129276231,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"KL Sentral",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":11130.2655556413,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"KL Sentral",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":11391.9182482869,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"KL Sentral",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":12128.7285765454,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"KL Sentral",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":8220.6463871734,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"KL Sentral",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":7990.8557800251,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"KL Sentral",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":10629.6990663806,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kajang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":3076.4063915602,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kajang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":3291.2854952515,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kajang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":3357.5513555611,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kajang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":3431.6839820938,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kajang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":2379.0849930902,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kajang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":2392.6571811612,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kajang",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":2962.8621202862,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kajang 2",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":435.051484565,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kajang 2",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":435.134734565,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kajang 2",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":435.0869653342,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kajang 2",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":434.4140944094,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kajang 2",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":256.0522219671,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kajang 2",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":257.6304168289,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kajang 2",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":426.0729071955,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kampung Batu",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":580.668178193,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kampung Batu",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":579.823029787,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kampung Batu",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":581.3836361252,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kampung Batu",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":621.8705617727,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kampung Batu",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":534.131111897,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kampung Batu",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":523.4604731383,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kampung Batu",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":577.9719343592,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kampung Dato Harun",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":364.3666103377,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kampung Dato Harun",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":363.6535894636,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kampung Dato Harun",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":363.5652771192,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kampung Dato Harun",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":343.9159825086,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kampung Dato Harun",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":91.1384629183,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kampung Dato Harun",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":28.37530855,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kampung Dato Harun",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":260.3595776245,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kampung Raja Uda",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":336.5192345552,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kampung Raja Uda",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":336.5792830994,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kampung Raja Uda",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":335.1032189037,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kampung Raja Uda",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":290.1930354372,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kampung Raja Uda",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":72.7733124461,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kampung Raja Uda",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":27.725255048,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kampung Raja Uda",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":232.566682732,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kepong",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":334.8673123174,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kepong",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":335.6784918499,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kepong",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":333.4375574374,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kepong",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":289.3149985591,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kepong",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":130.3462962294,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kepong",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":132.8997459159,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kepong",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":232.6790358104,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kepong Sentral",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":431.3657723798,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kepong Sentral",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":438.6057277316,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kepong Sentral",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":442.2788029473,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kepong Sentral",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":428.0635623157,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kepong Sentral",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":235.3398211198,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kepong Sentral",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":219.4424742421,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kepong Sentral",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":387.7282644646,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Klang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":1132.8171506333,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Klang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":1149.8457083109,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Klang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":1150.9964101829,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Klang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":1076.3000198869,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Klang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":408.6763040343,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Klang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":176.6236721163,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Klang",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":866.6379543627,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kuala Kubu Bharu",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":364.2503896668,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kuala Kubu Bharu",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":363.7672850888,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kuala Kubu Bharu",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":386.2173918694,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kuala Kubu Bharu",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":516.2224543687,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kuala Kubu Bharu",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":336.9790401921,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kuala Kubu Bharu",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":336.8154349546,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kuala Kubu Bharu",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":372.1311521092,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kuala Lumpur",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":1402.2121702315,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kuala Lumpur",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":1400.9565298719,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kuala Lumpur",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":1400.9491283567,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kuala Lumpur",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":1377.6646132954,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kuala Lumpur",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":1174.3687264651,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kuala Lumpur",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":1347.6434755918,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kuala Lumpur",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":1457.3314611055,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kuang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":697.1936987051,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kuang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":695.7237753736,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kuang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":691.3183535019,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kuang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":656.0409144253,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kuang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":289.1962733231,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kuang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":306.331591214,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Kuang",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":554.2138390844,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Labu",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":389.2976306684,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Labu",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":392.8286387126,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Labu",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":388.8010033272,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Labu",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":412.1602565451,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Labu",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":198.6163520924,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Labu",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":196.947918401,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Labu",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":347.6242111329,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Midvalley",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":2298.9203771509,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Midvalley",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":2361.6026131649,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Midvalley",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":2346.0964998913,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Midvalley",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":2181.6599205941,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Midvalley",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":1354.6678509411,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Midvalley",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":1277.6690439419,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Midvalley",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":1989.8621932599,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Nilai",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":1518.7958522318,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Nilai",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":1535.033847456,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Nilai",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":1637.8700593648,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Nilai",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":1899.7553171104,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Nilai",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":1371.7256488639,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Nilai",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":1421.2697313078,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Nilai",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":1526.2243995439,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Padang Jawa",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":503.6904553757,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Padang Jawa",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":505.0734620808,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Padang Jawa",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":501.0622461916,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Padang Jawa",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":481.2434319856,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Padang Jawa",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":162.2201235133,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Padang Jawa",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":81.0433848746,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Padang Jawa",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":385.5994346771,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Pantai Dalam",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":531.2284667215,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Pantai Dalam",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":532.6082132313,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Pantai Dalam",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":528.5197546346,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Pantai Dalam",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":507.7287119696,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Pantai Dalam",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":199.416613081,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Pantai Dalam",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":93.2063183786,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Pantai Dalam",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":474.024396006,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Pelabuhan Klang Selatan",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":137.7529680229,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Pelabuhan Klang Selatan",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":145.3793766175,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Pelabuhan Klang Selatan",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":158.2117779151,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Pelabuhan Klang Selatan",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":168.5836929418,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Pelabuhan Klang Selatan",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":91.396908653,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Pelabuhan Klang Selatan",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":51.368179565,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Pelabuhan Klang Selatan",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":133.1096950041,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Penalty",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":15.8598537058,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Penalty",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":15.7445971429,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Penalty",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":15.4651589561,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Penalty",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":15.0012227371,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Penalty",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":20.3439010283,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Penalty",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":25.5683825329,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Penalty",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":19.3857339489,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Petaling",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":720.411332083,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Petaling",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":724.2347291461,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Petaling",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":712.0325068312,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Petaling",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":565.9218544685,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Petaling",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":132.0425522571,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Petaling",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":61.4032849373,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Petaling",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":571.406346809,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Pulau Sebang (Tampin)",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":591.6433948036,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Pulau Sebang (Tampin)",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":587.4211695059,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Pulau Sebang (Tampin)",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":642.9991060445,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Pulau Sebang (Tampin)",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":948.270493466,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Pulau Sebang (Tampin)",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":877.1625612262,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Pulau Sebang (Tampin)",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":926.6468612695,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Pulau Sebang (Tampin)",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":730.7950302382,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Putra",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":564.0893545072,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Putra",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":572.3011115385,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Putra",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":583.6528643666,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Putra",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":617.1455396536,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Putra",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":514.2237065881,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Putra",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":521.2519019182,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Putra",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":588.7862252935,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Rasa",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":354.9311019336,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Rasa",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":360.4124299758,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Rasa",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":369.6431477668,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Rasa",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":376.3007177163,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Rasa",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":295.6769453215,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Rasa",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":443.5130306713,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Rasa",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":374.8001046432,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Rawang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":2369.0119142949,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Rawang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":2480.7393562498,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Rawang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":2488.2815113951,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Rawang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":2484.776267414,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Rawang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":1584.3984783641,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Rawang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":1758.7101538066,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Rawang",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":2138.1131404853,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Rembau",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":253.1477180009,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Rembau",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":259.6874376306,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Rembau",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":282.2291995613,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Rembau",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":423.1030599128,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Rembau",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":288.1054187378,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Rembau",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":282.6067828966,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Rembau",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":271.6409668237,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Rengam",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":253.1477180009,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Rengam",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":259.6874376306,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Rengam",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":282.2291995613,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Rengam",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":423.1030599128,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Rengam",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":288.1054187378,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Rengam",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":282.6067828966,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Rengam",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":271.6409668237,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Salak Selatan",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":234.6689214736,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Salak Selatan",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":237.2907203599,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Salak Selatan",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":240.9825613267,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Salak Selatan",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":237.3331168599,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Salak Selatan",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":161.5746793987,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Salak Selatan",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":137.8410567163,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Salak Selatan",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":234.7008145837,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Segambut",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":488.9393067851,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Segambut",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":493.1647428462,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Segambut",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":477.8156687029,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Segambut",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":462.824965135,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Segambut",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":216.0353138344,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Segambut",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":150.4362240515,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Segambut",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":413.3311981985,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Senawang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":767.4708430155,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Senawang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":775.835752293,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Senawang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":779.9848661638,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Senawang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":807.2193327678,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Senawang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":509.698986717,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Senawang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":534.6969926494,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Senawang",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":761.8699633419,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Sentul",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":193.6713610991,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Sentul",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":193.7518242248,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Sentul",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":195.3045173763,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Sentul",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":217.9267176426,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Sentul",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":163.1085941476,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Sentul",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":163.3365301924,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Sentul",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":194.7146744783,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Seputeh",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":99.8434530452,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Seputeh",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":97.0406689457,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Seputeh",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":100.4545780685,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Seputeh",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":100.4826986562,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Seputeh",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":62.5362103018,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Seputeh",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":60.7444349289,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Seputeh",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":101.4579787487,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Serdang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":897.602982025,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Serdang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":897.5773548605,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Serdang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":906.5137098389,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Serdang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":955.1276623688,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Serdang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":728.1628846679,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Serdang",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":735.7392083504,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Serdang",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":887.4399065168,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Seremban",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":2800.4323334663,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Seremban",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":2851.7394393326,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Seremban",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":2995.7112581719,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Seremban",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":3933.3682585752,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Seremban",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":2905.6907669779,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Seremban",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":3013.8332727292,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Seremban",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":3018.0687099713,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Serendah",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":683.3373966895,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Serendah",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":702.7014378583,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Serendah",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":704.4762334773,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Serendah",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":705.0631993533,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Serendah",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":374.852542369,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Serendah",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":337.7728736625,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Serendah",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":564.636634284,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Seri Setia",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":166.3477616232,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Seri Setia",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":166.2172799854,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Seri Setia",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":159.5995935214,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Seri Setia",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":151.1247048253,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Seri Setia",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":50.6021462294,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Seri Setia",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":19.8165010711,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Seri Setia",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":118.5558768344,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Setia Jaya",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":515.8444088422,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Setia Jaya",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":517.4367659851,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Setia Jaya",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":514.3739836515,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Setia Jaya",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":493.0607392049,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Setia Jaya",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":164.2775673817,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Setia Jaya",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":79.668138387,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Setia Jaya",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":505.0932658283,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Shah Alam",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":1091.5288716697,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Shah Alam",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":1096.7157762454,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Shah Alam",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":1088.2623036048,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Shah Alam",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":965.5362447968,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Shah Alam",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":238.195324241,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Shah Alam",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":112.9671878631,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Shah Alam",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":751.8895558558,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Subang Jaya",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":2143.5598850488,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Subang Jaya",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":2152.3575101291,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Subang Jaya",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":2129.4479620137,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Subang Jaya",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":1853.4782174427,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Subang Jaya",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":356.9054566865,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Subang Jaya",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":123.9521300664,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Subang Jaya",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":1518.2171494863,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Sungai Buloh",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":2172.3231888478,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Sungai Buloh",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":2295.37649685,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Sungai Buloh",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":2354.8550954536,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Sungai Buloh",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":2465.4458847823,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Sungai Buloh",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":1457.862352212,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Sungai Buloh",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":1300.5740120308,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Sungai Buloh",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":2043.0077226134,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Sungai Gadut",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":447.2725248577,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Sungai Gadut",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":449.4068586808,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Sungai Gadut",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":461.2201465927,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Sungai Gadut",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":552.2579056967,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Sungai Gadut",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":371.3105999612,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Sungai Gadut",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":411.7029905132,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Sungai Gadut",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":452.2128149372,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Taman Wahyu",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":396.662816825,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Taman Wahyu",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":397.2823550816,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Taman Wahyu",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":397.2694569992,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Taman Wahyu",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":393.5810993571,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Taman Wahyu",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":236.2813900364,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Taman Wahyu",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":218.3589606921,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Taman Wahyu",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":389.4302557732,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Tanjong Malim",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":1009.5669573701,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Tanjong Malim",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":1008.5856061935,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Tanjong Malim",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":1066.0314653741,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Tanjong Malim",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":1652.8346195559,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Tanjong Malim",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":1277.9970693069,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Tanjong Malim",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":1290.3162157161,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Tanjong Malim",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":1100.0446133903,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Telok Gadong",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":582.3805695809,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Telok Gadong",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":586.7379998358,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Telok Gadong",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":578.9691503023,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Telok Gadong",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":511.0445866781,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Telok Gadong",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":106.6197310762,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Telok Gadong",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":32.7102146981,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Telok Gadong",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":459.2294948864,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Telok Pulai",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":433.0095486816,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Telok Pulai",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":433.3116993691,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Telok Pulai",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":430.6982393134,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Telok Pulai",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":409.6939514938,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Telok Pulai",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":113.1007309586,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Telok Pulai",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":30.4019509965,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Telok Pulai",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":405.7304422947,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Tiroi",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":485.8979561131,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Tiroi",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":495.3811282602,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Tiroi",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":502.9347447106,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Tiroi",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":537.9470391534,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Tiroi",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":262.7420696943,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Tiroi",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":239.3617559594,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Tiroi",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":418.2543342286,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"UKM",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":861.0756441925,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"UKM",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":878.5716531187,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"UKM",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":914.5196373497,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"UKM",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":1050.8281759901,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"UKM",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":582.731166756,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"UKM",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":596.3191593332,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"UKM",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":854.7642685984,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Unknown",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-25",
+    "day_name":"Tuesday",
+    "expected_ridership":46.6540233134,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Unknown",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-26",
+    "day_name":"Wednesday",
+    "expected_ridership":45.4866577227,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Unknown",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-27",
+    "day_name":"Thursday",
+    "expected_ridership":45.0772734155,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Unknown",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-28",
+    "day_name":"Friday",
+    "expected_ridership":45.0229941253,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Unknown",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-29",
+    "day_name":"Saturday",
+    "expected_ridership":46.6910666898,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Unknown",
+    "line_name":"KTM Komuter",
+    "date":"2025-11-30",
+    "day_name":"Sunday",
+    "expected_ridership":49.4388232748,
+    "is_holiday":0,
+    "holiday_name":""
+  },
+  {
+    "station_name":"Unknown",
+    "line_name":"KTM Komuter",
+    "date":"2025-12-01",
+    "day_name":"Monday",
+    "expected_ridership":45.3478532282,
+    "is_holiday":0,
+    "holiday_name":""
+  }
+]

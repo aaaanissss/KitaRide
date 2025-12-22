@@ -1,0 +1,7 @@
+
+<svg width="30" height="46" viewBox="0 0 30 46" xmlns="http://www.w3.org/2000/svg">
+  <path d="M15 0C7 0 1 6 1 14c0 10.5 14 32 14 32s14-21.5 14-32C29 6 23 0 15 0z" 
+        fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+  <circle cx="15" cy="15" r="8" fill="white"/>
+  <text x="15" y="19" font-size="14" font-family="Arial" text-anchor="middle" fill="#000">⇄</text>
+</svg>

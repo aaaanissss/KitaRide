@@ -1,0 +1,336 @@
+/* Remove wallpaper & give dashboard its own neutral background */
+body.dashboard-body {
+  background: #f3f4f6; /* light grey */
+}
+
+/* Main container */
+.ktm-dashboard {
+  min-height: 100vh;
+  padding: 6rem 2rem 2rem; /* Increased top padding from 1.5rem to 6rem */
+  color: #111827;
+}
+
+/* Header */
+.ktm-dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 1.5rem;
+  border-radius: 1rem;
+  padding: 1.25rem 1.75rem;
+  background: linear-gradient(135deg, #0f766e, #0891b2);
+  color: white;
+  box-shadow: 0 10px 25px rgba(15, 118, 110, 0.25);
+}
+
+.ktm-dashboard-header h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.ktm-dashboard-header p {
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+/* Filter bar */
+.ktm-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1.25rem 0 1.75rem;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.filter-group label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b7280;
+}
+
+.filter-group select {
+  min-width: 180px;
+  padding: 0.4rem 0.6rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  font-size: 0.9rem;
+  background: white;
+}
+
+.filter-group--muted {
+  justify-content: flex-end;
+  color: #9ca3af;
+  font-size: 0.8rem;
+}
+
+/* Grid */
+.ktm-dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 1.5rem;
+}
+
+@media (max-width: 960px) {
+  .ktm-dashboard-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Cards */
+.ktm-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 15px 30px rgba(15, 23, 42, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ktm-card--wide {
+  grid-column: 1 / -1;
+}
+
+.ktm-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.ktm-card-header h2,
+.ktm-card-header h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* Tag pill */
+.ktm-tag {
+  font-size: 0.75rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background: #ecfdf3;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+/* Chart wrapper */
+.ktm-chart-wrapper {
+  width: 100%;
+  height: 320px;
+}
+
+/* Status messages */
+.ktm-status {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.ktm-status--error {
+  color: #b91c1c;
+}
+
+/* Card footer text */
+.ktm-card-footer {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+}
+
+/* Placeholder / highlights */
+.ktm-highlights {
+  margin-left: 1rem;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.ktm-highlights li + li {
+  margin-top: 0.3rem;
+}
+
+.ktm-placeholder {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+/* Toggle buttons */
+.toggle-buttons {
+  display: flex;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.toggle-buttons button {
+  flex: 1;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  background: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toggle-buttons button.active {
+  background: #0f766e;
+  color: white;
+}
+
+.toggle-buttons button:not(.active):hover {
+  background: #f3f4f6;
+}
+
+/* Hourly card header layout */
+.ktm-card-header--hourly {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap; /* allows wrapping on small screens */
+}
+
+.ktm-card-header-main h2 {
+  margin-bottom: 0.25rem;
+}
+
+.ktm-card-header-controls {
+  min-width: 150px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ktm-dow-label {
+  font-size: 12px;
+  color: #555;
+}
+
+.ktm-dow-select {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  background: #fff;
+}
+
+/* On smaller screens, let the dropdown go full width below the title */
+@media (max-width: 768px) {
+  .ktm-card-header--hourly {
+    align-items: flex-start;
+  }
+
+  .ktm-card-header-controls {
+    width: 100%;
+    max-width: 220px;
+  }
+}
+
+/* Busiest / quietest hour insights under chart */
+.ktm-hourly-insights {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  font-size: 0.85rem;
+  color: #374151; /* slate-700 style */
+}
+
+.ktm-hourly-insights strong {
+  font-weight: 600;
+}
+
+.ktm-insight-label {
+  font-weight: 500;
+}
+
+.ktm-insight-value {
+  color: #6b7280; /* slate-500 style */
+  font-size: 0.8rem;
+}
+
+.ktm-forecast-insights {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  font-size: 0.85rem;
+  color: #374151; /* slate-700 style */
+}
+
+.ktm-forecast-insights strong {
+  font-weight: 600;
+}
+
+.ktm-insight-holiday {
+  color: #b91c1c; /* red-700-ish */
+  font-size: 0.8rem;
+}
+
+/* Insights section */
+.ktm-forecast-insights {
+  margin: 12px 0 4px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.insight-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.insight-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.busiest-dot {
+  background-color: #16a34a; /* green */
+}
+
+.quietest-dot {
+  background-color: #2563eb; /* blue */
+}
+
+.insight-row .label {
+  margin-right: 4px;
+  color: #444;
+}
+
+.insight-row strong {
+  margin-right: 4px;
+}
+
+.insight-row .value {
+  margin-left: 4px;
+  font-weight: 500;
+}
+
+.insight-row .pct {
+  margin-left: 6px;
+  color: #555;
+  font-size: 13px;
+}
+
+.insight-row.insight-busiest .pct {
+  color: #16a34a; /* green */
+}
+
+.insight-row.insight-quietest .pct {
+  color: #2563eb; /* blue */
+}
+
+.insight-row .holiday {
+  margin-left: 6px;
+  color: #c0392b;
+  font-size: 13px;
+}

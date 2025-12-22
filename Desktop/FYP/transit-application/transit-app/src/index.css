@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  /* background: url('/src/assets/background.jpg') no-repeat;*/
+  background: none !important;
+  background-color: #f5f5f5; /* or white */
+  background-size: cover;
+  background-position: center;
+}
+
+/* When we're on the map page, we will add this class to <body> */
+body.no-scroll {
+  overflow: hidden;        /* stop page scroll */
+  height: 100vh;           /* lock viewport height */
+  display: flex;
+  flex-direction: column;  /* header on top, map fills rest */
+}
+
+a{
+  text-decoration: none;
+}
+
+code{
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+.with-fixed-header {
+  padding-top: 84px; /* header height + a little */
+}
+

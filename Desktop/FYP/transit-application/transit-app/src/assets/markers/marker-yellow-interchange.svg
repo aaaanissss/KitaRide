@@ -1,0 +1,14 @@
+
+<svg width="30" height="46" viewBox="0 0 30 46" xmlns="http://www.w3.org/2000/svg">
+  <!-- Pin shape -->
+  <path d="M15 0C7 0 1 6 1 14c0 10.5 14 32 14 32s14-21.5 14-32C29 6 23 0 15 0z" 
+        fill="#FFD93B" stroke="#CFA500" stroke-width="2"/>
+
+  <!-- Circle area -->
+  <circle cx="15" cy="15" r="8" fill="white"/>
+
+  <!-- Interchange arrow ⇄ -->
+  <text x="15" y="19" font-size="14" font-family="Arial" text-anchor="middle" fill="#000">
+    ⇄
+  </text>
+</svg>

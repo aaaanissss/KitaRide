@@ -1,0 +1,27 @@
+[
+  {
+    "line_code": "rail_lrt_ampang",
+    "line_name": "LRT Ampang Line",
+    "avg_daily_ridership": 135640.81526898735
+  },
+  {
+    "line_code": "rail_lrt_kj",
+    "line_name": "LRT Kelana Jaya Line",
+    "avg_daily_ridership": 180884.1621835443
+  },
+  {
+    "line_code": "rail_monorail",
+    "line_name": "KL Monorail",
+    "avg_daily_ridership": 36111.889636075946
+  },
+  {
+    "line_code": "rail_mrt_kajang",
+    "line_name": "MRT Kajang Line",
+    "avg_daily_ridership": 155697.42919303797
+  },
+  {
+    "line_code": "rail_mrt_pjy",
+    "line_name": "MRT Putrajaya Line",
+    "avg_daily_ridership": 50924.49564873418
+  }
+]

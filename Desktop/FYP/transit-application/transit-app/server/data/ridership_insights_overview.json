@@ -1,0 +1,456 @@
+{
+  "weekly_pattern": {
+    "by_day": [
+      {
+        "dow": 0,
+        "avg_ridership": 597029.608219178
+      },
+      {
+        "dow": 1,
+        "avg_ridership": 638697.6083333333
+      },
+      {
+        "dow": 2,
+        "avg_ridership": 645476.3444444444
+      },
+      {
+        "dow": 3,
+        "avg_ridership": 640562.225
+      },
+      {
+        "dow": 4,
+        "avg_ridership": 651148.5027932961
+      },
+      {
+        "dow": 5,
+        "avg_ridership": 433110.35555555555
+      },
+      {
+        "dow": 6,
+        "avg_ridership": 378178.0904109589
+      }
+    ],
+    "avg_weekday": 634582.8577580504,
+    "avg_weekend": 405644.22298325726,
+    "weekday_weekend_ratio": 1.5643828305777265
+  },
+  "seasonality": {
+    "by_month": [
+      {
+        "month": 1,
+        "avg_ridership": 561174.7181818181
+      },
+      {
+        "month": 2,
+        "avg_ridership": 559604.4236453202
+      },
+      {
+        "month": 3,
+        "avg_ridership": 560133.5900900901
+      },
+      {
+        "month": 4,
+        "avg_ridership": 519224.7535545024
+      },
+      {
+        "month": 5,
+        "avg_ridership": 531325.5662100457
+      },
+      {
+        "month": 6,
+        "avg_ridership": 542882.5887850467
+      },
+      {
+        "month": 7,
+        "avg_ridership": 589500.8169642857
+      },
+      {
+        "month": 8,
+        "avg_ridership": 601304.3027522935
+      },
+      {
+        "month": 9,
+        "avg_ridership": 598894.9478672986
+      },
+      {
+        "month": 10,
+        "avg_ridership": 616865.4082568807
+      },
+      {
+        "month": 11,
+        "avg_ridership": 561787.7417582418
+      },
+      {
+        "month": 12,
+        "avg_ridership": 581526.6344086021
+      }
+    ]
+  },
+  "holiday_effect_overall": {
+    "Almarhum Sultan Iskandar Hol Day": {
+      "label": "Almarhum Sultan Iskandar Hol Day",
+      "has_data": true,
+      "effect_pct": -2.015956140854036
+    },
+    "Anniversary of the Coronation of the Sultan of Terengganu": {
+      "label": "Anniversary of the Coronation of the Sultan of Terengganu",
+      "has_data": true,
+      "effect_pct": 11.633527882367645
+    },
+    "Birthday of Yang di-Pertuan Besar": {
+      "label": "Birthday of Yang di-Pertuan Besar",
+      "has_data": true,
+      "effect_pct": -1.129693600922732
+    },
+    "Birthday of the Governor of Malacca": {
+      "label": "Birthday of the Governor of Malacca",
+      "has_data": true,
+      "effect_pct": 2.0302693643684977
+    },
+    "Birthday of the Governor of Sabah": {
+      "label": "Birthday of the Governor of Sabah",
+      "has_data": true,
+      "effect_pct": -22.294926352671173
+    },
+    "Birthday of the Governor of Sarawak": {
+      "label": "Birthday of the Governor of Sarawak",
+      "has_data": true,
+      "effect_pct": -19.082893538944735
+    },
+    "Birthday of the Raja of Perlis": {
+      "label": "Birthday of the Raja of Perlis",
+      "has_data": true,
+      "effect_pct": -3.852597261211277
+    },
+    "Birthday of the Sultan of Johor": {
+      "label": "Birthday of the Sultan of Johor",
+      "has_data": true,
+      "effect_pct": -27.686538026214368
+    },
+    "Birthday of the Sultan of Kelantan": {
+      "label": "Birthday of the Sultan of Kelantan",
+      "has_data": true,
+      "effect_pct": -2.5575460941935635
+    },
+    "Birthday of the Sultan of Pahang": {
+      "label": "Birthday of the Sultan of Pahang",
+      "has_data": true,
+      "effect_pct": -7.248132919493533
+    },
+    "Birthday of the Sultan of Perak": {
+      "label": "Birthday of the Sultan of Perak",
+      "has_data": true,
+      "effect_pct": 5.576732650748495
+    },
+    "Birthday of the Sultan of Selangor": {
+      "label": "Birthday of the Sultan of Selangor",
+      "has_data": true,
+      "effect_pct": 1.283511339375143
+    },
+    "Birthday of the Sultan of Terengganu": {
+      "label": "Birthday of the Sultan of Terengganu",
+      "has_data": true,
+      "effect_pct": -13.147786023663176
+    },
+    "Chinese New Year Holiday": {
+      "label": "Chinese New Year Holiday",
+      "has_data": true,
+      "effect_pct": -36.96391711678535
+    },
+    "Chinese New Year's Day": {
+      "label": "Chinese New Year's Day",
+      "has_data": true,
+      "effect_pct": -27.900364043885205
+    },
+    "Christmas Day": {
+      "label": "Christmas Day",
+      "has_data": true,
+      "effect_pct": -19.131660661970827
+    },
+    "Christmas Eve": {
+      "label": "Christmas Eve",
+      "has_data": true,
+      "effect_pct": 3.861758884673283
+    },
+    "Day of Arafat": {
+      "label": "Day of Arafat",
+      "has_data": true,
+      "effect_pct": -9.077969040888224
+    },
+    "December Solstice": {
+      "label": "December Solstice",
+      "has_data": true,
+      "effect_pct": -6.241534703712681
+    },
+    "Declaration of Malacca as Historical City": {
+      "label": "Declaration of Malacca as Historical City",
+      "has_data": true,
+      "effect_pct": -19.45336077749874
+    },
+    "Diwali/Deepavali": {
+      "label": "Diwali/Deepavali",
+      "has_data": true,
+      "effect_pct": -25.407706362857564
+    },
+    "Easter Sunday": {
+      "label": "Easter Sunday",
+      "has_data": true,
+      "effect_pct": -41.94226560153651
+    },
+    "Federal Territory Day": {
+      "label": "Federal Territory Day",
+      "has_data": true,
+      "effect_pct": -32.58315627432322
+    },
+    "First Day of Ramadan": {
+      "label": "First Day of Ramadan",
+      "has_data": true,
+      "effect_pct": -18.418666997479306
+    },
+    "Gawai Dayak": {
+      "label": "Gawai Dayak",
+      "has_data": true,
+      "effect_pct": -11.518813435380492
+    },
+    "Gawai Dayak Holiday": {
+      "label": "Gawai Dayak Holiday",
+      "has_data": true,
+      "effect_pct": -19.774828765593433
+    },
+    "George Town World Heritage City Day": {
+      "label": "George Town World Heritage City Day",
+      "has_data": true,
+      "effect_pct": -1.7235733128973307
+    },
+    "Good Friday": {
+      "label": "Good Friday",
+      "has_data": true,
+      "effect_pct": 3.372552355424352
+    },
+    "Hari Raya Haji": {
+      "label": "Hari Raya Haji",
+      "has_data": true,
+      "effect_pct": -31.689245746329863
+    },
+    "Hari Raya Haji (Day 2)": {
+      "label": "Hari Raya Haji (Day 2)",
+      "has_data": true,
+      "effect_pct": -20.904898413777484
+    },
+    "Hari Raya Haji holiday": {
+      "label": "Hari Raya Haji holiday",
+      "has_data": true,
+      "effect_pct": -53.347126214714045
+    },
+    "Hari Raya Puasa": {
+      "label": "Hari Raya Puasa",
+      "has_data": true,
+      "effect_pct": -42.41953487572321
+    },
+    "Hari Raya Puasa Day 2": {
+      "label": "Hari Raya Puasa Day 2",
+      "has_data": true,
+      "effect_pct": -36.4927931109616
+    },
+    "Hari Raya Puasa Holiday": {
+      "label": "Hari Raya Puasa Holiday",
+      "has_data": true,
+      "effect_pct": 9.010158021985614
+    },
+    "Harvest Festival": {
+      "label": "Harvest Festival",
+      "has_data": true,
+      "effect_pct": 7.126614942890042
+    },
+    "Holiday for Birthday of the Sultan of Kelantan": {
+      "label": "Holiday for Birthday of the Sultan of Kelantan",
+      "has_data": true,
+      "effect_pct": 4.929589873883833
+    },
+    "Isra and Mi'raj": {
+      "label": "Isra and Mi'raj",
+      "has_data": true,
+      "effect_pct": -12.15371861686364
+    },
+    "June Solstice": {
+      "label": "June Solstice",
+      "has_data": true,
+      "effect_pct": -1.4053876881561789
+    },
+    "Labour Day": {
+      "label": "Labour Day",
+      "has_data": true,
+      "effect_pct": -34.92405148297586
+    },
+    "Malaysia Day": {
+      "label": "Malaysia Day",
+      "has_data": true,
+      "effect_pct": -25.805914865883683
+    },
+    "Malaysia's National Day": {
+      "label": "Malaysia's National Day",
+      "has_data": true,
+      "effect_pct": -12.209869021229736
+    },
+    "March Equinox": {
+      "label": "March Equinox",
+      "has_data": true,
+      "effect_pct": -1.3617721651825287
+    },
+    "Muharram/New Year": {
+      "label": "Muharram/New Year",
+      "has_data": true,
+      "effect_pct": -31.229413518407622
+    },
+    "New Year's Day": {
+      "label": "New Year's Day",
+      "has_data": true,
+      "effect_pct": -27.219326589363245
+    },
+    "New Year's Eve": {
+      "label": "New Year's Eve",
+      "has_data": true,
+      "effect_pct": 20.339361381586652
+    },
+    "Nuzul Al-Quran": {
+      "label": "Nuzul Al-Quran",
+      "has_data": true,
+      "effect_pct": -40.47350981109038
+    },
+    "Pahang State Holiday": {
+      "label": "Pahang State Holiday",
+      "has_data": true,
+      "effect_pct": -10.700991836541164
+    },
+    "Penang Governor's Birthday": {
+      "label": "Penang Governor's Birthday",
+      "has_data": true,
+      "effect_pct": -21.787251439044496
+    },
+    "Sarawak Independence Day": {
+      "label": "Sarawak Independence Day",
+      "has_data": true,
+      "effect_pct": 5.703673777416252
+    },
+    "Second Day of Chinese New Year": {
+      "label": "Second Day of Chinese New Year",
+      "has_data": true,
+      "effect_pct": -33.986916383475275
+    },
+    "Second Day of Harvest Festival": {
+      "label": "Second Day of Harvest Festival",
+      "has_data": true,
+      "effect_pct": 2.5141206730095567
+    },
+    "September Equinox": {
+      "label": "September Equinox",
+      "has_data": true,
+      "effect_pct": 1.1112890735902603
+    },
+    "Sultan of Kedah's Birthday": {
+      "label": "Sultan of Kedah's Birthday",
+      "has_data": true,
+      "effect_pct": -35.07772391616082
+    },
+    "Thaipusam": {
+      "label": "Thaipusam",
+      "has_data": true,
+      "effect_pct": -32.962379196760814
+    },
+    "The Prophet Muhammad's Birthday": {
+      "label": "The Prophet Muhammad's Birthday",
+      "has_data": true,
+      "effect_pct": -27.73025128705463
+    },
+    "The Yang di-Pertuan Agong's Birthday": {
+      "label": "The Yang di-Pertuan Agong's Birthday",
+      "has_data": true,
+      "effect_pct": -39.38453893581484
+    },
+    "Valentine's Day": {
+      "label": "Valentine's Day",
+      "has_data": true,
+      "effect_pct": 12.81031623079012
+    },
+    "Wesak Day": {
+      "label": "Wesak Day",
+      "has_data": true,
+      "effect_pct": -41.92765379047867
+    }
+  },
+  "line_personalities": [
+    {
+      "line_code": "rail_lrt_ampang",
+      "line_name": "LRT Ampang + Sri Petaling",
+      "weekday_weekend_ratio": 1.4862420028549654,
+      "personality_tag": "Weekday commuter-heavy"
+    },
+    {
+      "line_code": "rail_lrt_kj",
+      "line_name": "LRT Kelana Jaya",
+      "weekday_weekend_ratio": 1.8251282869708108,
+      "personality_tag": "Weekday commuter-heavy"
+    },
+    {
+      "line_code": "rail_monorail",
+      "line_name": "KL Monorail",
+      "weekday_weekend_ratio": 1.16194711288817,
+      "personality_tag": "Balanced usage"
+    },
+    {
+      "line_code": "rail_mrt_kajang",
+      "line_name": "MRT Kajang Line",
+      "weekday_weekend_ratio": 1.474664519716312,
+      "personality_tag": "Weekday commuter-heavy"
+    },
+    {
+      "line_code": "rail_mrt_pjy",
+      "line_name": "MRT Putrajaya Line",
+      "weekday_weekend_ratio": 1.656688927775919,
+      "personality_tag": "Weekday commuter-heavy"
+    },
+    {
+      "line_code": "rail_komuter",
+      "line_name": "KTM Komuter Klang Valley",
+      "weekday_weekend_ratio": 1.42646819999963,
+      "personality_tag": "Weekday commuter-heavy"
+    }
+  ],
+  "anomalies": [],
+  "holiday_effect_by_line": {
+    "thaipusam": {
+      "per_line": [
+        {
+          "line_code": "rail_lrt_ampang",
+          "line_name": "LRT Ampang + Sri Petaling",
+          "effect_pct": -35.282678674572644
+        },
+        {
+          "line_code": "rail_lrt_kj",
+          "line_name": "LRT Kelana Jaya",
+          "effect_pct": -42.064945705123336
+        },
+        {
+          "line_code": "rail_monorail",
+          "line_name": "KL Monorail",
+          "effect_pct": -18.98142769187583
+        },
+        {
+          "line_code": "rail_mrt_kajang",
+          "line_name": "MRT Kajang Line",
+          "effect_pct": -30.723314984419826
+        },
+        {
+          "line_code": "rail_mrt_pjy",
+          "line_name": "MRT Putrajaya Line",
+          "effect_pct": -39.32505697068991
+        },
+        {
+          "line_code": "rail_komuter",
+          "line_name": "KTM Komuter Klang Valley",
+          "effect_pct": 193.48445371926846
+        }
+      ]
+    }
+  }
+}
