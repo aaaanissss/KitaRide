@@ -1,0 +1,375 @@
+/* ===== Admin: Review Users page ===== */
+
+.admin-header-card {
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.admin-users-section {
+  margin-top: 24px;
+}
+
+.admin-users-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.admin-users-toolbar h2 {
+  margin: 0;
+}
+
+.admin-users-filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.admin-chip {
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  padding: 4px 12px;
+  font-size: 12px;
+  background: rgba(15, 23, 42, 0.02);
+  color: #0f172a;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.admin-chip--active {
+  background: #0f172a;
+  color: #f9fafb;
+  border-color: #0f172a;
+}
+
+.admin-users-table .profile-table-header span:nth-child(1),
+.admin-users-table .profile-table-row span:nth-child(1) {
+  width: 60px;
+}
+
+.admin-role-select {
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  background: rgba(15, 23, 42, 0.02);
+  font-size: 12px;
+}
+
+.admin-role-select:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.admin-tag {
+  margin-left: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: rgba(56, 189, 248, 0.08);
+  color: #0284c7;
+}
+
+/* Make admin users table 5 columns instead of the default 4 */
+.admin-users-table .profile-table-header,
+.admin-users-table .profile-table-row {
+  display: grid;
+  grid-template-columns: 60px minmax(0, 2fr) 150px 110px 110px;
+  column-gap: 16px;
+  align-items: center;
+}
+
+/* Optional: you can remove this now, since grid-template-columns
+   controls the width of the first column */
+.admin-users-table .profile-table-header span:nth-child(1),
+.admin-users-table .profile-table-row span:nth-child(1) {
+  width: auto;
+}
+
+/* ===== Admin confirmation modal ===== */
+
+.admin-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.admin-modal {
+  background: #f9fafb;
+  border-radius: 18px;
+  padding: 20px 24px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.45);
+}
+
+.admin-modal h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  color: #0f172a;
+}
+
+.admin-modal p {
+  margin: 0 0 16px;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.admin-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.admin-modal-btn {
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 13px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease,
+    border-color 0.15s ease, transform 0.05s ease;
+}
+
+.admin-modal-btn-primary {
+  background: #0f172a;
+  color: #f9fafb;
+  border-color: #0f172a;
+}
+
+.admin-modal-btn-primary:hover {
+  transform: translateY(-1px);
+}
+
+.admin-modal-btn-secondary {
+  background: #e5e7eb;
+  color: #111827;
+  border-color: #d1d5db;
+}
+
+.admin-modal-btn-secondary:hover {
+  background: #d1d5db;
+}
+
+/* ===== Admin: Review Attractions layout ===== */
+
+.profile-grid.admin-attractions-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1.3fr) minmax(0, 1.7fr);
+  gap: 20px;
+  align-items: flex-start;
+}
+
+/* stack on small screens */
+@media (max-width: 1024px) {
+  .profile-grid.admin-attractions-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.admin-section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+
+.admin-request-row {
+  cursor: pointer;
+  transition: background 0.12s ease, box-shadow 0.12s ease;
+}
+
+.admin-request-row:hover {
+  background: rgba(15, 23, 42, 0.02);
+}
+
+.admin-request-row--active {
+  background: rgba(56, 189, 248, 0.06);
+  box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.4) inset;
+}
+
+/* Optional highlight for selected attraction row */
+.admin-attraction-row--active {
+  background: rgba(16, 185, 129, 0.04);
+  box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.35) inset;
+}
+
+/* Details panel styling */
+.admin-details-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-detail-card {
+  margin-top: 8px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+}
+
+.admin-detail-card--secondary {
+  margin-top: 16px;
+}
+
+.admin-detail-meta {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 4px 0 8px;
+}
+
+.admin-detail-reason {
+  font-size: 13px;
+  color: #374151;
+  margin: 4px 0 10px;
+}
+
+.admin-detail-label {
+  display: block;
+  font-size: 12px;
+  color: #4b5563;
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+
+.admin-detail-textarea {
+  width: 100%;
+  min-height: 80px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  padding: 8px;
+  font-size: 13px;
+  resize: vertical;
+}
+
+/* Approve / Reject buttons (shared) */
+.admin-detail-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.admin-btn {
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 13px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease,
+    border-color 0.15s ease, transform 0.05s ease;
+}
+
+.admin-btn--primary {
+  background: #0f172a;
+  color: #f9fafb;
+  border-color: #0f172a;
+}
+
+.admin-btn--primary:hover {
+  transform: translateY(-1px);
+}
+
+.admin-btn--danger {
+  background: #fef2f2;
+  color: #b91c1c;
+  border-color: #fecaca;
+}
+
+.admin-btn--danger:hover {
+  background: #fee2e2;
+}
+
+/* ===== Edit/Delete Requests table layout ===== */
+
+/* 4 columns: ID | Attraction | Type | User */
+.admin-requests-table .profile-table-header,
+.admin-requests-table .profile-table-row {
+  display: grid;
+  grid-template-columns: 50px minmax(0, 2fr) 80px 120px;
+  column-gap: 12px;
+  align-items: center;
+}
+
+/* stop headers & cells from wrapping into 2–3 lines */
+.admin-requests-table .profile-table-header span,
+.admin-requests-table .profile-table-row span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* highlight selected request row */
+.admin-request-row {
+  cursor: pointer;
+  transition: background 0.12s ease, box-shadow 0.12s ease;
+}
+
+.admin-request-row:hover {
+  background: rgba(15, 23, 42, 0.02);
+}
+
+.admin-request-row--active {
+  background: rgba(56, 189, 248, 0.06);
+  box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.4) inset;
+}
+
+/* ===== Request diff table (Field / Current / Requested) ===== */
+
+.admin-change-table {
+  margin-top: 10px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  overflow: hidden;
+  font-size: 12px;
+}
+
+.admin-change-header,
+.admin-change-row {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: 10px;
+  padding: 6px 10px;
+  align-items: flex-start;
+}
+
+.admin-change-header {
+  background: #e5e7eb;
+  font-weight: 600;
+  color: #111827;
+  font-size: 11px;
+}
+
+.admin-change-row {
+  border-top: 1px solid #e5e7eb;
+  background: #ffffff;
+}
+
+.admin-change-row:nth-child(even) {
+  background: #f9fafb;
+}
+
+.admin-change-row span:nth-child(1) {
+  font-weight: 500;
+  color: #6b7280;
+}
+
+/* let long text wrap nicely inside cells */
+.admin-change-row span:nth-child(2),
+.admin-change-row span:nth-child(3) {
+  white-space: normal;
+  word-break: break-word;
+}

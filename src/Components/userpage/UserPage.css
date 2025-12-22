@@ -1,0 +1,1363 @@
+/* HEADER BAR */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 72px;
+  padding: 0 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #020617;
+  color: #f9fafb;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.6);
+  z-index: 1000;   /* was 40 */
+}
+
+/* Logo */
+.logo {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #f9fafb;
+}
+
+/* Right side: nav links + profile */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+/* NAV LINKS */
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.nav-link {
+  position: relative;
+  font-size: 15px;
+  font-weight: 500;
+  color: #e5e7eb;
+  text-decoration: none;
+  padding-bottom: 4px;
+}
+
+/* hover state */
+.nav-link:hover {
+  color: #ffffff;
+}
+
+/* subtle white underline on hover */
+.nav-link::before {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  border-radius: 999px;
+  background: #ffffff;
+  transition: width 0.25s ease;
+}
+
+.nav-link:hover::before {
+  width: 100%;
+}
+
+/* active link color + gradient underline */
+.nav-link.active {
+  color: #38bdf8;
+}
+
+.nav-link.active::before {
+  width: 100%;
+  background: linear-gradient(90deg, #22d3ee, #38bdf8, #22c55e);
+}
+
+/* PROFILE DROPDOWN */
+.profile-wrapper {
+  position: relative;
+  margin-left: 8px;
+}
+
+.profile-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-icon {
+  font-size: 28px;
+  color: #e5e7eb;
+  transition: transform 0.1s ease, color 0.15s ease;
+}
+
+.profile-btn:hover .profile-icon {
+  color: #38bdf8;
+  transform: translateY(-1px);
+}
+
+.profile-dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  min-width: 170px;
+  background: rgba(15, 23, 42, 0.98);
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.8);
+  padding: 6px 0;
+  z-index: 1100;        /* ensure it's above the header & map */
+  backdrop-filter: blur(18px);
+}
+
+.profile-item {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: #e5e7eb;
+  text-align: left;
+  padding: 8px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.profile-item:hover {
+  background: rgba(30, 64, 175, 0.65);
+  color: #f9fafb;
+}
+
+.profile-item-danger {
+  color: #fca5a5;
+}
+
+.profile-item-danger:hover {
+  background: rgba(127, 29, 29, 0.75);
+  color: #fee2e2;
+}
+
+.profile-greeting {
+  padding: 12px 14px;
+  font-size: 14px;
+  color: #cbd5f5;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+  margin-bottom: 4px;
+}
+
+.profile-greeting strong {
+  color: #38bdf8;
+}
+
+/* ---- Home page layout ---- */
+
+/* User location marker with pulsing dot */
+/*.user-location-icon {        */
+  /* remove default icon image */
+/*}                            */
+
+.user-location-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 3px solid #ffffff;
+  background: #3b82f6;
+  box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.4);
+  animation: user-loc-pulse 1.8s ease-out infinite;
+}
+
+@keyframes user-loc-pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.4);
+  }
+  70% {
+    transform: scale(1.25);
+    box-shadow: 0 0 0 14px rgba(59, 130, 246, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 6px rgba(59, 130, 246, 0);
+  }
+}
+
+/* Search bar: narrower than page, with vertical gap */
+.searchBox--overlay {
+  border: 1px solid #c9c9c9;
+  border-radius: 10px;
+  padding: 12px 14px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  display: flex;
+  align-items: center;
+}
+
+.searchBox--overlay input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 14px;
+  background: transparent;
+  color: #222;
+}
+
+/* Map area */
+/* PAGE WRAPPER FOR FULLSCREEN MAP */
+.mapPage {
+  position: relative;
+  z-index: 0;
+  height: calc(100vh - 72px); /* adjust if header height changes */
+  width: 100%;
+  margin-top: 72px; /* equal to header height */
+  overflow: hidden;
+}
+
+/* The div that holds the Leaflet map + overlays */
+.mapWrapper {
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Leaflet container */
+.leaflet-container {
+  position: relative;
+  z-index: 0; /* keep it beneath header & dropdown */
+}
+
+/* The Leaflet map itself */
+.mapFullscreen {
+  width: 100%;
+  height: 100%;
+  filter: saturate(0.9) brightness(0.95);
+}
+
+.btn {
+  margin-left: 4px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #c9c9c9;
+  background: #fff;
+  cursor: pointer;
+}
+
+/* LEFT COLLAPSIBLE SIDE PANEL (Google Maps style) */
+.sidePanel {
+  position: absolute;
+  top: 96px;              /* below header + search bar */
+  left: 16px;
+  bottom: 24px;
+  width: 360px;
+  max-width: 80vw;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.25);
+  z-index: 1200;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+/* slide almost off-screen but leave a bit visible as a tab */
+.sidePanel--collapsed {
+  transform: translateX(calc(-100% + 40px)); /* 40px tab visible */
+}
+
+/* fully visible */
+.sidePanel--open {
+  transform: translateX(0);
+}
+
+.sidePanel-inner {
+  padding: 18px 20px 20px;
+  overflow-y: auto;
+  height: 100%;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.sidePanel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.sidePanel-header h2 {
+  margin: 0;
+  font-size: 1.15rem;
+  color: #009645;
+  font-weight: 700;
+}
+
+/* X button in header */
+.sidePanel-close {
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  cursor: pointer;
+  color: #666;
+}
+.sidePanel-close:hover {
+  color: #000;
+}
+
+/* small vertical pill to expand/collapse */
+.sidePanel-toggle {
+  position: absolute;
+  top: 50%;
+  right: -18px;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 60px;
+  border-radius: 999px;
+  border: none;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidePanel-empty {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidePanel-empty h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.sidePanel-empty p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* mobile: panel becomes bottom sheet instead of side panel */
+@media (max-width: 768px) {
+  .sidePanel {
+    left: 8px;
+    right: 8px;
+    width: auto;
+    bottom: 12px;
+    top: auto;
+    max-width: 100%;
+    border-radius: 16px 16px 10px 10px;
+  }
+
+  .sidePanel--collapsed {
+    transform: translateY(calc(100% - 48px)); /* just show header strip */
+  }
+
+  .sidePanel-toggle {
+    top: -18px;
+    right: 16px;
+    width: 36px;
+    height: 24px;
+    border-radius: 999px;
+    font-size: 14px;
+  }
+}
+
+/* ==== Nearest user card ==== */
+.nearestUserCard {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nearestUserTitle {
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.nearestUserName {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.nearestUserDistance {
+  font-size: 11px;
+  color: #4b5563;
+}
+
+.nearestUserBtn,
+.nearestUserRefresh {
+  margin-top: 6px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.nearestUserBtn {
+  background: #111827;
+  color: #f9fafb;
+  border-color: #111827;
+}
+
+.nearestUserBtn:hover {
+  background: #020617;
+}
+
+.nearestUserRefresh {
+  align-self: flex-start;
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.nearestUserRefresh:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.nearestUserError {
+  margin-top: 4px;
+  font-size: 10px;
+  color: #b91c1c;
+}
+
+/* ==== Map popups styled like timeline cards ==== */
+.popupTimeline {
+  font-family: "Poppins", sans-serif;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.popupTitle {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6b7280;
+  margin-bottom: 2px;
+}
+
+.popupStationName {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.popupLines {
+  margin-top: 2px;
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.popupMeta {
+  margin-top: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #16a34a; /* green, consistent with “good / active” */
+}
+
+/* ---- Attraction cards ---- */
+.attractionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Card base */
+.attractionCard {
+  border-radius: 14px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  border: 1px solid #e5e7eb;
+}
+
+/* Image area: fixed height, crop nicely */
+.attractionImageWrapper {
+  width: 100%;
+  height: 180px;           /* adjust to taste: 160–220px */
+  overflow: hidden;
+}
+
+.attractionImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;       /* 🔑 keeps aspect ratio, crops instead of stretch */
+  display: block;
+}
+
+/* Content area under the image */
+.attractionContent {
+  padding: 10px 12px 12px;
+}
+
+.overlaySectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.addAttractionBtn {
+  border: none;
+  border-radius: 999px;
+  width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #111827;
+  color: #f9fafb;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.addAttractionBtn:hover {
+  background: #0b1120;
+  transform: translateY(-1px);
+}
+
+.addAttractionForm {
+  padding: 10px 0 4px;
+  border-radius: 12px;
+  background: #f9fafb;
+  margin-bottom: 8px;
+}
+
+.addAttractionForm .formRow {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.addAttractionForm label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.addAttractionForm input {
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  padding: 6px 8px;
+  font-size: 13px;
+}
+
+.addAttractionForm .formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.btnPrimary,
+.btnSecondary,
+.btnDanger,
+.btnGhost {
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.btnPrimary {
+  background: #111827;
+  color: #f9fafb;
+}
+
+.btnSecondary {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.btnDanger {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.btnGhost {
+  background: transparent;
+  color: #6b7280;
+  border-color: #e5e7eb;
+}
+
+/* three-dots button on each card */
+.attractionMenuBtn {
+  border: none;
+  background: #f3f4f6;
+  border-radius: 999px;
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.attractionMenuBtn:hover {
+  background: #e5e7eb;
+}
+
+.addAttractionOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;      /* align to top instead of center */
+  padding-top: 96px;            /* 72px header + 24px breathing room */
+  z-index: 2000;
+}
+
+.addAttractionModal {
+  width: min(480px, 92%);
+  max-height: calc(100vh - 120px); /* keep some space below */
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 24px 24px 20px;
+  box-shadow: 0 22px 60px rgba(15, 23, 42, 0.55);
+}
+
+/* mobile */
+@media (max-width: 768px) {
+  .addAttractionOverlay {
+    padding-top: 80px;                       /* a bit tighter on small screens */
+  }
+
+  .addAttractionModal {
+    width: 100%;
+    max-height: calc(100vh - 100px);
+    border-radius: 16px 16px 0 0;
+  }
+}
+
+/* ==== Review form inside attraction card ==== */
+
+.attractionReviewTrigger {
+  margin-top: 6px;
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  color: #111827;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.attractionReviewTrigger:hover {
+  background: #e5e7eb;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transform: translateY(-1px);
+}
+
+.attractionReviewTrigger span.star {
+  color: #fbbf24; /* amber-400 */
+  font-size: 13px;
+}
+
+/* Card-style review form */
+.attractionReviewForm {
+  margin-top: 8px;
+  padding: 10px 10px 9px;
+  border-radius: 12px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Header text: "Your review" */
+.attractionReviewForm-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* rating line */
+.attractionReviewForm-ratingRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.attractionReviewForm-ratingLabel {
+  font-size: 11px;
+  color: #4b5563;
+}
+
+/* star dropdown */
+.attractionReviewForm select {
+  font-size: 12px;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  padding: 3px 8px;
+  background: #ffffff;
+}
+
+/* comment box */
+.attractionReviewForm textarea {
+  width: 100%;
+  min-height: 64px;
+  resize: vertical;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  padding: 6px 8px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+/* error text */
+.attractionReviewForm-error {
+  font-size: 11px;
+  color: #b91c1c;
+}
+
+/* actions row */
+.attractionReviewForm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.attractionReviewForm-actions .btnPrimary,
+.attractionReviewForm-actions .btnGhost {
+  font-size: 11px;
+  padding: 5px 10px;
+}
+
+/* ==== Attraction reviews (read comments) ==== */
+.attractionReviewsToggle {
+  margin-top: 4px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  font-size: 11px;
+  cursor: pointer;
+  color: #374151;
+}
+
+.attractionReviewsToggle:hover {
+  background: #eef2ff;
+  border-color: #c7d2fe;
+}
+
+.attractionReviewsPanel {
+  margin-top: 6px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.attractionReviewsLoading,
+.attractionReviewsError,
+.attractionReviewsEmpty {
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.attractionReviewsError {
+  color: #b91c1c;
+}
+
+.attractionReviewsList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.attractionReviewsItem {
+  padding-bottom: 6px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.attractionReviewsItem:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.attractionReviewsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  margin-bottom: 2px;
+}
+
+.attractionReviewsUser {
+  font-weight: 600;
+  color: #111827;
+}
+
+.attractionReviewsStars {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  letter-spacing: 1px;
+  color: #facc15;
+}
+
+.attractionReviewsText {
+  margin: 0;
+  font-size: 12px;
+  color: #374151;
+}
+
+.attractionReviewsDate {
+  display: inline-block;
+  margin-top: 2px;
+  font-size: 10px;
+  color: #9ca3af;
+}
+
+.attractionActionMenu {
+  position: absolute;
+  top: 24px;           /* just below the button */
+  right: 0;
+  padding: 6px;
+  background: #0f172a;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 999;        /* comfortably above the card */
+}
+
+.attractionHeaderRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.attractionHeaderActions {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+.attractionMenuWrapper {
+  position: relative;   /* 🔑 menu will position relative to this */
+  display: inline-block;
+}
+
+/* buttons inside the action menu */
+.attractionActionMenu button {
+  font-size: 12px;
+  padding: 4px 8px;
+  border: none;
+  background: transparent;
+  color: #e5e7eb;
+  text-align: left;
+  cursor: pointer;
+}
+
+.attractionActionMenu button:hover {
+  background: rgba(148, 163, 184, 0.2);
+}
+
+.attractionActionMenu-cancel {
+  color: #9ca3af;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.modalHeader h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.modalHeader p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.modalClose {
+  border-radius: 999px;
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.modalClose:hover {
+  background: #f3f4f6;
+}
+
+.photoPreview {
+  margin-top: 8px;
+  border-radius: 12px;
+  overflow: hidden;
+  max-height: 160px;
+}
+
+.photoPreview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .addAttractionModal {
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    border-radius: 0;
+  }
+}
+
+/* small action panel under list */
+.attractionMenuPanel {
+  margin-top: 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+}
+
+.menuButtonsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+/* Make the Nearby Attractions section more compact */
+.overlaySection--attractions {
+  padding-top: 4px;        /* or 0 if you want it flush */
+}
+
+/* Remove large default margins on the section title */
+.overlaySection--attractions h4 {
+  margin: 0;
+}
+
+/* Ensure the list sits tight under the header */
+.overlaySection--attractions .attractionsList {
+  margin-top: 4px;         /* reduce / control the spacing */
+}
+
+/* If a “no attractions” message shows, keep that tight too */
+.overlaySection--attractions p {
+  margin-top: 4px;
+}
+
+/* HEATMAP */
+/* ========= FLOATING BUTTON (when heatmap is OFF) ========= */
+.heatmapToggle {
+  position: absolute;
+  top: 60px;          /* just under the main nav bar */
+  right: 24px;        /* move to top-right so it never goes under side panel */
+  z-index: 1200;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: none;
+  background: #111827;
+  color: #f9fafb;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+
+.heatmapToggle:hover {
+  background: #165eb0;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+}
+
+/* ========= PANEL (when heatmap is ON) ========= */
+/* Heatmap info card */
+.heatmap-panel {
+  position: absolute;
+  bottom: 24px;
+  /* left: 24px;  ❌ old */
+  right: 24px;        /* ✅ move to bottom-right */
+  z-index: 1200;
+  max-width: 340px;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 14px 16px 16px;
+  box-shadow: 0 14px 40px rgba(15, 23, 42, 0.25);
+}
+
+.heatmap-lines-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* button INSIDE the panel (normal, not absolute) */
+.heatmapBtn {
+  align-self: flex-start;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: none;
+  font-size: 13px;
+  font-weight: 500;
+  background: #1f7ae0;
+  color: #ffffff;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  margin-top: 6px;
+}
+
+.heatmapBtn:hover {
+  background: #165eb0;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+}
+
+/* inline legend in panel */
+.heatmap-legend-inline {
+  margin-top: 4px;
+  font-size: 11px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;   /* center everything */
+}
+
+.heatmap-legend-title {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #111827;
+}
+
+.heatmap-legend-bar {
+  width: 180px;
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    #4b9fff,
+    #4fd2a4,
+    #f6d365,
+    #f08c6a,
+    #e84545
+  );
+  margin-bottom: 4px;
+}
+
+.heatmap-legend-labels {
+  width: 180px;           /* match bar width */
+  display: flex;
+  justify-content: space-between;
+  color: #6b7280;
+  font-size: 10px;
+  margin-bottom: 3px;
+}
+
+.heatmap-legend-line {
+  font-size: 10px;
+  color: #374151;
+}
+
+/* fade for heat layer */
+.mapFullscreen .leaflet-heat-layer {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.mapFullscreen.heatmap-on .leaflet-heat-layer {
+  opacity: 0.85;
+}
+
+/* mobile: move panel to bottom center */
+@media (max-width: 768px) {
+  .heatmap-panel {
+    top: auto;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 90vw;
+  }
+}
+
+/* station title */
+.stationOverlay h2 {
+  margin: 0 0 12px;
+  font-size: 1.3rem;               
+  color: #009645;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+}
+
+.stationOverlay .overlaySection h4 {
+  margin-top: 14px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #222;
+}
+
+/* ---- Chart container fixes ---- */
+.stationOverlay .overlaySection {
+  width: 100%;
+  min-height: 200px; /* Ensure section has height */
+}
+
+/* Specific styling for the chart container */
+.overlaySection > div:first-child {
+  width: 100% !important;
+  height: 180px !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  position: relative;
+}
+
+/* Ensure the chart container doesn't collapse */
+.recharts-wrapper {
+  min-width: 0 !important;
+  min-height: 0 !important;
+}
+
+/* Chart specific responsive container */
+.chart-container {
+  width: 100%;
+  height: 180px;
+  min-width: 0;
+  min-height: 0;
+  position: relative;
+}
+
+/* list items */
+.stationOverlay ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stationOverlay li {
+  padding: 6px 0;
+  border-bottom: 1px solid #efefef;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+/* Close button inside station overlay */
+.closeOverlayBtn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  line-height: 1;
+  color: #666;
+  cursor: pointer;
+}
+.closeOverlayBtn:hover {
+  color: #000;
+}
+
+/* subtle divider between info sections */
+.sectionDivider {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 16px 0 14px;
+}
+
+/* tighten headings inside sections */
+.stationOverlay .overlaySection h4 {
+  margin: 0 0 8px;
+}
+
+/* optional: reduce min-height now that the sections are visually separated */
+.stationOverlay .overlaySection {
+  width: 100%;
+  min-height: 180px;
+}
+
+/* ---- Map markers ---- */
+.markerPin {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+/* Start = green */
+.markerPin.start {
+  background: #21c55d;
+}
+
+/* End = red */
+.markerPin.end {
+  background: #ef4444;
+}
+
+/* Interchange = yellow with icon */
+.markerPin.interchange {
+  background: #facc15;
+  color: #111;
+  width: 22px;
+  height: 22px;
+  font-size: 13px;
+}
+
+/* ---- Route options cards ---- */
+.panelCard {
+  padding: 14px 18px;
+  margin-bottom: 14px;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid #eee;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  transition: 0.2s ease;
+}
+
+.panelCard:hover {
+  background: #f6f8fb;
+  transform: translateY(-1px);
+}
+
+.panelCard.selected {
+  background: #e8f2ff;          /* highlight */
+  border: 2px solid #2b7cff;
+  box-shadow: 0 4px 12px rgba(43,124,255,0.25);
+}
+
+/* responsive tweak: on very small screens keep it usable */
+@media (max-width: 768px) {
+  .stationOverlay {
+    width: calc(100% - 32px);
+    right: 16px;
+    left: 16px;
+    top: auto;
+    bottom: 16px;
+    height: 60vh;
+  }
+  
+  /* OPTIONAL: nicer Leaflet UI spacing inside rounded corners */
+  .leaflet-top.leaflet-left {
+    margin-top: 12px;
+    margin-left: 12px;
+  }
+  .leaflet-control-attribution {
+    margin-bottom: 8px;
+    margin-right: 12px;
+    font-size: 11px;
+  }
+}
+
+/* Smooth transition when becoming active */
+.attractionCard {
+  background: #ffffff !important;
+  border-radius: 16px;
+  padding: 14px;
+  color: #000;                     /* switch to dark text */
+  box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+  position: relative;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.attractionCard--active {
+  border: 2px solid #38bdf8;     /* cyan border highlight */
+  box-shadow: 0 0 0 3px rgba(56,189,248,0.25);
+  background: #ffffff !important;
+}
+
+
+/* ==== Attraction map markers ==== */
+.attraction-icon {
+  /* Leaflet will position this container, we just style the inner dot */
+}
+
+.attraction-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+}
+
+/* Default */
+.attraction-icon.attraction-generic .attraction-dot {
+  background: #6b7280; /* gray */
+}
+
+/* Mall / shopping */
+.attraction-icon.attraction-mall .attraction-dot {
+  background: #ec4899; /* pink */
+}
+
+/* Food */
+.attraction-icon.attraction-food .attraction-dot {
+  background: #f97316; /* orange */
+}
+
+/* Park */
+.attraction-icon.attraction-park .attraction-dot {
+  background: #22c55e; /* green */
+}
+
+/* Museum */
+.attraction-icon.attraction-museum .attraction-dot {
+  background: #6366f1; /* indigo */
+}

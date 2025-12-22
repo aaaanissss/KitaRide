@@ -1,0 +1,258 @@
+[
+  {
+    "id": "KB1",
+    "name": "Batu Caves"
+  },
+  {
+    "id": "KB2",
+    "name": "Taman Wahyu"
+  },
+  {
+    "id": "KB3",
+    "name": "Kampung Batu"
+  },
+  {
+    "id": "KB4",
+    "name": "Batu Kentonmen"
+  },
+  {
+    "id": "KB5",
+    "name": "Sentul"
+  },
+  {
+    "id": "KB6",
+    "name": "Putra"
+  },
+  {
+    "id": "KB7",
+    "name": "Bank Negara"
+  },
+  {
+    "id": "KB8",
+    "name": "Kuala Lumpur"
+  },
+  {
+    "id": "KB9",
+    "name": "KL Sentral"
+  },
+  {
+    "id": "KB10",
+    "name": "Mid Valley"
+  },
+  {
+    "id": "KB11",
+    "name": "Seputeh"
+  },
+  {
+    "id": "KB12",
+    "name": "Salak Selatan"
+  },
+  {
+    "id": "KB13",
+    "name": "Bandar Tasik Selatan"
+  },
+  {
+    "id": "KB14",
+    "name": "Serdang"
+  },
+  {
+    "id": "KB15",
+    "name": "Kajang"
+  },
+  {
+    "id": "KB16",
+    "name": "Kajang 2"
+  },
+  {
+    "id": "KB17",
+    "name": "UKM"
+  },
+  {
+    "id": "KB18",
+    "name": "Bangi"
+  },
+  {
+    "id": "KB19",
+    "name": "Batang Benar"
+  },
+  {
+    "id": "KB20",
+    "name": "Nilai"
+  },
+  {
+    "id": "KB21",
+    "name": "Labu"
+  },
+  {
+    "id": "KB22",
+    "name": "Tiroi"
+  },
+  {
+    "id": "KB23",
+    "name": "Seremban"
+  },
+  {
+    "id": "KB24",
+    "name": "Senawang"
+  },
+  {
+    "id": "KB25",
+    "name": "Sungai Gadut"
+  },
+  {
+    "id": "KB26",
+    "name": "Rembau"
+  },
+  {
+    "id": "KB27",
+    "name": "Pulau Sebang"
+  },
+  {
+    "id": "KT1",
+    "name": "Tanjung Malim"
+  },
+  {
+    "id": "KT2",
+    "name": "Kuala Kubu Baru"
+  },
+  {
+    "id": "KT3",
+    "name": "Rasa"
+  },
+  {
+    "id": "KT4",
+    "name": "Batang Kali"
+  },
+  {
+    "id": "KT5",
+    "name": "Serendah"
+  },
+  {
+    "id": "KT6",
+    "name": "Rawang"
+  },
+  {
+    "id": "KT7",
+    "name": "Kuang"
+  },
+  {
+    "id": "KT8",
+    "name": "Sungai Buloh"
+  },
+  {
+    "id": "KT9",
+    "name": "Kepong Sentral"
+  },
+  {
+    "id": "KT10",
+    "name": "Kepong"
+  },
+  {
+    "id": "KT11",
+    "name": "Segambut"
+  },
+  {
+    "id": "KT12",
+    "name": "Putra"
+  },
+  {
+    "id": "KT13",
+    "name": "Bank Negara"
+  },
+  {
+    "id": "KT14",
+    "name": "Kuala Lumpur"
+  },
+  {
+    "id": "KT15",
+    "name": "KL Sentral"
+  },
+  {
+    "id": "KT16",
+    "name": "Abdullah Hukum"
+  },
+  {
+    "id": "KT17",
+    "name": "Angkasapuri"
+  },
+  {
+    "id": "KT18",
+    "name": "Pantai Dalam"
+  },
+  {
+    "id": "KT19",
+    "name": "Petaling"
+  },
+  {
+    "id": "KT20",
+    "name": "Jalan Templer"
+  },
+  {
+    "id": "KT21",
+    "name": "Kapung Dato Harun"
+  },
+  {
+    "id": "KT22",
+    "name": "Seri Setia"
+  },
+  {
+    "id": "KT23",
+    "name": "Setia Jaya"
+  },
+  {
+    "id": "KT24",
+    "name": "Subang Jaya"
+  },
+  {
+    "id": "KT25",
+    "name": "Batu Tiga"
+  },
+  {
+    "id": "KT26",
+    "name": "Shah Alam"
+  },
+  {
+    "id": "KT27",
+    "name": "Padang Jawa"
+  },
+  {
+    "id": "KT28",
+    "name": "Bukit Badak"
+  },
+  {
+    "id": "KT29",
+    "name": "Klang"
+  },
+  {
+    "id": "KT30",
+    "name": "Teluk Pulai"
+  },
+  {
+    "id": "KT31",
+    "name": "Teluk Gadong"
+  },
+  {
+    "id": "KT32",
+    "name": "Kampung Raja Uda"
+  },
+  {
+    "id": "KT33",
+    "name": "Jalan Kastam"
+  },
+  {
+    "id": "KT34",
+    "name": "Pelabuhan Klang"
+  },
+  {
+    "id": "KS1",
+    "name": "Skypark Terminal"
+  },
+  {
+    "id": "KS2",
+    "name": "Subang Jaya"
+  },
+  {
+    "id": "KS3",
+    "name": "KL Sentral"
+  }
+]

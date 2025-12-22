@@ -1,0 +1,532 @@
+/* ---------------------------------------------------
+   ProfilePage overall layout & background
+   --------------------------------------------------- */
+
+/* Main profile page wrapper: full viewport height, no bottom gap */
+.profilePage {
+  width: 100%;
+  min-height: 100vh;              /* always cover full viewport */
+  box-sizing: border-box;
+  padding: 96px 0 64px;           /* 72px header + 24px breathing space on top */
+
+  /* light, harmonious background */
+  background:
+    radial-gradient(
+      circle at 20% -10%,
+      rgba(56, 189, 248, 0.18),
+      rgba(56, 189, 248, 0) 55%
+    ),
+    radial-gradient(
+      circle at 80% 110%,
+      rgba(45, 212, 191, 0.20),
+      rgba(45, 212, 191, 0) 60%
+    ),
+    linear-gradient(180deg, #f5f7fb 0%, #e7f0ff 45%, #f8fbff 100%);
+}
+
+/* If you have this somewhere, remove it or make it a no-op
+   so it doesn't double-count header height */
+.with-fixed-header {
+  margin-top: 0;
+}
+
+/* Subtle big blurred blobs for depth (same hue family) */
+.profilePage::before,
+.profilePage::after {
+  content: "";
+  position: fixed;
+  width: 360px;
+  height: 360px;
+  border-radius: 999px;
+  filter: blur(70px);
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.profilePage::before {
+  left: -140px;
+  top: 35%;
+  background: rgba(59, 130, 246, 0.55);  /* soft blue */
+}
+
+.profilePage::after {
+  right: -120px;
+  bottom: 5%;
+  background: rgba(56, 189, 248, 0.45);  /* cyan, same family */
+}
+
+/* Center content, keep it above background glows */
+.profile-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 96px 24px 40px;
+}
+
+/* ---------------------------------------------------
+   Top hero card (name + role)
+   --------------------------------------------------- */
+
+.profile-header-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  /* Dark hero bar to match app header */
+  background: radial-gradient(circle at 0% 0%, #0ea5e9 0, #020617 55%);
+  color: #f9fafb;
+
+  padding: 22px 26px;
+  border-radius: 24px;
+  box-shadow:
+    0 22px 60px rgba(15, 23, 42, 0.55),
+    0 0 0 1px rgba(148, 163, 184, 0.2);
+  margin-bottom: 32px;
+}
+
+.profile-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 30% 20%, #38bdf8, #0f172a);
+  border: 2px solid rgba(56, 189, 248, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.profile-header-text h1 {
+  font-size: 24px;
+  margin: 0;
+}
+
+.profile-header-text p {
+  margin: 2px 0;
+  color: #e5e7eb;
+}
+
+/* ---------------------------------------------------
+   Loading / error text
+   --------------------------------------------------- */
+
+.profile-status {
+  font-size: 14px;
+  color: #4b5563;
+  margin-bottom: 16px;
+}
+
+.profile-status--error {
+  color: #b91c1c;
+}
+
+/* ---------------------------------------------------
+   Content grid: Attractions + Reviews
+   --------------------------------------------------- */
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 900px) {
+  .profile-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Shared card styling for both panels */
+.profile-section {
+  position: relative;
+  background: rgba(255, 255, 255, 0.86); /* light glass */
+  border-radius: 22px;
+  padding: 20px 22px;
+  box-shadow:
+    0 18px 40px rgba(148, 163, 184, 0.28),
+    0 0 0 1px rgba(203, 213, 225, 0.7);
+  backdrop-filter: blur(18px);
+  color: #111827;
+}
+
+/* Thin glowing line across the top edge */
+.profile-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  padding: 1px;
+  background: linear-gradient(90deg, #22d3ee, #38bdf8, #0ea5e9);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.profile-section h2 {
+  margin: 0 0 4px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.profile-section-sub {
+  margin: 0 0 14px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.profile-empty {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+
+/* ---------------------------------------------------
+   Attractions table
+   --------------------------------------------------- */
+
+.profile-table {
+  font-size: 13px;
+}
+
+.profile-table-header,
+.profile-table-row {
+  display: grid;
+  grid-template-columns: 2.1fr 1.5fr 1fr 1fr;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.profile-table-header {
+  font-weight: 600;
+  color: #4b5563;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 4px;
+}
+
+.profile-table-row {
+  border-bottom: 1px solid #edf2f7;
+}
+
+.profile-table-row:last-child {
+  border-bottom: none;
+}
+
+.profile-main-name {
+  font-weight: 500;
+}
+
+/* Status pill colours – all within same green family */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.status-approved {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.status-pending {
+  background: #fef9c3;
+  color: #b45309;
+}
+
+.status-rejected {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.profile-admin-remark {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #64748b; /* slate-ish */
+  max-width: 260px;
+  line-height: 1.4;
+}
+
+/* ---------------------------------------------------
+   Reviews cards
+   --------------------------------------------------- */
+
+.profile-reviews {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.profile-review-card {
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  padding: 10px 12px;
+  background: rgba(249, 250, 251, 0.95);
+}
+
+.profile-review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.profile-review-header h3 {
+  margin: 0;
+  font-size: 15px;
+  color: #111827;
+}
+
+.profile-review-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: #f97316;
+}
+
+.profile-review-comment {
+  margin: 4px 0 2px;
+  font-size: 13px;
+  color: #4b5563;
+}
+
+.profile-review-meta {
+  margin: 0;
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+/* header row with title + toggle on the left card */
+.profile-section-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.profile-section-header-row h2 {
+  margin-bottom: 4px;
+}
+
+/* little pill buttons for "New attractions" / "Edit / delete" */
+.profile-toggle {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 2px;
+  background: rgba(148, 163, 184, 0.16);
+}
+
+.profile-toggle-btn {
+  border: none;
+  background: transparent;
+  font-size: 12px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  color: #0f172a;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.profile-toggle-btn--active {
+  background: #0f172a;
+  color: #f9fafb;
+}
+
+/* optional: slightly lighter text for "your reason" line */
+.profile-admin-remark--light {
+  color: #9ca3af;
+}
+
+/* ===== Profile: My Submitted Attractions toggle ===== */
+
+.profile-section-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.profile-toggle-pill {
+  display: inline-flex;
+  align-items: center;
+  background: #0f172a;
+  border-radius: 999px;
+  padding: 3px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.25);
+}
+
+/* reset button look */
+.profile-toggle-pill-btn {
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #e5e7eb;
+  padding: 6px 18px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s ease, color 0.15s ease,
+    transform 0.05s ease, box-shadow 0.15s ease;
+}
+
+.profile-toggle-pill-btn:hover {
+  transform: translateY(-0.5px);
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.3);
+}
+
+/* active tab */
+.profile-toggle-pill-btn--active {
+  background: #f9fafb;
+  color: #0f172a;
+}
+
+/* small screen: stack header + toggle nicely */
+@media (max-width: 768px) {
+  .profile-section-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
+
+/* clickable table rows */
+.profile-table-row--clickable {
+  cursor: pointer;
+  transition: background 0.12s ease, box-shadow 0.12s ease;
+}
+
+.profile-table-row--clickable:hover {
+  background: rgba(15, 23, 42, 0.02);
+}
+
+.profile-table-row--active {
+  background: rgba(56, 189, 248, 0.06);
+  box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.45) inset;
+}
+
+/* detail card under the table */
+.profile-detail-card {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+  font-size: 13px;
+}
+
+.profile-detail-card h3 {
+  margin: 0 0 4px;
+  font-size: 16px;
+  color: #0f172a;
+}
+
+.profile-detail-meta {
+  margin: 0 0 10px;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.profile-detail-text {
+  margin: 4px 0;
+  color: #374151;
+}
+
+.profile-detail-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 6px;
+  margin-bottom: 8px;
+  font-size: 12px;
+}
+
+.profile-detail-links a {
+  color: #0369a1;
+}
+
+.profile-detail-admin {
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px dashed #e5e7eb;
+  color: #374151;
+}
+
+.profile-detail-admin strong {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 12px;
+}
+
+/* ===== User attraction request diff ===== */
+
+.profile-request-sub {
+  font-size: 12px;
+  color: #4b5563;
+  margin: 8px 0 6px;
+}
+
+/* Field / Current / Requested table */
+.profile-change-table {
+  margin-top: 4px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  overflow: hidden;
+  font-size: 12px;
+}
+
+.profile-change-header,
+.profile-change-row {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: 10px;
+  padding: 6px 10px;
+  align-items: flex-start;
+}
+
+.profile-change-header {
+  background: #e5e7eb;
+  font-weight: 600;
+  color: #111827;
+  font-size: 11px;
+}
+
+.profile-change-row {
+  border-top: 1px solid #e5e7eb;
+  background: #ffffff;
+}
+
+.profile-change-row:nth-child(even) {
+  background: #f9fafb;
+}
+
+.profile-change-row span:nth-child(1) {
+  font-weight: 500;
+  color: #6b7280;
+}
+
+/* allow long URLs / addresses to wrap nicely */
+.profile-change-row span:nth-child(2),
+.profile-change-row span:nth-child(3) {
+  white-space: normal;
+  word-break: break-word;
+}
+
+.profile-request-admin {
+  margin-top: 12px;
+  border-top: 1px dashed #e5e7eb;
+  padding-top: 8px;
+}
