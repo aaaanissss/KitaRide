@@ -8,6 +8,7 @@ import path from "path";
 import express from 'express';
 import multer from "multer";
 import { fileURLToPath } from "url";
+import { storage } from './config/cloudinary.js';
 
 // --- Auth middleware: attach req.user from JWT ---
 function requireAuth(req, res, next) {
@@ -129,7 +130,6 @@ router.post('/register', async (req, res) => {
   }
 });
 
-
 // POST /api/forgot-password  { username, newPassword }
 router.post('/forgot-password', async (req, res) => {
   try {
@@ -168,6 +168,7 @@ router.get('/test', (req, res) => {
   res.json({ message: "Server is working!", timestamp: new Date() });
 });
 
+/*
 // --- Helper to load JSON files once ---
 function loadJson(relativePath) {
   const fullPath = path.join(process.cwd(), relativePath);
@@ -179,11 +180,38 @@ function loadJson(relativePath) {
 const ktmStations   = loadJson('data/ktm/ktm_stations.json');
 const komuterHourly = loadJson('data/ktm/ktm_hourly_pattern_by_station_dow.json');
 const stationIdToName = new Map(ktmStations.map((s) => [s.id, s.name]));
-const ktmExpectedDaily = loadJson('data/ktm/ktm_expected_pattern_by_station.json');
+const ktmExpectedDaily = loadJson('data/ktm/ktm_expected_pattern_by_line.json');
 
 // build __dirname in ESM
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = path.dirname(__filename);
+
+*/
+
+// build __dirname in ESM (put this near the top, before loadJson is used)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname  = path.dirname(__filename);
+
+// --- Helper to load JSON files relative to /server ---
+function loadJson(relativePath, fallback = null) {
+  const fullPath = path.join(__dirname, relativePath);
+
+  try {
+    const raw = fs.readFileSync(fullPath, "utf8");
+    return JSON.parse(raw);
+  } catch (err) {
+    console.error(`❌ Failed to load JSON: ${relativePath}`);
+    console.error("   Path:", fullPath);
+    console.error("   Reason:", err.message);
+    return fallback;
+  }
+}
+
+// --- Load KTM datasets (now correctly reads from server/data/...) ---
+const ktmStations      = loadJson("data/ktm/ktm_stations.json", []);
+const komuterHourly    = loadJson("data/ktm/ktm_hourly_pattern_by_station_dow.json", []);
+const ktmExpectedDaily = loadJson("data/ktm/ridership_expected_pattern_by_line.json", []);
+const stationIdToName  = new Map(ktmStations.map((s) => [s.id, s.name]));
 
 // absolute path to /server/data/... (for LRT/MRT/Monorail next-7-days by line)
 const next7Path = path.join(__dirname, "data", "ridership_next7days_by_line.json");
@@ -223,24 +251,7 @@ try {
 
 // ========== ATTRACTIONS ==========
 
-// Multer storage for attraction photos
-const uploadsDir = path.join(__dirname, "uploads", "attractions");
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "uploads", "attractions"));
-  },
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname || "");
-    const base = path.basename(file.originalname || "photo", ext);
-    const safeBase = base.replace(/[^a-z0-9_-]/gi, "_");
-    const filename = `${safeBase}_${Date.now()}${ext}`;
-    cb(null, filename);
-  },
-});
+// Use Cloudinary storage for attraction photos
 const upload = multer({ storage });
 
 // Add a new nearby attraction for a station (no admin approval yet)
@@ -305,7 +316,7 @@ router.post(
           : null;
 
       const coverImageUrl = req.file
-        ? `/uploads/attractions/${req.file.filename}`
+        ? req.file.path // Cloudinary returns the full URL in req.file.path
         : null;
 
       const insertAttractionSql = `

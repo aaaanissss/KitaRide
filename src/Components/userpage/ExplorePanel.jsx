@@ -193,7 +193,6 @@ export default function ExplorePanel({
     }
   };
 
-
   return (
     <div className="sidePanel-empty">
       {/* Header */}

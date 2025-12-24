@@ -516,7 +516,9 @@ export default function StationSidePanel({
   const sidePanelClass = "sidePanel" + (isOpen ? " sidePanel--open" : " sidePanel--collapsed");
 
   const lineNames = selectedStation?.lines?.map((l) => l.lineName) ?? [];
-
+  // if this station includes KTM, use the global KTM wording
+  const isKtmStation = lineNames.some((n) => String(n).toLowerCase().includes("ktm"));
+  
   return (
     <>
       {/* main side panel */}
@@ -553,22 +555,23 @@ export default function StationSidePanel({
               {/* chart section */}
               <div className="overlaySection">
                 <h4
-                style={{
-                    marginBottom: "10px", 
+                  style={{
+                    marginBottom: "10px",
                     lineHeight: 1.3,
                   }}
                 >
-                  📈 Next 7 Days Ridership Prediction
-                  {lineNames.length > 0 && (
+                  📈 Next 7 Days Ridership Prediction{" "}
+                  {isKtmStation ? (
                     <>
-                      {" "}
-                      for{" "}
-                      <span style={{ fontWeight: 600 }}>
-                        {lineNames.join(" / ")}
-                      </span>
+                      for <span style={{ fontWeight: 600 }}>all KTM Komuter Lines</span>
                     </>
-                  )}
+                  ) : lineNames.length > 0 ? (
+                    <>
+                      for <span style={{ fontWeight: 600 }}>{lineNames.join(" / ")}</span>
+                    </>
+                  ) : null}
                 </h4>
+
                 <RidershipNext7Chart
                   predictions={next7Predictions}
                   lineNames={lineNames}
