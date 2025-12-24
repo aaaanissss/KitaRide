@@ -393,7 +393,7 @@ router.post(
       res.status(500).json({
         ok: false,
         error: "Failed to add attraction",
-        details: err.message,        // ⭐ important
+        details: err.message,        // important
       });
     }
   }
@@ -1122,6 +1122,65 @@ router.get("/attractions/search", async (req, res) => {
   } catch (err) {
     console.error("Error in /api/attractions/search:", err);
     res.status(500).json({ message: "Failed to search attractions" });
+  }
+});
+
+// GET /api/attractions/similar?q=searchTerm
+// Search for similar attractions (for autofill suggestions)
+router.get("/attractions/similar", async (req, res) => {
+  try {
+    const { q = "" } = req.query;
+
+    if (!q.trim()) {
+      return res.json({ attractions: [] });
+    }
+
+    const searchTerm = `%${q.trim()}%`;
+    const sql = `
+      SELECT
+        a.atrid,
+        a.atrname,
+        a.atrcategory,
+        a.atraddress,
+        a.atrwebsite,
+        a.atrmaplocation,
+        a.atrlatitude,
+        a.atrlongitude,
+        a.coverimageurl,
+        a.openinghours,
+        a.isverified,
+
+        COALESCE(AVG(r.rating), 0) AS averagerating,
+        COUNT(r.revid) AS reviewcount
+
+      FROM attraction a
+      LEFT JOIN attraction_review r ON r.atrid = a.atrid
+      WHERE a.status = 'approved' 
+        AND a.atrname ILIKE $1
+      GROUP BY
+        a.atrid,
+        a.atrname,
+        a.atrcategory,
+        a.atraddress,
+        a.atrwebsite,
+        a.atrmaplocation,
+        a.atrlatitude,
+        a.atrlongitude,
+        a.coverimageurl,
+        a.openinghours,
+        a.isverified
+      ORDER BY
+        a.isverified DESC,
+        averagerating DESC,
+        a.atrname ASC
+      LIMIT 10;
+    `;
+
+    const { rows } = await query(sql, [searchTerm]);
+    res.json({ attractions: rows });
+  } catch (err) {
+    console.error("Error in /api/attractions/similar:", err);
+    res.status(500).json({ message: "Failed to search similar attractions" });
   }
 });
 

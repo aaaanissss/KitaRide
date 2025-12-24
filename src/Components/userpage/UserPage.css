@@ -354,6 +354,21 @@
   color: #555;
 }
 
+.addAttractionForm select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  background: white;
+}
+
+.addAttractionForm select:focus {
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.35);
+}
+
 /* mobile: panel becomes bottom sheet instead of side panel */
 @media (max-width: 768px) {
   .sidePanel {

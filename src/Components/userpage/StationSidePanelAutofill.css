@@ -1,0 +1,129 @@
+/* Smart Autofill Styles for StationSidePanel */
+
+/* Form field wrapper for suggestions */
+.form-field-wrapper {
+  position: relative;
+}
+
+/* Suggestions dropdown */
+.suggestions-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 50;
+
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.no-suggestions-inline {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.suggestions-header {
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  border-radius: 10px 10px 0 0;
+}
+
+.suggestion-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #f3f4f6;
+  transition: background 0.15s ease;
+}
+
+.suggestion-item:hover {
+  background: #f3f4f6;
+}
+
+.suggestion-item:last-child {
+  border-bottom: none;
+  border-radius: 0 0 10px 10px;
+}
+
+.suggestion-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+  flex: 1;
+}
+
+.suggestion-meta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.suggestion-category {
+  font-size: 11px;
+  background: #e5e7eb;
+  color: #374151;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+.suggestion-rating {
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.suggestion-loading {
+  padding: 12px;
+  text-align: center;
+  font-size: 12px;
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* Coordinate info display */
+.coordinate-info {
+  margin-top: 6px;
+  padding: 6px 8px;
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 6px;
+  font-size: 11px;
+  color: #0369a1;
+}
+
+/* Autofilled field highlighting */
+.form-field-wrapper input.autofilled {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
+.form-field-wrapper textarea.autofilled {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
+/* Selected suggestion indicator */
+.suggestion-item.selected {
+  background: #eff6ff;
+  border-left: 3px solid #3b82f6;
+}
+
+/* No results message */
+.no-suggestions {
+  padding: 12px;
+  text-align: center;
+  font-size: 12px;
+  color: #6b7280;
+  font-style: italic;
+}

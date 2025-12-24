@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaPlus, FaEllipsisV } from "react-icons/fa";
 import RidershipNext7Chart from "./RidershipNext7Chart.jsx";
 import ExplorePanel from "./ExplorePanel.jsx";
+import "./StationSidePanelAutofill.css";
 
 export default function StationSidePanel({
   isOpen,
@@ -43,6 +44,13 @@ export default function StationSidePanel({
   });
   const [photoFile, setPhotoFile] = useState(null);
   const [photoPreview, setPhotoPreview] = useState(null);
+  
+  // Smart autofill states
+  const [searchResults, setSearchResults] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [searchTimeout, setSearchTimeout] = useState(null);
+  const [isSearching, setIsSearching] = useState(false);
+  const [selectedSuggestion, setSelectedSuggestion] = useState(null);
 
   // per-attraction menu (edit / delete request)
   const [activeAttractionForAction, setActiveAttractionForAction] =
@@ -102,6 +110,141 @@ export default function StationSidePanel({
     }
   };
 
+  // Smart search functionality
+  const searchSimilarAttractions = async (searchTerm) => {
+    if (!searchTerm || searchTerm.trim().length < 2) {
+      setSearchResults([]);
+      setShowSuggestions(false);
+      return;
+    }
+
+    try {
+      setIsSearching(true);
+      const res = await fetch(`/api/attractions/similar?q=${encodeURIComponent(searchTerm.trim())}`);
+      if (res.ok) {
+        const data = await res.json();
+        setSearchResults(data.attractions || []);
+        setShowSuggestions(true);
+        setShowSuggestions(results.length > 0); // only show if there are results
+
+        // if query is too short, close it
+        if (!searchTerm || searchTerm.trim().length < 2) {
+          setSearchResults([]);
+          setShowSuggestions(false);
+          return;
+        }
+      }
+    } catch (err) {
+      console.error("Error searching similar attractions:", err);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  // Parse Google Maps URL for coordinates
+  const parseGoogleMapsUrl = (url) => {
+    if (!url || typeof url !== 'string') return null;
+    
+    try {
+      // Match patterns like: @3.1529,101.7094 or q=place@lat,lng
+      const coordMatch = url.match(/@(-?\d+\.?\d*),(-?\d+\.?\d*)/);
+      if (coordMatch) {
+        return {
+          latitude: parseFloat(coordMatch[1]),
+          longitude: parseFloat(coordMatch[2])
+        };
+      }
+      
+      // Extract place name from q parameter
+      const placeMatch = url.match(/[?&]q=([^&]+)/);
+      if (placeMatch) {
+        return { placeName: decodeURIComponent(placeMatch[1]) };
+      }
+    } catch (err) {
+      console.error("Error parsing Google Maps URL:", err);
+    }
+    return null;
+  };
+
+  // Auto-fill form from selected suggestion
+  const autofillFromSuggestion = (attraction) => {
+    const autofilledForm = {
+      name: attraction.atrname || "",
+      category: attraction.atrcategory || "",
+      address: attraction.atraddress || "",
+      website: attraction.atrwebsite || "",
+      mapLocation: attraction.atrmaplocation || "",
+      openingHours: attraction.openinghours || "",
+      atrLatitude: attraction.atrlatitude?.toString() || "",
+      atrLongitude: attraction.atrlongitude?.toString() || "",
+      // Leave blank for user to fill:
+      distanceMeters: "",
+      travelTimeMinutes: "",
+      commuteOption: "",
+    };
+    
+    setAddAttractionForm(autofilledForm);
+    setShowSuggestions(false);
+    setSearchResults([]);
+    setSelectedSuggestion(attraction);
+    
+    // Set photo preview if existing attraction has image
+    if (attraction.coverimageurl) {
+      setPhotoPreview(attraction.coverimageurl);
+    }
+  };
+
+  // Handle name input with debounced search
+  const handleNameChange = (e) => {
+    const value = e.target.value;
+    setAddAttractionForm({ ...addAttractionForm, name: value });
+    
+    // Clear previous timeout
+    if (searchTimeout) {
+      clearTimeout(searchTimeout);
+    }
+    
+    // Set new timeout for search
+    const newTimeout = setTimeout(() => {
+      searchSimilarAttractions(value);
+    }, 300); // 300ms debounce
+    
+    setSearchTimeout(newTimeout);
+  };
+
+  // Handle map location input (check for Google Maps URL)
+  const handleMapLocationChange = (e) => {
+    const value = e.target.value;
+    setAddAttractionForm({ ...addAttractionForm, mapLocation: value });
+    
+    // Auto-parse coordinates if it's a Google Maps URL
+    const parsed = parseGoogleMapsUrl(value);
+    if (parsed) {
+      if (parsed.latitude && parsed.longitude) {
+        setAddAttractionForm(prev => ({
+          ...prev,
+          atrLatitude: parsed.latitude.toString(),
+          atrLongitude: parsed.longitude.toString()
+        }));
+      } else if (parsed.placeName && !addAttractionForm.name) {
+        // Use place name as attraction name if name is empty
+        setAddAttractionForm(prev => ({
+          ...prev,
+          name: parsed.placeName
+        }));
+      }
+    }
+  };
+
+  const ATTRACTION_CATEGORIES = [
+    "Mosque",
+    "Landmark",
+    "Shopping Mall",
+    "Restaurants & Cafe",
+    "Themepark",
+    "Stadium",
+  ];
+
   const resetAddAttractionForm = () => {
     setAddAttractionForm({
       name: "",
@@ -118,6 +261,10 @@ export default function StationSidePanel({
     });
     setPhotoFile(null);
     setPhotoPreview(null);
+    setSearchResults([]);
+    setShowSuggestions(false);
+    setSelectedSuggestion(null);
+    setIsSearching(false);
   };
 
   const closeAddAttractionForm = () => {
@@ -246,10 +393,17 @@ export default function StationSidePanel({
       return;
     }
 
+    // Validate required fields before submission
+    const name = addAttractionForm.name?.trim();
+    if (!name) {
+      alert("❌ Please enter an attraction name before submitting.");
+      return;
+    }
+
     try {
       const payload = {
         stationID: selectedStation.stationID,
-        name: addAttractionForm.name.trim(),
+        name: name,
         category: addAttractionForm.category.trim(),
         address: addAttractionForm.address.trim(),
         website: addAttractionForm.website.trim(),
@@ -1007,11 +1161,30 @@ export default function StationSidePanel({
         <div className="addAttractionOverlay">
           <div className="addAttractionModal">
             <div className="modalHeader">
-              <div>
-                <h3>Suggest an attraction</h3>
-                <p>
-                  Near <strong>{selectedStation.stationName}</strong>
-                </p>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div>
+                  <h3>Suggest an attraction</h3>
+                  <p>
+                    Near <strong>{selectedStation.stationName}</strong>
+                  </p>
+                </div>
+                {selectedSuggestion && (
+                  <button
+                    type="button"
+                    onClick={resetAddAttractionForm}
+                    style={{
+                      padding: "4px 8px",
+                      fontSize: "11px",
+                      background: "#fef2f2",
+                      color: "#b91c1c",
+                      border: "1px solid #fecaca",
+                      borderRadius: "6px",
+                      cursor: "pointer"
+                    }}
+                  >
+                    Clear Auto-fill
+                  </button>
+                )}
               </div>
               <button className="modalClose" onClick={closeAddAttractionForm}>
                 ✕
@@ -1022,29 +1195,94 @@ export default function StationSidePanel({
               className="addAttractionForm"
               onSubmit={handleSubmitAddAttraction}
             >
+              {selectedSuggestion && (
+                <div style={{
+                  padding: "6px 8px",
+                  background: "#eff6ff",
+                  border: "1px solid #bfdbfe",
+                  borderRadius: "6px",
+                  fontSize: "11px",
+                  color: "#1e40af",
+                  marginBottom: "12px"
+                }}>
+                  🎯 Form auto-filled from existing attraction: <strong>{selectedSuggestion.atrname}</strong><br/>
+                  <span style={{fontSize: "10px", color: "#64748b"}}>
+                    Edit any field if needed, then add station-specific info below.
+                  </span>
+                </div>
+              )}
               <div className="formRow">
                 <label>Name</label>
-                <input
-                  type="text"
-                  required
-                  value={addAttractionForm.name}
-                  onChange={(e) =>
-                    handleAddAttractionChange("name", e.target.value)
-                  }
-                  placeholder="Pavilion Kuala Lumpur"
-                />
+                <div className="form-field-wrapper">
+                  <input
+                    type="text"
+                    required
+                    value={addAttractionForm.name}
+                    onChange={handleNameChange}
+                    placeholder="Attraction Name"
+                  />
+                  {showSuggestions && searchResults.length > 0 && (
+                    <div className="suggestions-dropdown">
+                      <div className="suggestions-header">
+                        🎯 Similar attractions found:
+                      </div>
+                      {searchResults.map((attraction, index) => (
+                        <div
+                          key={attraction.atrid}
+                          className="suggestion-item"
+                          onClick={() => autofillFromSuggestion(attraction)}
+                        >
+                          <div className="suggestion-name">
+                            {attraction.atrname}
+                          </div>
+                          <div className="suggestion-meta">
+                            {attraction.atrcategory && (
+                              <span className="suggestion-category">
+                                {attraction.atrcategory}
+                              </span>
+                            )}
+                            {attraction.averagerating > 0 && (
+                              <span className="suggestion-rating">
+                                ⭐ {Number(attraction.averagerating || 0).toFixed(1)}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                      {isSearching && (
+                        <div className="suggestion-loading">
+                          Searching...
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {!isSearching && addAttractionForm.name.trim().length >= 2 && searchResults.length === 0 && (
+                    <div className="no-suggestions-inline">
+                      No similar attractions found
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className="formRow">
                 <label>Category</label>
-                <input
-                  type="text"
+                <select
                   value={addAttractionForm.category}
                   onChange={(e) =>
-                    handleAddAttractionChange("category", e.target.value)
+                    setAddAttractionForm((prev) => ({
+                      ...prev,
+                      category: e.target.value,
+                    }))
                   }
-                  placeholder="Shopping Mall, Theme Park..."
-                />
+                >
+                  <option value="">Select category</option>
+                  {ATTRACTION_CATEGORIES.map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="formRow">
@@ -1053,9 +1291,13 @@ export default function StationSidePanel({
                   type="text"
                   value={addAttractionForm.address}
                   onChange={(e) =>
-                    handleAddAttractionChange("address", e.target.value)
+                    setAddAttractionForm({
+                      ...addAttractionForm,
+                      address: e.target.value,
+                    })
                   }
                   placeholder="Full address (optional)"
+                  className={selectedSuggestion?.atraddress ? "autofilled" : ""}
                 />
               </div>
 
@@ -1065,9 +1307,13 @@ export default function StationSidePanel({
                   type="url"
                   value={addAttractionForm.website}
                   onChange={(e) =>
-                    handleAddAttractionChange("website", e.target.value)
+                    setAddAttractionForm({
+                      ...addAttractionForm,
+                      website: e.target.value,
+                    })
                   }
                   placeholder="https://..."
+                  className={selectedSuggestion?.atrwebsite ? "autofilled" : ""}
                 />
               </div>
 
@@ -1076,11 +1322,14 @@ export default function StationSidePanel({
                 <input
                   type="url"
                   value={addAttractionForm.mapLocation}
-                  onChange={(e) =>
-                    handleAddAttractionChange("mapLocation", e.target.value)
-                  }
+                  onChange={handleMapLocationChange}
                   placeholder="Google Maps link"
                 />
+                {(addAttractionForm.atrLatitude || addAttractionForm.atrLongitude) && (
+                  <div className="coordinate-info">
+                    📍 Parsed coordinates: {addAttractionForm.atrLatitude || "?"}, {addAttractionForm.atrLongitude || "?"}
+                  </div>
+                )}
               </div>
 
               <div className="formRow">
@@ -1092,9 +1341,13 @@ export default function StationSidePanel({
                     style={{ flex: 1 }}
                     value={addAttractionForm.atrLatitude}
                     onChange={(e) =>
-                      handleAddAttractionChange("atrLatitude", e.target.value)
+                      setAddAttractionForm({
+                        ...addAttractionForm,
+                        atrLatitude: e.target.value,
+                      })
                     }
                     placeholder="Latitude"
+                    className={selectedSuggestion?.atrlatitude ? "autofilled" : ""}
                   />
                   <input
                     type="number"
@@ -1102,22 +1355,29 @@ export default function StationSidePanel({
                     style={{ flex: 1 }}
                     value={addAttractionForm.atrLongitude}
                     onChange={(e) =>
-                      handleAddAttractionChange("atrLongitude", e.target.value)
+                      setAddAttractionForm({
+                        ...addAttractionForm,
+                        atrLongitude: e.target.value,
+                      })
                     }
                     placeholder="Longitude"
+                    className={selectedSuggestion?.atrlongitude ? "autofilled" : ""}
                   />
                 </div>
               </div>
-
               <div className="formRow">
                 <label>Opening hours (optional)</label>
                 <input
                   type="text"
                   value={addAttractionForm.openingHours}
                   onChange={(e) =>
-                    handleAddAttractionChange("openingHours", e.target.value)
+                    setAddAttractionForm({
+                      ...addAttractionForm,
+                      openingHours: e.target.value,
+                    })
                   }
                   placeholder="E.g. Daily 10:00 AM – 10:00 PM"
+                  className={selectedSuggestion?.openinghours ? "autofilled" : ""}
                 />
               </div>
 
@@ -1156,18 +1416,6 @@ export default function StationSidePanel({
               </div>
 
               <div className="formRow">
-                <label>How to get there (optional)</label>
-                <input
-                  type="text"
-                  value={addAttractionForm.commuteOption}
-                  onChange={(e) =>
-                    handleAddAttractionChange("commuteOption", e.target.value)
-                  }
-                  placeholder="E.g. 5-min covered walk, via link bridge"
-                />
-              </div>
-
-              <div className="formRow">
                 <label>Photo (optional, 1 image)</label>
                 <input
                   type="file"
@@ -1203,11 +1451,30 @@ export default function StationSidePanel({
         <div className="addAttractionOverlay">
           <div className="addAttractionModal">
             <div className="modalHeader">
-              <div>
-                <h3>Request an edit</h3>
-                <p>
-                  For <strong>{activeAttractionForAction.atrname}</strong>
-                </p>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div>
+                  <h3>Suggest an attraction</h3>
+                  <p>
+                    Near <strong>{selectedStation.stationName}</strong>
+                  </p>
+                </div>
+                {selectedSuggestion && (
+                  <button
+                    type="button"
+                    onClick={resetAddAttractionForm}
+                    style={{
+                      padding: "4px 8px",
+                      fontSize: "11px",
+                      background: "#fef2f2",
+                      color: "#b91c1c",
+                      border: "1px solid #fecaca",
+                      borderRadius: "6px",
+                      cursor: "pointer"
+                    }}
+                  >
+                    Clear Auto-fill
+                  </button>
+                )}
               </div>
               <button className="modalClose" onClick={closeEditRequestModal}>
                 ✕
@@ -1222,6 +1489,7 @@ export default function StationSidePanel({
                 <label>Name</label>
                 <input
                   type="text"
+                  required
                   value={editRequestForm.name}
                   onChange={(e) =>
                     setEditRequestForm((prev) => ({
@@ -1229,13 +1497,13 @@ export default function StationSidePanel({
                       name: e.target.value,
                     }))
                   }
+                  placeholder="Attraction Name"
                 />
               </div>
 
               <div className="formRow">
                 <label>Category</label>
-                <input
-                  type="text"
+                <select
                   value={editRequestForm.category}
                   onChange={(e) =>
                     setEditRequestForm((prev) => ({
@@ -1243,7 +1511,14 @@ export default function StationSidePanel({
                       category: e.target.value,
                     }))
                   }
-                />
+                >
+                  <option value="">Select category</option>
+                  {ATTRACTION_CATEGORIES.map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="formRow">
@@ -1257,6 +1532,7 @@ export default function StationSidePanel({
                       address: e.target.value,
                     }))
                   }
+                  placeholder="Full address (optional)"
                 />
               </div>
 
@@ -1271,6 +1547,7 @@ export default function StationSidePanel({
                       website: e.target.value,
                     }))
                   }
+                  placeholder="https://..."
                 />
               </div>
 
@@ -1285,6 +1562,7 @@ export default function StationSidePanel({
                       mapLocation: e.target.value,
                     }))
                   }
+                  placeholder="Google Maps link"
                 />
               </div>
 

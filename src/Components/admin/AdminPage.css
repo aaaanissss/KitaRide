@@ -373,3 +373,68 @@
   white-space: normal;
   word-break: break-word;
 }
+
+/* ===== Admin: Complete Attraction Form View ===== */
+.admin-attraction-form {
+  margin-top: 12px;
+  padding: 16px;
+  border-radius: 12px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+}
+
+.admin-attraction-form h4 {
+  margin: 0 0 12px;
+  font-size: 15px;
+  color: #0f172a;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 6px;
+}
+
+.admin-form-section {
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.admin-form-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.admin-form-section strong {
+  display: block;
+  font-size: 13px;
+  color: #374151;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.admin-form-section p {
+  margin: 4px 0;
+  font-size: 13px;
+  color: #4b5563;
+  line-height: 1.4;
+}
+
+.admin-image-preview {
+  margin-top: 6px;
+}
+
+.admin-attraction-image {
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  object-fit: cover;
+}
+
+.admin-form-section a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.admin-form-section a:hover {
+  text-decoration: underline;
+}

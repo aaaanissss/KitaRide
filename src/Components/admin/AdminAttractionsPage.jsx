@@ -387,6 +387,8 @@ export default function AdminAttractionsPage() {
                   <br />
                   Station: {selectedAttraction.stationname || "—"} (
                   {selectedAttraction.stationid || "—"})
+                  <br />
+                  By: {selectedAttraction.creator_username || "Unknown User"}
                   {selectedAttraction.created_at && (
                     <>
                       {" · "}
@@ -395,28 +397,91 @@ export default function AdminAttractionsPage() {
                   )}
                 </p>
 
-                {selectedAttraction.atraddress && (
-                  <p className="admin-detail-text">
-                    {selectedAttraction.atraddress}
-                  </p>
-                )}
+                {/* Complete User-Submitted Information */}
+                <div className="admin-attraction-form">
+                  <h4>📋 Submitted Information</h4>
+                  
+                  <div className="admin-form-section">
+                    <strong>Basic Details:</strong>
+                    <p><strong>Name:</strong> {selectedAttraction.atrname || "—"}</p>
+                    <p><strong>Category:</strong> {selectedAttraction.atrcategory || "—"}</p>
+                    {selectedAttraction.atraddress && (
+                      <p><strong>Address:</strong> {selectedAttraction.atraddress}</p>
+                    )}
+                    {selectedAttraction.atrwebsite && (
+                      <p><strong>Website:</strong> <a href={selectedAttraction.atrwebsite} target="_blank" rel="noopener noreferrer">{selectedAttraction.atrwebsite}</a></p>
+                    )}
+                    {selectedAttraction.mapLocation && (
+                      <p><strong>Map Location:</strong> {selectedAttraction.atrmaplocation}</p>
+                    )}
+                    {selectedAttraction.openinghours && (
+                      <p><strong>Opening Hours:</strong> 🕒 {selectedAttraction.openinghours}</p>
+                    )}
+                  </div>
 
-                {selectedAttraction.openinghours && (
-                  <p className="admin-detail-text">
-                    🕒 {selectedAttraction.openinghours}
-                  </p>
-                )}
+                  <div className="admin-form-section">
+                    <strong>Location Details:</strong>
+                    {selectedAttraction.atrlatitude && selectedAttraction.atrlongitude && (
+                      <p><strong>Coordinates:</strong> {selectedAttraction.atrlatitude}, {selectedAttraction.atrlongitude}</p>
+                    )}
+                  </div>
 
-                <label className="admin-detail-label">
-                  Admin remark for this attraction
-                </label>
-                <textarea
-                  value={attractionRemark}
-                  onChange={(e) => setAttractionRemark(e.target.value)}
-                  className="admin-detail-textarea"
-                  placeholder="Explain why it is approved / rejected…"
-                />
+                  <div className="admin-form-section">
+                    <strong>Station Connection:</strong>
+                    <p><strong>Station:</strong> {selectedAttraction.stationname || "—"} ({selectedAttraction.stationid || "—"})</p>
+                    {selectedAttraction.distance !== null && (
+                      <p><strong>Distance:</strong> {selectedAttraction.distance} meters</p>
+                    )}
+                    {selectedAttraction.traveltimeminutes !== null && (
+                      <p><strong>Travel Time:</strong> {selectedAttraction.traveltimeminutes} minutes</p>
+                    )}
+                    {selectedAttraction.commuteoption && (
+                      <p><strong>Commute Option:</strong> {selectedAttraction.commuteoption}</p>
+                    )}
+                  </div>
 
+                  <div className="admin-form-section">
+                    <strong>Media:</strong>
+                    {selectedAttraction.coverimageurl && (
+                      <div className="admin-image-preview">
+                        <p><strong>Image:</strong></p>
+                        <img 
+                          src={selectedAttraction.coverimageurl} 
+                          alt={selectedAttraction.atrname}
+                          className="admin-attraction-image"
+                          onError={(e) => e.target.style.display='none'}
+                        />
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="admin-form-section">
+                    <strong>Review Stats:</strong>
+                    <p><strong>Average Rating:</strong> {selectedAttraction.avg_rating || "No reviews"} ({selectedAttraction.review_count || 0} reviews)</p>
+                  </div>
+
+                  <div className="admin-form-section">
+                    <strong>Status:</strong>
+                    <span className={`status-pill status-${selectedAttraction.status || "pending"}`}>
+                      {selectedAttraction.status || "pending"}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Admin Remark Section */}
+                <div className="admin-form-section">
+                  <label className="admin-detail-label">
+                    Admin remark for this attraction
+                  </label>
+                  <textarea
+                    value={attractionRemark}
+                    onChange={(e) => setAttractionRemark(e.target.value)}
+                    className="admin-detail-textarea"
+                    placeholder="Explain why you approve or reject this attraction…"
+                  />
+                </div>
+
+                {/* Approval Actions */}
                 <div className="admin-detail-actions">
                   <button
                     type="button"

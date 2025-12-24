@@ -289,7 +289,7 @@ export default function HomePage() {
       },
       {
         enableHighAccuracy: true,
-        timeout: 10000,
+        timeout: 5000,
         maximumAge: 60000,
       }
     );
