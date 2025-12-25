@@ -5,6 +5,7 @@ import LoginRegisterForm from "./Components/authentication/LoginRegisterForm.jsx
 import HomePage from "./Components/userpage/HomePage";
 import InsightBoard from "./Components/userpage/InsightBoard.jsx";
 import KtmDashboard from "./Components/userpage/KtmDashboard";
+import PowerBIDashboard from "./Components/userpage/PowerBIDashboard.jsx";
 import Header from "./Components/userpage/Header";
 import ProfilePage from "./Components/userpage/ProfilePage";
 import AdminAttractionsPage from "./Components/admin/AdminAttractionsPage.jsx";
@@ -24,6 +25,16 @@ function AdminRoute({ children, token }) {
 
   if (!token) return <Navigate to="/login" replace />;
   if (user?.role !== "admin") return <Navigate to="/" replace />; // block commuters
+
+  return children;
+}
+
+function CommuterRoute({ children, token }) {
+  const storedUser = localStorage.getItem("authUser");
+  const user = storedUser ? JSON.parse(storedUser) : null;
+
+  if (!token) return <Navigate to="/login" replace />;
+  if (user?.role === "admin") return <Navigate to="/admin" replace />;
 
   return children;
 }
@@ -105,6 +116,14 @@ function App() {
               <ProtectedRoute token={token}>
                 <KtmDashboard />
               </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/powerbi-dashboard"
+            element={
+              <CommuterRoute token={token}>
+                <PowerBIDashboard />
+              </CommuterRoute>
             }
           />
         </Routes>

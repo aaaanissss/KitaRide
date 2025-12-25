@@ -1,0 +1,119 @@
+/* PowerBI Dashboard */
+body.dashboard-body {
+  background: #f3f4f6;
+}
+
+.powerbi-dashboard {
+  min-height: 100vh;
+  padding: 6rem 2rem 2rem;
+  color: #111827;
+}
+
+.powerbi-dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 1rem;
+  padding: 1.25rem 1.75rem;
+  background: linear-gradient(135deg, #0f766e, #0891b2);
+  color: #ffffff;
+  box-shadow: 0 10px 25px rgba(15, 118, 110, 0.25);
+  flex-wrap: wrap;
+}
+
+.powerbi-dashboard-header h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.powerbi-dashboard-header p {
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+.powerbi-dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.5rem;
+}
+
+.powerbi-card {
+  background: #ffffff;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 15px 30px rgba(15, 23, 42, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.powerbi-card--wide {
+  grid-column: 1 / -1;
+}
+
+.powerbi-tag {
+  font-size: 0.75rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background: #ecfdf3;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.powerbi-title-wrap {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.powerbi-title-chip {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #0f172a;
+  padding: 0.45rem 1.4rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(14, 116, 144, 0.15), rgba(14, 116, 144, 0.05));
+  border: 1px solid rgba(14, 116, 144, 0.2);
+}
+
+.powerbi-title-sub {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.powerbi-embed-wrapper {
+  width: 100%;
+  min-height: 560px;
+  border-radius: 0.9rem;
+  overflow: hidden;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+.powerbi-embed-frame {
+  width: 100%;
+  height: min(70vh, 720px);
+  min-height: 560px;
+  border: 0;
+}
+
+@media (max-width: 768px) {
+  .powerbi-dashboard {
+    padding: 5rem 1.25rem 2rem;
+  }
+
+  .powerbi-dashboard-header h1 {
+    font-size: 1.4rem;
+  }
+
+  .powerbi-embed-frame {
+    height: 60vh;
+    min-height: 420px;
+  }
+}

@@ -68,6 +68,14 @@ function Header() {
               >
                 KTM Dashboard
               </NavLink>
+              <NavLink
+                to="/powerbi-dashboard"
+                className={({ isActive }) =>
+                  isActive ? "nav-link active" : "nav-link"
+                }
+              >
+                PowerBI Dashboard
+              </NavLink>
             </>
           )}
 
