@@ -4,11 +4,18 @@ import "./ExplorePanel.css";
 // Simple category chips – filter client-side using atrcategory text
 const ATTRACTION_CATEGORY_OPTIONS = [
   { id: "ALL", label: "All types" },
-  { id: "MALL", label: "Shopping & malls" },
-  { id: "FOOD", label: "Food & cafes" },
-  { id: "PARK", label: "Parks & outdoor" },
-  { id: "MUSEUM", label: "Museums & culture" },
+  { id: "Mosque", label: "Mosque" },
+  { id: "Landmark", label: "Landmark" },
+  { id: "Shopping Mall", label: "Shopping Mall" },
+  { id: "Restaurants & Cafe", label: "Restaurants & Cafe" },
+  { id: "Themepark", label: "Themepark" },
+  { id: "Stadium", label: "Stadium" },
+  { id: "Park", label: "Park" },
 ];
+
+function normalizeCategory(v) {
+  return String(v ?? "").trim().toLowerCase();
+}
 
 export default function ExplorePanel({
   nearestStationFromUser,
@@ -129,21 +136,14 @@ export default function ExplorePanel({
   const [attractionResults, setAttractionResults] = useState([]);
   const [attractionError, setAttractionError] = useState("");
 
-  const categoryFilters = {
-    MALL: (c) => /mall|shopping|retail/i.test(c || ""),
-    FOOD: (c) => /food|dining|restaurant|cafe|eat/i.test(c || ""),
-    PARK: (c) => /park|garden|outdoor|recreation/i.test(c || ""),
-    MUSEUM: (c) => /museum|gallery|heritage|history/i.test(c || ""),
-  };
-
   const filteredAttractionResults = useMemo(() => {
     if (!attractionResults.length) return [];
     if (selectedCategoryId === "ALL") return attractionResults;
 
-    const fn = categoryFilters[selectedCategoryId];
-    if (!fn) return attractionResults;
-
-    return attractionResults.filter((a) => fn(a.atrcategory || ""));
+    return attractionResults.filter(
+      (a) =>
+        normalizeCategory(a.atrcategory) === normalizeCategory(selectedCategoryId)
+    );
   }, [attractionResults, selectedCategoryId]);
 
   async function handleSearchAttractions() {
@@ -383,11 +383,17 @@ export default function ExplorePanel({
                   )}
                 </div>
 
-                {a.stationname && (
-                  <div className="exploreAttractionStation">
-                    🚆 {a.stationname} ({a.stationid})
-                  </div>
-                )}
+                {Array.isArray(a.stations) && a.stations.length > 0 && (
+                <div className="exploreAttractionStation">
+                  {a.stations.map((s) => (
+                    <div key={s.stationid}>
+                      🚆 {s.stationname} ({s.stationid})
+                      {s.distance != null ? ` · ${s.distance} m` : ""}
+                      {s.traveltimeminutes != null ? ` · ${s.traveltimeminutes} min` : ""}
+                    </div>
+                  ))}
+                </div>
+              )}
 
                 {a.averagerating != null && (
                   <div className="exploreAttractionRating">

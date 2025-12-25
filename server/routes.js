@@ -290,7 +290,16 @@ router.post(
         commuteOption,
         atrLatitude,
         atrLongitude,
+        existingAtrId,
       } = data;
+
+      if (existingAtrId && req.file) {
+        return res.status(400).json({
+          ok: false,
+          error:
+            "Photo upload is disabled when using autofill (existing attraction). Use Request edit to change the photo.",
+        });
+      }
 
       if (!name) {
         return res.status(400).json({ ok: false, error: "Name is required" });
@@ -369,25 +378,55 @@ router.post(
         "pending",     // pending until admin approves
       ];
 
-      const { rows: attrRows } = await query(insertAttractionSql, attrValues);
-      const newAttraction = attrRows[0];
+      // 1) Decide which atrid to use
+      let atrIdToUse = existingAtrId ? Number(existingAtrId) : null;
+      let attractionRow = null;
+
+      if (atrIdToUse) {
+        // verify the attraction exists and fetch it
+        const { rows: checkRows } = await query(
+          `SELECT
+            atrid, userid, atrname, atrcategory, atraddress, atrwebsite, atrmaplocation,
+            atrlatitude, atrlongitude, coverimageurl, openinghours, isverified, status, created_at
+          FROM attraction
+          WHERE atrid = $1`,
+          [atrIdToUse]
+        );
+
+        if (!checkRows.length) {
+          return res.status(400).json({ ok: false, error: "Selected attraction not found." });
+        }
+
+        attractionRow = checkRows[0];
+      } else {
+        // create a NEW attraction only when user didn't pick existing suggestion
+        const { rows: createdRows } = await query(insertAttractionSql, attrValues);
+        attractionRow = createdRows[0];
+        atrIdToUse = attractionRow.atrid;
+      }
 
       const linkSql = `
         INSERT INTO attraction_station
           (stationid, atrid, distance, traveltimeminutes, commuteoption)
         VALUES
           ($1, $2, $3, $4, $5)
+        ON CONFLICT (stationid, atrid)
+        DO UPDATE SET
+          distance = EXCLUDED.distance,
+          traveltimeminutes = EXCLUDED.traveltimeminutes,
+          commuteoption = EXCLUDED.commuteoption
       `;
 
       await query(linkSql, [
         stationId,
-        newAttraction.atrid,
+        atrIdToUse,
         distanceVal,
         travelTimeVal,
         commuteOption || null,
       ]);
 
-      res.status(201).json({ ok: true, attraction: newAttraction });
+      res.status(201).json({ ok: true, attraction: attractionRow, atrid: atrIdToUse });
+
     } catch (err) {
       console.error("❌ Error inserting attraction:", err);
       res.status(500).json({
@@ -1072,20 +1111,25 @@ router.get("/attractions/explore", async (req, res) => {
   }
 });
 
-// SEARCH attractions for ExplorePanel (no stationid dependency yet)
+// SEARCH attractions for ExplorePanel
 router.get("/attractions/search", async (req, res) => {
   try {
-    const { q = "" } = req.query;   // we ignore stationId for now
+    const q = String(req.query.q ?? "").trim();
+    const category = String(req.query.category ?? "").trim();
 
     const params = [];
     const where = [];
 
-    // Only show approved attractions
     where.push(`a.status = 'approved'`);
 
-    if (q.trim()) {
-      params.push(`%${q.trim()}%`);
+    if (q) {
+      params.push(`%${q}%`);
       where.push(`a.atrname ILIKE $${params.length}`);
+    }
+
+    if (category && category.toUpperCase() !== "ALL") {
+      params.push(category);
+      where.push(`LOWER(a.atrcategory) = LOWER($${params.length})`);
     }
 
     const whereSql = where.length ? "WHERE " + where.join(" AND ") : "";
@@ -1103,16 +1147,35 @@ router.get("/attractions/search", async (req, res) => {
         a.atrlongitude,
         a.openinghours,
 
-        -- ✅ USE rating + revid (correct column names)
-        COALESCE(AVG(r.rating), 0)  AS averagerating,
-        COUNT(r.revid)              AS reviewcount
+        COALESCE(AVG(r.rating), 0) AS averagerating,
+        COUNT(DISTINCT r.revid)    AS reviewcount,
+
+        -- ✅ ALL nearby stations for this attraction
+        COALESCE(
+          JSONB_AGG(
+            DISTINCT JSONB_BUILD_OBJECT(
+              'stationid', s.stationid,
+              'stationname', s.stationname,
+              'distance', ast.distance,
+              'traveltimeminutes', ast.traveltimeminutes,
+              'commuteoption', ast.commuteoption
+            )
+          ) FILTER (WHERE s.stationid IS NOT NULL),
+          '[]'::jsonb
+        ) AS stations
 
       FROM attraction a
       LEFT JOIN attraction_review r
         ON r.atrid = a.atrid
+
+      LEFT JOIN attraction_station ast
+        ON ast.atrid = a.atrid
+      LEFT JOIN station s
+        ON s.stationid = ast.stationid
+
       ${whereSql}
-      GROUP BY
-        a.atrid
+
+      GROUP BY a.atrid
       ORDER BY a.atrname ASC
       LIMIT 50;
     `;

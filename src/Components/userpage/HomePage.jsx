@@ -251,8 +251,8 @@ export default function HomePage() {
   const [attractionMarkers, setAttractionMarkers] = useState([]);
   const [showAttractionMarkers, setShowAttractionMarkers] = useState(false);
   const [selectedAttractionId, setSelectedAttractionId] = useState(null);
-  const [flyToTarget, setFlyToTarget] = useState(null); 
-  
+  const [flyToTarget, setFlyToTarget] = useState(null);
+  const [attractionNearbyStations, setAttractionNearbyStations] = useState([]);
   const requestUserLocation = () => {
     if (!("geolocation" in navigator)) {
       setLocError("Geolocation is not supported in this browser.");
@@ -288,9 +288,9 @@ export default function HomePage() {
         setIsLocLoading(false);
       },
       {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 60000,
+        enableHighAccuracy: false,
+        timeout: 15000,
+        maximumAge: 300000,
       }
     );
   };
@@ -795,7 +795,7 @@ const loadPredictions = async () => {
       const lng = Number(station.stationLongitude);
 
       if (Number.isFinite(lat) && Number.isFinite(lng)) {
-        // ✅ use the same MapFlyTo helper as attractions
+        // use the same MapFlyTo helper as attractions
         setFlyToTarget({ lat, lng, zoom: 16 });
       } else {
         console.warn("handleStationClick: invalid lat/lng", station);
@@ -810,6 +810,8 @@ const loadPredictions = async () => {
       setAttractionMarkers([]);
       setShowAttractionMarkers(false);
       setFlyToTarget(null);
+      // clear extra stations list if you add it
+      setAttractionNearbyStations([]);
       return;
     }
 
@@ -821,52 +823,91 @@ const loadPredictions = async () => {
     // 2) Compute lat/lng robustly
     const lat = Number(
       atr.atrlatitude ??
-      atr.atrLatitude ??
-      atr.latitude ??
-      atr.lat
+        atr.atrLatitude ??
+        atr.latitude ??
+        atr.lat
     );
     const lng = Number(
       atr.atrlongitude ??
-      atr.atrLongitude ??
-      atr.longitude ??
-      atr.lng
+        atr.atrLongitude ??
+        atr.longitude ??
+        atr.lng
     );
 
     if (Number.isFinite(lat) && Number.isFinite(lng)) {
-      // Use MapFlyTo helper to pan/zoom
       setFlyToTarget({ lat, lng, zoom: 17 });
     } else {
       console.warn("handleHighlightAttraction: no valid lat/lng for", atr);
     }
 
-    // 3) Find linked / nearest station
-    let station = null;
-    const stationId = atr.stationid || atr.stationID;
+    // if backend returns multiple stations, use them
+    // Expect atr.stations = [{ stationid, stationname, ... }, ...]
+    const linkedStations = Array.isArray(atr.stations) ? atr.stations : [];
 
-    if (stationId && stationsById[stationId]) {
-      station = stationsById[stationId];
-    } else if (Number.isFinite(lat) && Number.isFinite(lng) && stationsList.length > 0) {
-      let bestStation = null;
-      let bestDist = Infinity;
+    const resolvedStations = linkedStations
+      .map((s) => {
+        const id = s.stationid || s.stationID;
+        return id ? stationsById[id] : null;
+      })
+      .filter(Boolean);
 
-      for (const s of stationsList) {
-        const sLat = Number(s.stationLatitude);
-        const sLng = Number(s.stationLongitude);
-        if (!Number.isFinite(sLat) || !Number.isFinite(sLng)) continue;
+    // 3) Find station(s)
+    let primaryStation = null;
 
-        const d = haversineMeters(lat, lng, sLat, sLng);
-        if (d < bestDist) {
-          bestDist = d;
-          bestStation = s;
-        }
+    if (resolvedStations.length > 0) {
+      // Choose closest as primary (if distance provided), else first
+      const withDistance = linkedStations
+        .map((s) => {
+          const id = s.stationid || s.stationID;
+          const full = id ? stationsById[id] : null;
+          return full
+            ? { station: full, distance: Number(s.distance) }
+            : null;
+        })
+        .filter(Boolean);
+
+      if (withDistance.length > 0 && withDistance.some((x) => Number.isFinite(x.distance))) {
+        withDistance.sort((a, b) => (a.distance ?? Infinity) - (b.distance ?? Infinity));
+        primaryStation = withDistance[0].station;
+      } else {
+        primaryStation = resolvedStations[0];
       }
 
-      station = bestStation;
+      // store list for UI display (recommended)
+      setAttractionNearbyStations(resolvedStations);
+    } else {
+      // Fallback: old logic (single stationid OR nearest station by haversine)
+      let station = null;
+      const stationId = atr.stationid || atr.stationID;
+
+      if (stationId && stationsById[stationId]) {
+        station = stationsById[stationId];
+      } else if (Number.isFinite(lat) && Number.isFinite(lng) && stationsList.length > 0) {
+        let bestStation = null;
+        let bestDist = Infinity;
+
+        for (const s of stationsList) {
+          const sLat = Number(s.stationLatitude);
+          const sLng = Number(s.stationLongitude);
+          if (!Number.isFinite(sLat) || !Number.isFinite(sLng)) continue;
+
+          const d = haversineMeters(lat, lng, sLat, sLng);
+          if (d < bestDist) {
+            bestDist = d;
+            bestStation = s;
+          }
+        }
+
+        station = bestStation;
+      }
+
+      primaryStation = station;
+      setAttractionNearbyStations(station ? [station] : []);
     }
 
-    // 4) Open the side panel for that station, but DON'T move map from the attraction
-    if (station) {
-      handleStationClick(station, { fly: false });
+    // 4) Open the side panel for the primary station (but DON'T move map)
+    if (primaryStation) {
+      handleStationClick(primaryStation, { fly: false });
     }
   }
 
@@ -1274,6 +1315,7 @@ const loadPredictions = async () => {
             onFitAttractions={zoomToAttractions}
             onHighlightAttraction={handleHighlightAttraction} 
             selectedAttractionId={selectedAttractionId} 
+            attractionNearbyStations={attractionNearbyStations}
           />
         </div>
       </main>

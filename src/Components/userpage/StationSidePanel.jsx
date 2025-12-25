@@ -21,6 +21,7 @@ export default function StationSidePanel({
   onFitAttractions, 
   onHighlightAttraction, 
   selectedAttractionId,
+  attractionNearbyStations = [],
 }) {
   // attractions for the currently selected station
   const [stationAttractions, setStationAttractions] = useState([]);
@@ -52,9 +53,13 @@ export default function StationSidePanel({
   const [isSearching, setIsSearching] = useState(false);
   const [selectedSuggestion, setSelectedSuggestion] = useState(null);
 
+  // Missing-fields prompt (for NEW attraction only)
+  const [showMissingPrompt, setShowMissingPrompt] = useState(false);
+  const [missingFields, setMissingFields] = useState([]);
+  const [skipMissingPromptOnce, setSkipMissingPromptOnce] = useState(false);
+
   // per-attraction menu (edit / delete request)
-  const [activeAttractionForAction, setActiveAttractionForAction] =
-    useState(null);
+  const [activeAttractionForAction, setActiveAttractionForAction] = useState(null);
 
   // review form state
   const [reviewForm, setReviewForm] = useState({
@@ -94,7 +99,43 @@ export default function StationSidePanel({
 
   const [deleteReason, setDeleteReason] = useState("");
 
+  const [menuOpenAtrId, setMenuOpenAtrId] = useState(null);
+  
+
   // ---------- helpers ----------
+
+  function getMissingImportantFields(form) {
+    const missing = [];
+
+    const name = form.name?.trim();
+    const category = form.category?.trim();
+    const map = form.mapLocation?.trim();
+    const lat = String(form.atrLatitude ?? "").trim();
+    const lng = String(form.atrLongitude ?? "").trim();
+
+    // required
+    if (!name) missing.push({ label: "Name", required: true });
+    if (!category) missing.push({ label: "Category", required: true });
+
+    const hasCoords = lat !== "" && lng !== "";
+    const hasMap = map !== "";
+
+    if (!hasMap && !hasCoords) {
+      missing.push({
+        label: "Map link OR Coordinates (Latitude + Longitude)",
+        required: true,
+      });
+    }
+
+    // required
+    if (!form.address?.trim())
+      missing.push({ label: "Address", required: true });
+
+    // recommended (prompt only)
+    if (!form.openingHours?.trim())
+      missing.push({ label: "Opening hours", required: false });
+    return missing;
+  }
 
   const handleAddAttractionChange = (field, value) => {
     setAddAttractionForm((prev) => ({ ...prev, [field]: value }));
@@ -112,7 +153,9 @@ export default function StationSidePanel({
 
   // Smart search functionality
   const searchSimilarAttractions = async (searchTerm) => {
-    if (!searchTerm || searchTerm.trim().length < 2) {
+    const q = searchTerm?.trim() || "";
+
+    if (q.length < 2) {
       setSearchResults([]);
       setShowSuggestions(false);
       return;
@@ -120,22 +163,24 @@ export default function StationSidePanel({
 
     try {
       setIsSearching(true);
-      const res = await fetch(`/api/attractions/similar?q=${encodeURIComponent(searchTerm.trim())}`);
-      if (res.ok) {
-        const data = await res.json();
-        setSearchResults(data.attractions || []);
-        setShowSuggestions(true);
-        setShowSuggestions(results.length > 0); // only show if there are results
 
-        // if query is too short, close it
-        if (!searchTerm || searchTerm.trim().length < 2) {
-          setSearchResults([]);
-          setShowSuggestions(false);
-          return;
-        }
+      const res = await fetch(`/api/attractions/similar?q=${encodeURIComponent(q)}`);
+
+      if (!res.ok) {
+        setSearchResults([]);
+        setShowSuggestions(false);
+        return;
       }
+
+      const data = await res.json();
+      const list = data.attractions || [];
+
+      setSearchResults(list);
+      setShowSuggestions(list.length > 0);   // ✅ IMPORTANT
     } catch (err) {
       console.error("Error searching similar attractions:", err);
+      setSearchResults([]);
+      setShowSuggestions(false);
     } finally {
       setIsSearching(false);
     }
@@ -184,6 +229,8 @@ export default function StationSidePanel({
     };
     
     setAddAttractionForm(autofilledForm);
+    setPhotoFile(null);
+    setPhotoPreview(attraction.coverimageurl || null);
     setShowSuggestions(false);
     setSearchResults([]);
     setSelectedSuggestion(attraction);
@@ -197,18 +244,16 @@ export default function StationSidePanel({
   // Handle name input with debounced search
   const handleNameChange = (e) => {
     const value = e.target.value;
-    setAddAttractionForm({ ...addAttractionForm, name: value });
-    
+    // update name
+    setAddAttractionForm((prev) => ({ ...prev, name: value }));
+    // if user types manually, stop treating it as an existing attraction
+    setSelectedSuggestion(null);
     // Clear previous timeout
-    if (searchTimeout) {
-      clearTimeout(searchTimeout);
-    }
-    
-    // Set new timeout for search
+    if (searchTimeout) clearTimeout(searchTimeout);
+    if (value.trim().length >= 2) setShowSuggestions(true);    // Debounced search
     const newTimeout = setTimeout(() => {
       searchSimilarAttractions(value);
-    }, 300); // 300ms debounce
-    
+    }, 300);
     setSearchTimeout(newTimeout);
   };
 
@@ -243,6 +288,7 @@ export default function StationSidePanel({
     "Restaurants & Cafe",
     "Themepark",
     "Stadium",
+    "Park",
   ];
 
   const resetAddAttractionForm = () => {
@@ -277,11 +323,11 @@ export default function StationSidePanel({
   };
 
   const openAttractionMenu = (attraction) => {
-    setActiveAttractionForAction(attraction);
+    setMenuOpenAtrId(attraction.atrid);
   };
 
   const closeAttractionMenu = () => {
-    setActiveAttractionForAction(null);
+    setMenuOpenAtrId(null);
   };
 
   const openEditRequestModal = (attraction) => {
@@ -294,21 +340,15 @@ export default function StationSidePanel({
       website: attraction.atrwebsite || "",
       mapLocation: attraction.atrmaplocation || "",
       openingHours: attraction.openinghours || "",
-      distanceMeters:
-        attraction.distance != null ? String(attraction.distance) : "",
-      travelTimeMinutes:
-        attraction.traveltimeminutes != null
-          ? String(attraction.traveltimeminutes)
-          : "",
+      distanceMeters: attraction.distance != null ? String(attraction.distance) : "",
+      travelTimeMinutes: attraction.traveltimeminutes != null ? String(attraction.traveltimeminutes) : "",
       commuteOption: attraction.commuteoption || "",
-      atrLatitude:
-        attraction.atrlatitude != null ? String(attraction.atrlatitude) : "",
-      atrLongitude:
-        attraction.atrlongitude != null ? String(attraction.atrlongitude) : "",
+      atrLatitude: attraction.atrlatitude != null ? String(attraction.atrlatitude) : "",
+      atrLongitude: attraction.atrlongitude != null ? String(attraction.atrlongitude) : "",
     });
 
     setShowEditRequestModal(true);
-    closeAttractionMenu();
+    setMenuOpenAtrId(null); // close menu only
   };
 
   const closeEditRequestModal = () => {
@@ -332,7 +372,7 @@ export default function StationSidePanel({
     setActiveAttractionForAction(attraction);
     setDeleteReason("");
     setShowDeleteRequestModal(true);
-    closeAttractionMenu();
+    setMenuOpenAtrId(null); // close menu only
   };
 
   const closeDeleteRequestModal = () => {
@@ -383,6 +423,14 @@ export default function StationSidePanel({
     }
   }, [selectedStation]);
 
+  // whenever selectedSuggestion changes, lock photo upload + show shared photo
+  useEffect(() => {
+    if (selectedSuggestion) {
+      setPhotoFile(null);
+      setPhotoPreview(selectedSuggestion.coverimageurl || null);
+    }
+  }, [selectedSuggestion]);
+
   const handleSubmitAddAttraction = async (e) => {
     e.preventDefault();
     if (!selectedStation) return;
@@ -393,7 +441,34 @@ export default function StationSidePanel({
       return;
     }
 
-    // Validate required fields before submission
+    const isAutofill = !!selectedSuggestion; // existing attraction selected
+    const isNewAttraction = !isAutofill;
+
+    // ---- NEW: prompt missing important fields ONLY for new attractions ----
+    if (isNewAttraction && !skipMissingPromptOnce) {
+      const missing = getMissingImportantFields(addAttractionForm);
+
+      const requiredMissing = missing.filter((m) => m.required);
+      if (requiredMissing.length > 0) {
+        alert(
+          "❌ Please fill required fields:\n- " +
+            requiredMissing.map((m) => m.label).join("\n- ")
+        );
+        return;
+      }
+
+      const recommendedMissing = missing.filter((m) => !m.required);
+      if (recommendedMissing.length > 0) {
+        setMissingFields(recommendedMissing);
+        setShowMissingPrompt(true);
+        return;
+      }
+    }
+
+    // reset skip flag after using it once
+    if (skipMissingPromptOnce) setSkipMissingPromptOnce(false);
+
+    // Validate required fields before submission (keep your original name check)
     const name = addAttractionForm.name?.trim();
     if (!name) {
       alert("❌ Please enter an attraction name before submitting.");
@@ -414,11 +489,12 @@ export default function StationSidePanel({
         commuteOption: addAttractionForm.commuteOption.trim(),
         atrLatitude: addAttractionForm.atrLatitude.trim(),
         atrLongitude: addAttractionForm.atrLongitude.trim(),
+        existingAtrId: selectedSuggestion?.atrid ?? null,
       };
 
       const formData = new FormData();
       formData.append("data", JSON.stringify(payload));
-      if (photoFile) {
+      if (photoFile && !selectedSuggestion) {
         formData.append("photo", photoFile);
       }
 
@@ -431,16 +507,20 @@ export default function StationSidePanel({
         }
       );
 
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      if (!res.ok) {
+        const errBody = await res.json().catch(() => ({}));
+        throw new Error(errBody.error || errBody.message || `HTTP ${res.status}`);
+      }
 
       alert("✅ Your attraction suggestion has been sent for review.");
       closeAddAttractionForm();
       await loadAttractionsForStation(selectedStation.stationID);
     } catch (err) {
       console.error("Failed to submit attraction suggestion", err);
-      alert("❌ Failed to send suggestion. Please try again later.");
+      alert(err.message || "❌ Failed to send suggestion. Please try again later.");
     }
   };
+
 
   // EDIT request submit
   const handleSubmitEditRequest = async (e) => {
@@ -704,6 +784,36 @@ export default function StationSidePanel({
                 {selectedStation.lines.map((l) => l.lineName).join(" / ")}
               </p>
 
+              {Array.isArray(attractionNearbyStations) && attractionNearbyStations.length > 1 && (
+                <div
+                  style={{
+                    marginTop: 8,
+                    padding: "10px 12px",
+                    borderRadius: 12,
+                    border: "1px solid #e2e8f0",
+                    background: "#f8fafc",
+                  }}
+                >
+                  <div style={{ fontWeight: 700, marginBottom: 6, fontSize: 13 }}>
+                    🚉 Nearby stations for this attraction
+                  </div>
+
+                  <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                    {attractionNearbyStations.map((s) => (
+                      <button
+                        key={s.stationID}
+                        type="button"
+                        className="btnSecondary"
+                        style={{ textAlign: "left" }}
+                        onClick={() => onStationClick?.(s)}
+                      >
+                        {s.stationName} ({s.stationID})
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <hr className="sectionDivider" />
 
               {/* chart section */}
@@ -835,7 +945,7 @@ export default function StationSidePanel({
                                     <FaEllipsisV size={11} />
                                   </button>
 
-                                  {activeAttractionForAction?.atrid ===
+                                  {menuOpenAtrId === a.atrid && (
                                     a.atrid && (
                                     <div className="attractionActionMenu">
                                       <button
@@ -860,11 +970,10 @@ export default function StationSidePanel({
                                         Cancel
                                       </button>
                                     </div>
-                                  )}
+                                  ))}
                                 </div>
                               </div>
                             </div>
-
                             <p
                               style={{
                                 margin: "2px 0 4px",
@@ -1296,7 +1405,7 @@ export default function StationSidePanel({
                       address: e.target.value,
                     })
                   }
-                  placeholder="Full address (optional)"
+                  placeholder="Full address"
                   className={selectedSuggestion?.atraddress ? "autofilled" : ""}
                 />
               </div>
@@ -1417,30 +1526,112 @@ export default function StationSidePanel({
 
               <div className="formRow">
                 <label>Photo (optional, 1 image)</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handlePhotoChange}
-                />
-                {photoPreview && (
-                  <div className="photoPreview">
-                    <img src={photoPreview} alt="Preview" />
+
+                {selectedSuggestion ? (
+                  <div
+                    style={{
+                      padding: "8px 10px",
+                      borderRadius: "8px",
+                      border: "1px solid #e2e8f0",
+                      background: "#f8fafc",
+                      fontSize: "12px",
+                      color: "#475569",
+                    }}
+                  >
+                    ✅ This attraction already exists in the system, so its photo is shared across stations.
+                    <br />
+                    To change the photo, use <strong>Request edit</strong>.
                   </div>
+                ) : (
+                  <>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handlePhotoChange}
+                    />
+                    {photoPreview && (
+                      <div className="photoPreview">
+                        <img src={photoPreview} alt="Preview" />
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
 
-              <div className="formActions">
-                <button
-                  type="button"
-                  className="btnSecondary"
-                  onClick={closeAddAttractionForm}
+              {/* Missing-fields prompt (recommended fields only) */}
+              {showMissingPrompt && (
+                <div
+                  style={{
+                    marginTop: 10,
+                    padding: "10px 12px",
+                    borderRadius: 10,
+                    border: "1px solid #fde68a",
+                    background: "#fffbeb",
+                    color: "#92400e",
+                    fontSize: 12,
+                  }}
                 >
-                  Cancel
-                </button>
-                <button type="submit" className="btnPrimary">
-                  Send suggestion
-                </button>
-              </div>
+                  <div style={{ fontWeight: 700, marginBottom: 6 }}>
+                    ⚠️ Some recommended details are empty
+                  </div>
+
+                  <ul style={{ margin: 0, paddingLeft: 18 }}>
+                    {missingFields.map((m) => (
+                      <li key={m.label}>{m.label}</li>
+                    ))}
+                  </ul>
+
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: 8,
+                      marginTop: 10,
+                      justifyContent: "flex-end",
+                    }}
+                  >
+                    <button
+                      type="button"
+                      className="btnSecondary"
+                      onClick={() => {
+                        setShowMissingPrompt(false);
+                        setMissingFields([]);
+                      }}
+                    >
+                      Go back & fill
+                    </button>
+
+                    <button
+                      type="button"
+                      className="btnPrimary"
+                      onClick={() => {
+                        setShowMissingPrompt(false);
+                        setMissingFields([]);
+                        setSkipMissingPromptOnce(true);
+                        // re-trigger submit
+                        const fakeEvent = { preventDefault: () => {} };
+                        handleSubmitAddAttraction(fakeEvent);
+                      }}
+                    >
+                      Submit anyway
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {!showMissingPrompt && (
+                <div className="formActions">
+                  <button
+                    type="button"
+                    className="btnSecondary"
+                    onClick={closeAddAttractionForm}
+                  >
+                    Cancel
+                  </button>
+                  <button type="submit" className="btnPrimary">
+                    Send suggestion
+                  </button>
+                </div>
+              )}
             </form>
           </div>
         </div>
@@ -1532,7 +1723,7 @@ export default function StationSidePanel({
                       address: e.target.value,
                     }))
                   }
-                  placeholder="Full address (optional)"
+                  placeholder="Full address"
                 />
               </div>
 
