@@ -1340,39 +1340,63 @@
 
 
 /* ==== Attraction map markers ==== */
-.attraction-icon {
-  /* Leaflet will position this container, we just style the inner dot */
+.attraction-marker-wrapper {
+  background: transparent;
+  border: none;
 }
 
-.attraction-dot {
-  width: 18px;
-  height: 18px;
+.attraction-marker-wrapper--active .attraction-marker {
+  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.25), 0 10px 20px rgba(15, 23, 42, 0.3);
+}
+
+.attraction-marker {
+  width: 38px;
+  height: 38px;
+  border-radius: 16px;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.attraction-marker::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -11px;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border: 7px solid transparent;
+  border-top-color: rgba(15, 23, 42, 0.14);
+}
+
+.attraction-marker__ring {
+  width: 28px;
+  height: 28px;
   border-radius: 999px;
-  border: 2px solid #ffffff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+  background: #ffffff;
+  border: 2px solid var(--marker-accent, #6b7280);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.9);
 }
 
-/* Default */
-.attraction-icon.attraction-generic .attraction-dot {
-  background: #6b7280; /* gray */
+.attraction-marker__icon-img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  display: block;
 }
 
-/* Mall / shopping */
-.attraction-icon.attraction-mall .attraction-dot {
-  background: #ec4899; /* pink */
-}
-
-/* Food */
-.attraction-icon.attraction-food .attraction-dot {
-  background: #f97316; /* orange */
-}
-
-/* Park */
-.attraction-icon.attraction-park .attraction-dot {
-  background: #22c55e; /* green */
-}
-
-/* Museum */
-.attraction-icon.attraction-museum .attraction-dot {
-  background: #6366f1; /* indigo */
+.attraction-marker__icon-text {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #0f172a;
+  text-transform: uppercase;
 }

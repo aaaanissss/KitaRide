@@ -168,26 +168,6 @@ router.get('/test', (req, res) => {
   res.json({ message: "Server is working!", timestamp: new Date() });
 });
 
-/*
-// --- Helper to load JSON files once ---
-function loadJson(relativePath) {
-  const fullPath = path.join(process.cwd(), relativePath);
-  const raw = fs.readFileSync(fullPath, 'utf8');
-  return JSON.parse(raw);
-}
-
-// --- Load KTM datasets ---
-const ktmStations   = loadJson('data/ktm/ktm_stations.json');
-const komuterHourly = loadJson('data/ktm/ktm_hourly_pattern_by_station_dow.json');
-const stationIdToName = new Map(ktmStations.map((s) => [s.id, s.name]));
-const ktmExpectedDaily = loadJson('data/ktm/ktm_expected_pattern_by_line.json');
-
-// build __dirname in ESM
-const __filename = fileURLToPath(import.meta.url);
-const __dirname  = path.dirname(__filename);
-
-*/
-
 // build __dirname in ESM (put this near the top, before loadJson is used)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = path.dirname(__filename);

@@ -101,61 +101,66 @@ function UserLocationMarker({ position }) {
   );
 }
 
-function getAttractionIcon(category) {
-  const key = (category || "").toUpperCase();
+const LANDMARK_ICON_OVERRIDES = [
+  { match: /klcc|petronas|twin tower/i, url: "/attraction-icons/klcc.png", color: "#0ea5e9" },
+  { match: /kl\s*tower|menara\s*kl/i, url: "/attraction-icons/kl_tower.png", color: "#7c3aed" },
+  { match: /batu\s*caves/i, url: "/attraction-icons/batu-caves.png", color: "#ea580c" },
+  { match: /merdeka\s*118|pn\s*118|118/i, url: "/attraction-icons/118.png", color: "#1f2937" },
+  { match: /trx|tun\s*razak\s*exchange/i, url: "/attraction-icons/trx.png", color: "#0f766e" },
+  { match: /dataran\s*merdeka|merdeka\s*square/i, url: "/attraction-icons/dataran_merdeka.png", color: "#b45309" },
+  { match: /river\s*of\s*life|sungai\s*kehidupan/i, url: "/attraction-icons/river_of_life.png", color: "#2563eb" },
+];
 
-  const colorMap = {
-    MALL: "#1d4ed8",    // blue
-    FOOD: "#b45309",    // brown/orange
-    PARK: "#15803d",    // green
-    MUSEUM: "#6b21a8",  // purple
-  };
+const CATEGORY_ICON_CONFIG = [
+  { match: /mosque/i, url: "/attraction-icons/mosque.png", color: "#0f766e" },
+  { match: /shopping|mall/i, url: "/attraction-icons/mall.png", color: "#db2777" },
+  { match: /restaurant|cafe|food|dining/i, url: "/attraction-icons/restaurant_cafe.png", color: "#f97316" },
+  { match: /theme\s*park|themepark|amusement/i, url: "/attraction-icons/themepark.png", color: "#facc15" },
+  { match: /stadium|arena/i, url: "/attraction-icons/stadium.png", color: "#0f172a" },
+  { match: /park|garden|outdoor|recreation/i, url: "/attraction-icons/park.png", color: "#16a34a" },
+];
 
-  const color = colorMap[key] || "#4b5563";
+function buildAttractionIcon({ url, label, color, isSelected }) {
+  const content = url
+    ? `<img class="attraction-marker__icon-img" src="${url}" alt="" />`
+    : `<span class="attraction-marker__icon-text">${label}</span>`;
 
   return L.divIcon({
-    className: "attraction-marker-icon",
+    className: `attraction-marker-wrapper${isSelected ? " attraction-marker-wrapper--active" : ""}`,
     html: `
-      <div
-        style="
-          width: 18px;
-          height: 18px;
-          border-radius: 999px;
-          border: 2px solid #ffffff;
-          background: ${color};
-          box-shadow: 0 2px 6px rgba(0,0,0,0.35);
-        "
-      ></div>
+      <div class="attraction-marker" style="--marker-accent: ${color}">
+        <div class="attraction-marker__ring">
+          ${content}
+        </div>
+      </div>
     `,
-    iconSize: [20, 20],
-    iconAnchor: [10, 10],
-    popupAnchor: [0, -10],
+    iconSize: [34, 42],
+    iconAnchor: [17, 40],
+    popupAnchor: [0, -34],
   });
 }
 
-const makeAttractionIcon = (extraClass) =>
-  L.divIcon({
-    className: `attraction-icon ${extraClass}`,
-    html: '<div class="attraction-dot"></div>',
-    iconSize: [22, 22],
-    iconAnchor: [11, 11],
+function pickAttractionIcon(attraction, isSelected) {
+  const name = String(attraction?.atrname ?? "").trim();
+  const category = String(attraction?.atrcategory ?? "").trim();
+
+  if (name && LANDMARK_ICON_OVERRIDES.length > 0) {
+    const override = LANDMARK_ICON_OVERRIDES.find((o) => o.match.test(name));
+    if (override) {
+      return buildAttractionIcon({ ...override, isSelected });
+    }
+  }
+
+  const catConfig = CATEGORY_ICON_CONFIG.find((c) => c.match.test(category));
+  if (catConfig) {
+    return buildAttractionIcon({ ...catConfig, isSelected });
+  }
+
+  return buildAttractionIcon({
+    label: "?",
+    color: "#6b7280",
+    isSelected,
   });
-
-const genericAttractionIcon = makeAttractionIcon("attraction-generic");
-const mallAttractionIcon    = makeAttractionIcon("attraction-mall");
-const foodAttractionIcon    = makeAttractionIcon("attraction-food");
-const parkAttractionIcon    = makeAttractionIcon("attraction-park");
-const museumAttractionIcon  = makeAttractionIcon("attraction-museum");
-
-function pickAttractionIcon(category) {
-  const c = (category || "").toLowerCase();
-
-  if (/mall|shopping|retail/.test(c)) return mallAttractionIcon;
-  if (/food|dining|restaurant|cafe|eat/.test(c)) return foodAttractionIcon;
-  if (/park|garden|outdoor|recreation/.test(c)) return parkAttractionIcon;
-  if (/museum|gallery|heritage|history/.test(c)) return museumAttractionIcon;
-
-  return genericAttractionIcon;
 }
 
 // Component to fit map bounds to route segments after user search
@@ -1230,7 +1235,7 @@ const loadPredictions = async () => {
                       <Marker
                         key={`atr-${a.atrid}`}
                         position={[lat, lng]}
-                        icon={pickAttractionIcon(a.atrcategory)}
+                        icon={pickAttractionIcon(a, isSelected)}
                         zIndexOffset={isSelected ? 1500 : 800}
                         eventHandlers={{
                           click: () => handleHighlightAttraction(a),
