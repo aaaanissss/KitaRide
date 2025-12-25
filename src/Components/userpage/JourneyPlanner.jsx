@@ -459,7 +459,11 @@ export default function JourneyPlanner({
         <aside className="resultsSidePanel">
           <button
             className="closeSideBtn"
-            onClick={() => setResult(null)}
+            onClick={() => {
+              setResult(null);
+              setExpandedRouteIdx(-1);
+              if (onRouteFound) onRouteFound(null);
+            }}
             title="Close results"
           >
             ×

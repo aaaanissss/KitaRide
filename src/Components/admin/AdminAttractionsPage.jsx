@@ -17,6 +17,7 @@ export default function AdminAttractionsPage() {
   const [requestFilter, setRequestFilter] = useState("pending");
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [requestRemark, setRequestRemark] = useState("");
+  const [toast, setToast] = useState(null);
 
   const token = localStorage.getItem("authToken");
 
@@ -108,7 +109,7 @@ export default function AdminAttractionsPage() {
     if (!selectedRequest || !token) return;
 
     try {
-      await fetch(
+      const res = await fetch(
         `/api/admin/attraction-requests/${selectedRequest.requestid}/decision`,
         {
           method: "POST",
@@ -122,6 +123,14 @@ export default function AdminAttractionsPage() {
           }),
         }
       );
+      if (!res.ok) throw new Error("Failed to update request");
+
+      const actionLabel =
+        decision === "approved" ? "Approved" : decision === "rejected" ? "Rejected" : "Updated";
+      setToast({
+        type: decision === "rejected" ? "error" : "success",
+        message: `${actionLabel} request #${selectedRequest.requestid}.`,
+      });
 
       setRequestRemark("");
       setSelectedRequest(null);
@@ -129,7 +138,10 @@ export default function AdminAttractionsPage() {
       await loadAttractions(); // attraction status might change too
     } catch (err) {
       console.error(err);
-      alert("Failed to update request");
+      setToast({
+        type: "error",
+        message: err.message || "Failed to update request.",
+      });
     }
   }
 
@@ -139,9 +151,27 @@ export default function AdminAttractionsPage() {
   const allKeys = Array.from(
     new Set([...Object.keys(snapshot), ...Object.keys(requestedChanges)])
   );
+  const filteredKeys = allKeys.filter((k) => k !== "coverimageurl");
+  const currentPhoto = snapshot?.coverimageurl || null;
+  const requestedPhoto = requestedChanges?.coverimageurl || null;
+  const formatValueWithUnit = (value, unit) => {
+    if (value === null || value === undefined || value === "") return "-";
+    return `${value} ${unit}`;
+  };
+
+  useEffect(() => {
+    if (!toast) return;
+    const id = setTimeout(() => setToast(null), 3000);
+    return () => clearTimeout(id);
+  }, [toast]);
 
   return (
     <main className="profilePage with-fixed-header">
+      {toast && (
+        <div className={`admin-toast admin-toast--${toast.type}`}>
+          {toast.message}
+        </div>
+      )}
       <div className="profile-container">
         {/* header card */}
         <section className="profile-header-card admin-header-card">
@@ -334,18 +364,42 @@ export default function AdminAttractionsPage() {
                 )}
 
                 {/* Existing vs requested changes (for edit) */}
-                {selectedRequest.request_type === "edit" && allKeys.length > 0 && (
+                {selectedRequest.request_type === "edit" && (currentPhoto || requestedPhoto) && (
+                  <div className="admin-request-photos">
+                    <div className="admin-request-photos-title">Photo change</div>
+                    <div className="admin-request-photos-row">
+                      <div className="admin-request-photo">
+                        <div className="admin-request-photo-label">Current</div>
+                        {currentPhoto ? (
+                          <img src={currentPhoto} alt="Current attraction" />
+                        ) : (
+                          <div className="admin-request-photo-empty">No photo</div>
+                        )}
+                      </div>
+                      <div className="admin-request-photo">
+                        <div className="admin-request-photo-label">Requested</div>
+                        {requestedPhoto ? (
+                          <img src={requestedPhoto} alt="Requested attraction" />
+                        ) : (
+                          <div className="admin-request-photo-empty">No change</div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {selectedRequest.request_type === "edit" && filteredKeys.length > 0 && (
                   <div className="admin-change-table">
                     <div className="admin-change-header">
                       <span>Field</span>
                       <span>Current</span>
                       <span>Requested</span>
                     </div>
-                    {allKeys.map((key) => (
+                    {filteredKeys.map((key) => (
                       <div key={key} className="admin-change-row">
                         <span>{key}</span>
-                        <span>{snapshot[key] ?? "—"}</span>
-                        <span>{requestedChanges[key] ?? "—"}</span>
+                        <span>{snapshot[key] ?? "-"}</span>
+                        <span>{requestedChanges[key] ?? "-"}</span>
                       </div>
                     ))}
                   </div>
@@ -428,13 +482,9 @@ export default function AdminAttractionsPage() {
 
                   <div className="admin-form-section">
                     <strong>Station Connection:</strong>
-                    <p><strong>Station:</strong> {selectedAttraction.stationname || "—"} ({selectedAttraction.stationid || "—"})</p>
-                    {selectedAttraction.distance !== null && (
-                      <p><strong>Distance:</strong> {selectedAttraction.distance} meters</p>
-                    )}
-                    {selectedAttraction.traveltimeminutes !== null && (
-                      <p><strong>Travel Time:</strong> {selectedAttraction.traveltimeminutes} minutes</p>
-                    )}
+                    <p><strong>Station:</strong> {selectedAttraction.stationname || "-"} ({selectedAttraction.stationid || "-"})</p>
+                    <p><strong>Distance:</strong> {formatValueWithUnit(selectedAttraction.distance, "meters")}</p>
+                    <p><strong>Travel Time:</strong> {formatValueWithUnit(selectedAttraction.traveltimeminutes, "minutes")}</p>
                     {selectedAttraction.commuteoption && (
                       <p><strong>Commute Option:</strong> {selectedAttraction.commuteoption}</p>
                     )}

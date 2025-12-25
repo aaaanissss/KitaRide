@@ -82,6 +82,8 @@ export default function StationSidePanel({
   // three-dot menu + request modals
   const [showEditRequestModal, setShowEditRequestModal] = useState(false);
   const [showDeleteRequestModal, setShowDeleteRequestModal] = useState(false);
+  const [editPhotoFile, setEditPhotoFile] = useState(null);
+  const [editPhotoPreview, setEditPhotoPreview] = useState(null);
 
   const [editRequestForm, setEditRequestForm] = useState({
     name: "",
@@ -347,6 +349,8 @@ export default function StationSidePanel({
       atrLongitude: attraction.atrlongitude != null ? String(attraction.atrlongitude) : "",
     });
 
+    setEditPhotoFile(null);
+    setEditPhotoPreview(attraction.coverimageurl || null);
     setShowEditRequestModal(true);
     setMenuOpenAtrId(null); // close menu only
   };
@@ -366,6 +370,8 @@ export default function StationSidePanel({
       atrLatitude: "",
       atrLongitude: "",
     });
+    setEditPhotoFile(null);
+    setEditPhotoPreview(null);
   };
 
   const openDeleteRequestModal = (attraction) => {
@@ -552,33 +558,47 @@ export default function StationSidePanel({
         : null;
 
     try {
+      const requestedChanges = {
+        atrname: editRequestForm.name.trim() || null,
+        atrcategory: editRequestForm.category.trim() || null,
+        atraddress: editRequestForm.address.trim() || null,
+        atrwebsite: editRequestForm.website.trim() || null,
+        atrmaplocation: editRequestForm.mapLocation.trim() || null,
+        openinghours: editRequestForm.openingHours.trim() || null,
+        distance: distanceVal,
+        traveltimeminutes: travelTimeVal,
+        commuteoption: editRequestForm.commuteOption.trim() || null,
+        atrlatitude: latVal,
+        atrlongitude: lngVal,
+      };
+
+      const payload = {
+        type: "EDIT",
+        data: {
+          stationID: selectedStation.stationID,
+          atrid: activeAttractionForAction.atrid,
+          reason: null,
+          requestedChanges,
+        },
+      };
+
+      const useFormData = Boolean(editPhotoFile);
       const res = await fetch("/api/attractions/requests", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          type: "EDIT",
-          data: {
-            stationID: selectedStation.stationID,
-            atrid: activeAttractionForAction.atrid,
-            reason: null,
-            requestedChanges: {
-              atrname: editRequestForm.name.trim() || null,
-              atrcategory: editRequestForm.category.trim() || null,
-              atraddress: editRequestForm.address.trim() || null,
-              atrwebsite: editRequestForm.website.trim() || null,
-              atrmaplocation: editRequestForm.mapLocation.trim() || null,
-              openinghours: editRequestForm.openingHours.trim() || null,
-              distance: distanceVal,
-              traveltimeminutes: travelTimeVal,
-              commuteoption: editRequestForm.commuteOption.trim() || null,
-              atrlatitude: latVal,
-              atrlongitude: lngVal,
+        headers: useFormData
+          ? { Authorization: `Bearer ${token}` }
+          : {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
-          },
-        }),
+        body: useFormData
+          ? (() => {
+              const formData = new FormData();
+              formData.append("data", JSON.stringify(payload));
+              formData.append("photo", editPhotoFile);
+              return formData;
+            })()
+          : JSON.stringify(payload),
       });
 
       if (!res.ok) {
@@ -1457,6 +1477,7 @@ export default function StationSidePanel({
                     }
                     placeholder="Latitude"
                     className={selectedSuggestion?.atrlatitude ? "autofilled" : ""}
+                    required
                   />
                   <input
                     type="number"
@@ -1471,6 +1492,7 @@ export default function StationSidePanel({
                     }
                     placeholder="Longitude"
                     className={selectedSuggestion?.atrlongitude ? "autofilled" : ""}
+                    required
                   />
                 </div>
               </div>
@@ -1525,6 +1547,18 @@ export default function StationSidePanel({
               </div>
 
               <div className="formRow">
+                <label>Commute option (How to get there)</label>
+                <input
+                  type="text"
+                  value={addAttractionForm.commuteOption}
+                  onChange={(e) =>
+                    handleAddAttractionChange("commuteOption", e.target.value)
+                  }
+                  placeholder="E.g. 5-min covered walk, via link bridge"
+                />
+              </div>
+
+              <div className="formRow">
                 <label>Photo (optional, 1 image)</label>
 
                 {selectedSuggestion ? (
@@ -1549,6 +1583,9 @@ export default function StationSidePanel({
                       accept="image/*"
                       onChange={handlePhotoChange}
                     />
+                    <div style={{ fontSize: 11, color: "#6b7280", marginTop: 6 }}>
+                      Tip: keep the photo small (compressed) to avoid upload errors.
+                    </div>
                     {photoPreview && (
                       <div className="photoPreview">
                         <img src={photoPreview} alt="Preview" />
@@ -1772,6 +1809,7 @@ export default function StationSidePanel({
                       }))
                     }
                     placeholder="Latitude"
+                    required
                   />
                   <input
                     type="number"
@@ -1785,6 +1823,7 @@ export default function StationSidePanel({
                       }))
                     }
                     placeholder="Longitude"
+                    required
                   />
                 </div>
               </div>
@@ -1801,6 +1840,27 @@ export default function StationSidePanel({
                     }))
                   }
                 />
+              </div>
+
+              <div className="formRow">
+                <label>Photo (optional, 1 image)</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0] || null;
+                    setEditPhotoFile(file);
+                    setEditPhotoPreview(file ? URL.createObjectURL(file) : null);
+                  }}
+                />
+                <div style={{ fontSize: 11, color: "#6b7280", marginTop: 6 }}>
+                  Tip: keep the photo small (compressed) to avoid upload errors.
+                </div>
+                {editPhotoPreview && (
+                  <div className="photoPreview">
+                    <img src={editPhotoPreview} alt="Preview" />
+                  </div>
+                )}
               </div>
 
               <div className="formRow">

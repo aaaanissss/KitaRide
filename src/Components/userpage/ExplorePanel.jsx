@@ -353,6 +353,19 @@ export default function ExplorePanel({
           >
             {isSearchingAttractions ? "Searching…" : "Search attractions"}
           </button>
+          <button
+            type="button"
+            className="btnSecondary exploreSearchBtn"
+            onClick={() => {
+              setAttractionResults([]);
+              setAttractionError("");
+              if (onAttractionSearchResults) onAttractionSearchResults([]);
+              if (onToggleAttractionMarkers) onToggleAttractionMarkers(false);
+            }}
+            disabled={isSearchingAttractions}
+          >
+            Close attractions
+          </button>
 
           {/* Results */}
           <div className="exploreList">

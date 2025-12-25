@@ -109,6 +109,7 @@ const LANDMARK_ICON_OVERRIDES = [
   { match: /trx|tun\s*razak\s*exchange/i, url: "/attraction-icons/trx.png", color: "#0f766e" },
   { match: /dataran\s*merdeka|merdeka\s*square/i, url: "/attraction-icons/dataran_merdeka.png", color: "#b45309" },
   { match: /river\s*of\s*life|sungai\s*kehidupan/i, url: "/attraction-icons/river_of_life.png", color: "#2563eb" },
+  { match: /saloma\s*link/i, url: "/attraction-icons/saloma_link.png", color: "#db2777" },
 ];
 
 const CATEGORY_ICON_CONFIG = [
@@ -751,6 +752,14 @@ const loadPredictions = async () => {
 
   // When a new routeResult is set, process it into routeLines for map display
   async function handleRouteFound(data) {
+    if (!data) {
+      setRouteResult(null);
+      setRouteSegments([]);
+      setRouteStationIds(new Set());
+      setShowStations(false);
+      setSelectedRouteIdx(0);
+      return;
+    }
     setShowHeatmap(false);   // whenever a route is found, make sure heatmap is OFF
     setRouteResult(data);
     setSelectedRouteIdx(0)
@@ -1092,9 +1101,12 @@ const loadPredictions = async () => {
                   <Marker
                     position={[startStation.stationLatitude, startStation.stationLongitude]}
                     icon={startIsInterchange ? startInterchangeIcon : startIcon}
-                    zIndexOffset={1000}
+                    zIndexOffset={2200}
                     eventHandlers={{ click: () => handleStationClick(startStation) }}
                   >
+                    <Tooltip direction="top" offset={[0, -20]} opacity={0.95} sticky>
+                      {startStation.stationName}
+                    </Tooltip>
                     <Popup>
                       <div className="popupTimeline">
                         <div className="popupTitle">Start</div>
@@ -1118,9 +1130,12 @@ const loadPredictions = async () => {
                   <Marker
                     position={[endStation.stationLatitude, endStation.stationLongitude]}
                     icon={endIsInterchange ? endInterchangeIcon : endIcon}
-                    zIndexOffset={1000}
+                    zIndexOffset={2200}
                     eventHandlers={{ click: () => handleStationClick(endStation) }}
                   >
+                    <Tooltip direction="top" offset={[0, -20]} opacity={0.95} sticky>
+                      {endStation.stationName}
+                    </Tooltip>
                     <Popup>
                       <div className="popupTimeline">
                         <div className="popupTitle">Destination</div>
@@ -1150,9 +1165,12 @@ const loadPredictions = async () => {
                         key={station.stationID + "-interchange"}
                         position={[station.stationLatitude, station.stationLongitude]}
                         icon={interchangeIcon}
-                        zIndexOffset={900}
+                        zIndexOffset={2100}
                         eventHandlers={{ click: () => handleStationClick(station) }}
                       >
+                        <Tooltip direction="top" offset={[0, -20]} opacity={0.95} sticky>
+                          {station.stationName}
+                        </Tooltip>
                         <Popup>
                           <div className="popupTimeline">
                             <div className="popupStationName">{station.stationName}</div>
@@ -1180,8 +1198,12 @@ const loadPredictions = async () => {
                       <Marker
                         key={station.stationID}
                         position={[station.stationLatitude, station.stationLongitude]}
+                        zIndexOffset={2000}
                         eventHandlers={{ click: () => handleStationClick(station) }}
                       >
+                        <Tooltip direction="top" offset={[0, -20]} opacity={0.95} sticky>
+                          {station.stationName}
+                        </Tooltip>
                         <Popup>
                           <div className="popupTimeline">
                             <div className="popupStationName">
@@ -1207,9 +1229,12 @@ const loadPredictions = async () => {
                         Number(selectedStation.stationLatitude),
                         Number(selectedStation.stationLongitude),
                       ]}
-                      zIndexOffset={1400} // make nearest station “float” above others
+                      zIndexOffset={2000} // make nearest station “float” above others
                       eventHandlers={{ click: () => handleStationClick(selectedStation) }}
                     >
+                      <Tooltip direction="top" offset={[0, -20]} opacity={0.95} sticky>
+                        {selectedStation.stationName}
+                      </Tooltip>
                       <Popup>
                         <div className="popupTimeline">
                           <div className="popupStationName">
@@ -1241,6 +1266,15 @@ const loadPredictions = async () => {
                           click: () => handleHighlightAttraction(a),
                         }}
                       >
+                        <Tooltip
+                          direction="top"
+                          offset={[0, -16]}
+                          opacity={0.95}
+                          permanent={false}
+                          sticky
+                        >
+                          {a.atrname}
+                        </Tooltip>
                         <Popup>
                           <div className="popupTimeline">
                             <div className="popupStationName">{a.atrname}</div>

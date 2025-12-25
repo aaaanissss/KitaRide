@@ -790,11 +790,20 @@ router.get("/stations/:stationID/attractions", async (req, res) => {
 });
 
 // CREATE a new edit/delete request for an attraction
-router.post("/attractions/requests", requireAuth, async (req, res) => {
+router.post("/attractions/requests", requireAuth, upload.single("photo"), async (req, res) => {
   try {
     const userId = req.user.userId;
 
-    const { type, data } = req.body || {};
+    let payload = req.body || {};
+    if (payload.data) {
+      try {
+        payload = JSON.parse(payload.data);
+      } catch (parseErr) {
+        return res.status(400).json({ message: "Invalid request payload JSON." });
+      }
+    }
+
+    const { type, data } = payload || {};
     const requestTypeRaw = (type || "").toLowerCase();  // e.g. "EDIT" -> "edit"
 
     if (!["edit", "delete"].includes(requestTypeRaw)) {
@@ -813,6 +822,7 @@ router.post("/attractions/requests", requireAuth, async (req, res) => {
     const stationId = data.stationID || null;      // optional, but nice for indexing
     const reason    = data.reason || null;         // for delete / general
     const changes   = data.requestedChanges || null; // for edit (we'll hook this later)
+    const coverImageUrl = req.file ? req.file.path : null;
 
     // Optional: snapshot current attraction row for admin context
     let existingSnapshot = null;
@@ -871,7 +881,14 @@ router.post("/attractions/requests", requireAuth, async (req, res) => {
       userId,
       requestTypeRaw,
       existingSnapshot ? JSON.stringify(existingSnapshot) : null,
-      changes ? JSON.stringify(changes) : null,
+      changes
+        ? JSON.stringify({
+            ...changes,
+            ...(coverImageUrl ? { coverimageurl: coverImageUrl } : {}),
+          })
+        : coverImageUrl
+          ? JSON.stringify({ coverimageurl: coverImageUrl })
+          : null,
       reason,
     ];
 
@@ -1238,26 +1255,27 @@ const ADMIN_UPDATE_ATTR_SQL = `
     atraddress     = COALESCE($3, atraddress),
     atrmaplocation = COALESCE($4, atrmaplocation),
     atrwebsite     = COALESCE($5, atrwebsite),
-    openinghours   = COALESCE($6, openinghours),
+    coverimageurl  = COALESCE($6, coverimageurl),
+    openinghours   = COALESCE($7, openinghours),
 
     -- status change (varchar)
-    status         = COALESCE($7::varchar, status),
+    status         = COALESCE($8::varchar, status),
 
     -- auto toggle isverified
     isverified     = CASE 
-                       WHEN $7::varchar  = 'approved' THEN TRUE
-                       WHEN $7::varchar  = 'rejected' THEN FALSE
+                       WHEN $8::varchar  = 'approved' THEN TRUE
+                       WHEN $8::varchar  = 'rejected' THEN FALSE
                        ELSE isverified
                      END,
 
     -- admin remark (text)
-    admin_remark   = COALESCE($8::text, admin_remark),
+    admin_remark   = COALESCE($9::text, admin_remark),
 
     -- reviewer metadata
-    reviewed_by    = CASE WHEN $7 IS NOT NULL THEN $9 ELSE reviewed_by END,
-    reviewed_at    = CASE WHEN $7 IS NOT NULL THEN NOW() ELSE reviewed_at END
+    reviewed_by    = CASE WHEN $8 IS NOT NULL THEN $10 ELSE reviewed_by END,
+    reviewed_at    = CASE WHEN $8 IS NOT NULL THEN NOW() ELSE reviewed_at END
 
-  WHERE atrid = $10
+  WHERE atrid = $11
   RETURNING *;
 `;
 
@@ -1272,6 +1290,7 @@ async function updateAttractionAdmin(atrId, fields, reviewerId) {
     atrAddress = null,
     atrMapLocation = null,
     atrWebsite = null,
+    coverImageUrl = null,
     openingHours = null,
     status = null,
     adminRemark = null
@@ -1283,6 +1302,7 @@ async function updateAttractionAdmin(atrId, fields, reviewerId) {
     atrAddress,
     atrMapLocation,
     atrWebsite,
+    coverImageUrl,
     openingHours,
     status,
     adminRemark,
@@ -1408,6 +1428,9 @@ router.get('/admin/attractions', requireAuth, requireAdmin, async (req, res) => 
         -- station (first linked station)
         s.stationid,
         s.stationname,
+        ast.distance,
+        ast.traveltimeminutes,
+        ast.commuteoption,
 
         -- reviews overview
         COALESCE(AVG(r.rating), 0) AS avg_rating,
@@ -1434,7 +1457,10 @@ router.get('/admin/attractions', requireAuth, requireAdmin, async (req, res) => 
         a.atrid,
         cu.userid, cu.username,
         ru.userid, ru.username,
-        s.stationid, s.stationname
+        s.stationid, s.stationname,
+        ast.distance,
+        ast.traveltimeminutes,
+        ast.commuteoption
       ORDER BY a.created_at DESC;
     `;
 
@@ -1595,6 +1621,7 @@ router.post(
               atrAddress:     changes.atraddress     ?? null,
               atrMapLocation: changes.atrmaplocation ?? null,
               atrWebsite:     changes.atrwebsite     ?? null,
+              coverImageUrl:  changes.coverimageurl  ?? null,
               openingHours:   changes.openinghours   ?? null,
               status:         "approved", // or keep existing
               adminRemark:    adminRemark ?? null,

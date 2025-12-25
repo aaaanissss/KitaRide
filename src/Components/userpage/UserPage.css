@@ -1346,16 +1346,18 @@
 }
 
 .attraction-marker-wrapper--active .attraction-marker {
-  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.25), 0 10px 20px rgba(15, 23, 42, 0.3);
+  box-shadow:
+    0 0 0 5px rgba(14, 165, 233, 0.28),
+    0 14px 28px rgba(15, 23, 42, 0.32);
 }
 
 .attraction-marker {
-  width: 38px;
-  height: 38px;
-  border-radius: 16px;
+  width: 44px;
+  height: 44px;
+  border-radius: 18px;
   background: #ffffff;
-  border: 1px solid rgba(15, 23, 42, 0.12);
-  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.25);
+  border: 2px solid rgba(15, 23, 42, 0.16);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.28);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1366,29 +1368,31 @@
   content: "";
   position: absolute;
   left: 50%;
-  bottom: -11px;
+  bottom: -12px;
   transform: translateX(-50%);
   width: 0;
   height: 0;
-  border: 7px solid transparent;
-  border-top-color: rgba(15, 23, 42, 0.14);
+  border: 8px solid transparent;
+  border-top-color: rgba(15, 23, 42, 0.2);
 }
 
 .attraction-marker__ring {
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   border-radius: 999px;
   background: #ffffff;
-  border: 2px solid var(--marker-accent, #6b7280);
+  border: 3px solid var(--marker-accent, #6b7280);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.9);
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.9),
+    0 6px 12px rgba(15, 23, 42, 0.15);
 }
 
 .attraction-marker__icon-img {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   object-fit: contain;
   display: block;
 }
