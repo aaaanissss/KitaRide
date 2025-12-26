@@ -281,7 +281,7 @@ router.post(
         });
       }
 
-      if (!name) {
+      if (!existingAtrId && !name) {
         return res.status(400).json({ ok: false, error: "Name is required" });
       }
 
@@ -387,14 +387,15 @@ router.post(
 
       const linkSql = `
         INSERT INTO attraction_station
-          (stationid, atrid, distance, traveltimeminutes, commuteoption)
+          (stationid, atrid, distance, traveltimeminutes, commuteoption, created_by)
         VALUES
-          ($1, $2, $3, $4, $5)
+          ($1, $2, $3, $4, $5, $6)
         ON CONFLICT (stationid, atrid)
-        DO UPDATE SET
+          DO UPDATE SET
           distance = EXCLUDED.distance,
           traveltimeminutes = EXCLUDED.traveltimeminutes,
-          commuteoption = EXCLUDED.commuteoption
+          commuteoption = EXCLUDED.commuteoption,
+          updated_at = NOW()
       `;
 
       await query(linkSql, [
@@ -403,6 +404,7 @@ router.post(
         distanceVal,
         travelTimeVal,
         commuteOption || null,
+        userId,
       ]);
 
       res.status(201).json({ ok: true, attraction: attractionRow, atrid: atrIdToUse });
@@ -905,15 +907,20 @@ router.post("/attractions/requests", requireAuth, upload.single("photo"), async 
 });
 
 // --- USER PROFILE: attractions submitted by this user ---
-router.get('/users/:userId/attractions', async (req, res) => {
-  try {
-    const userId = Number(req.params.userId);
-    if (!userId) {
-      return res.status(400).json({ message: "Invalid user id" });
-    }
+router.get('/users/:userId/attractions', requireAuth, async (req, res) => {
+    try {
+      const userId = Number(req.params.userId);
+      if (!userId) {
+        return res.status(400).json({ message: "Invalid user id" });
+      }
+
+      // only owner or admin
+      if (req.user.userId !== userId && req.user.role !== "admin") {
+        return res.status(403).json({ message: "Forbidden" });
+      }
 
     const sql = `
-      SELECT 
+      SELECT DISTINCT ON (a.atrid, s.stationid)
         a.atrid,
         a.atrname,
         a.atrcategory,
@@ -926,20 +933,33 @@ router.get('/users/:userId/attractions', async (req, res) => {
         a.admin_remark,
         a.reviewed_at,
         a.created_at,
+
         s.stationname,
         s.stationid,
         ast.distance,
         ast.traveltimeminutes,
-        ast.commuteoption
+        ast.commuteoption,
+
+        CASE
+          WHEN a.userid = $1 THEN 'created'
+          ELSE 'linked'
+        END AS submission_type,
+
+        ast.created_at AS link_created_at,
+        ast.updated_at AS link_updated_at
+
       FROM attraction a
       LEFT JOIN attraction_station ast ON ast.atrid = a.atrid
       LEFT JOIN station s ON s.stationid = ast.stationid
+
       WHERE a.userid = $1
-      ORDER BY a.created_at DESC;
+        OR ast.created_by = $1
+
+      ORDER BY a.atrid, s.stationid, a.created_at DESC, ast.created_at DESC;
     `;
 
-    const { rows } = await query(sql, [userId]);  // ✅
-    res.json({ attractions: rows });              // ✅
+    const { rows } = await query(sql, [userId]);  
+    res.json({ attractions: rows });              
 
   } catch (err) {
     console.error("Error loading user attractions:", err);
