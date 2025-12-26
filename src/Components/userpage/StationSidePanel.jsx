@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+// src/components/StationSidePanel.jsx
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { FaPlus, FaEllipsisV } from "react-icons/fa";
 import RidershipNext7Chart from "./RidershipNext7Chart.jsx";
 import ExplorePanel from "./ExplorePanel.jsx";
@@ -18,17 +19,16 @@ export default function StationSidePanel({
   allStations,
   onAttractionSearchResults,
   onToggleAttractionMarkers,
-  onFitAttractions, 
-  onHighlightAttraction, 
+  onFitAttractions,
+  onHighlightAttraction,
   selectedAttractionId,
   attractionNearbyStations = [],
 }) {
-  // attractions for the currently selected station
+  // -------------------- STATE --------------------
   const [stationAttractions, setStationAttractions] = useState([]);
   const [isLoadingAttractions, setIsLoadingAttractions] = useState(false);
   const [attractionsError, setAttractionsError] = useState(null);
 
-  // add-attraction modal + form
   const [showAddAttractionForm, setShowAddAttractionForm] = useState(false);
   const [addAttractionForm, setAddAttractionForm] = useState({
     name: "",
@@ -45,43 +45,25 @@ export default function StationSidePanel({
   });
   const [photoFile, setPhotoFile] = useState(null);
   const [photoPreview, setPhotoPreview] = useState(null);
-  
-  // Smart autofill states
+
+  // Smart autofill
   const [searchResults, setSearchResults] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [searchTimeout, setSearchTimeout] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
   const [selectedSuggestion, setSelectedSuggestion] = useState(null);
 
-  // Missing-fields prompt (for NEW attraction only)
+  // Missing prompt (recommended fields)
   const [showMissingPrompt, setShowMissingPrompt] = useState(false);
   const [missingFields, setMissingFields] = useState([]);
   const [skipMissingPromptOnce, setSkipMissingPromptOnce] = useState(false);
 
-  // per-attraction menu (edit / delete request)
+  // menus / request modals
+  const [menuOpenAtrId, setMenuOpenAtrId] = useState(null);
   const [activeAttractionForAction, setActiveAttractionForAction] = useState(null);
 
-  // review form state
-  const [reviewForm, setReviewForm] = useState({
-    atrid: null,
-    rating: 5,
-    comment: "",
-    loading: false,
-    error: "",
-  });
-
-  // list of reviews for one attraction
-  const [reviewsState, setReviewsState] = useState({
-    atrid: null,
-    loading: false,
-    error: "",
-    items: [],
-    expanded: false,
-  });
-
-  // three-dot menu + request modals
   const [showEditRequestModal, setShowEditRequestModal] = useState(false);
   const [showDeleteRequestModal, setShowDeleteRequestModal] = useState(false);
+
   const [editPhotoFile, setEditPhotoFile] = useState(null);
   const [editPhotoPreview, setEditPhotoPreview] = useState(null);
 
@@ -101,11 +83,73 @@ export default function StationSidePanel({
 
   const [deleteReason, setDeleteReason] = useState("");
 
-  const [menuOpenAtrId, setMenuOpenAtrId] = useState(null);
-  
+  // review form
+  const [reviewForm, setReviewForm] = useState({
+    atrid: null,
+    rating: 5,
+    comment: "",
+    loading: false,
+    error: "",
+  });
 
-  // ---------- helpers ----------
+  // reviews list
+  const [reviewsState, setReviewsState] = useState({
+    atrid: null,
+    loading: false,
+    error: "",
+    items: [],
+    expanded: false,
+  });
 
+  // debounce timer
+  const nameSearchTimerRef = useRef(null);
+
+  // -------------------- CONSTANTS --------------------
+  const ATTRACTION_CATEGORIES = useMemo(
+    () => [
+      "Mosque",
+      "Landmark",
+      "Shopping Mall",
+      "Restaurants & Cafe",
+      "Themepark",
+      "Stadium",
+      "Park",
+    ],
+    []
+  );
+
+  // -------------------- DERIVED UI FLAGS (IMPORTANT FIX) --------------------
+  // ✅ these must be at component scope (NOT inside submit handler)
+  const isExisting = Boolean(selectedSuggestion);
+  const existingStatus = String(selectedSuggestion?.status || "").toLowerCase();
+  const existingVerified = Boolean(selectedSuggestion?.isverified);
+  const existingIsApproved = existingVerified || existingStatus === "approved";
+
+  // if user is adding an existing attraction to THIS station, detect if already linked
+  const isAlreadyLinkedToThisStation = useMemo(() => {
+    if (!selectedSuggestion?.atrid) return false;
+    return stationAttractions.some((a) => String(a.atrid) === String(selectedSuggestion.atrid));
+  }, [stationAttractions, selectedSuggestion]);
+
+  const submitLabel = !isExisting
+    ? "Send for Approval"
+    : isAlreadyLinkedToThisStation
+    ? "Already added"
+    : existingIsApproved
+    ? "Add to this station"
+    : "Send for Approval";
+
+  const submitHint = !isExisting
+    ? "New attraction submissions require admin approval."
+    : isAlreadyLinkedToThisStation
+    ? "This attraction is already linked to this station."
+    : existingIsApproved
+    ? "This attraction is already approved. It will be added to this station immediately."
+    : "This attraction exists but is not approved yet. It will be queued for admin review.";
+
+  const disableSubmit = isExisting && isAlreadyLinkedToThisStation;
+
+  // -------------------- HELPERS --------------------
   function getMissingImportantFields(form) {
     const missing = [];
 
@@ -115,7 +159,6 @@ export default function StationSidePanel({
     const lat = String(form.atrLatitude ?? "").trim();
     const lng = String(form.atrLongitude ?? "").trim();
 
-    // required
     if (!name) missing.push({ label: "Name", required: true });
     if (!category) missing.push({ label: "Category", required: true });
 
@@ -129,13 +172,11 @@ export default function StationSidePanel({
       });
     }
 
-    // required
-    if (!form.address?.trim())
-      missing.push({ label: "Address", required: true });
+    if (!form.address?.trim()) missing.push({ label: "Address", required: true });
 
-    // recommended (prompt only)
     if (!form.openingHours?.trim())
       missing.push({ label: "Opening hours", required: false });
+
     return missing;
   }
 
@@ -146,63 +187,19 @@ export default function StationSidePanel({
   const handlePhotoChange = (e) => {
     const file = e.target.files?.[0] || null;
     setPhotoFile(file);
-    if (file) {
-      setPhotoPreview(URL.createObjectURL(file));
-    } else {
-      setPhotoPreview(null);
-    }
+    setPhotoPreview(file ? URL.createObjectURL(file) : null);
   };
 
-  // Smart search functionality
-  const searchSimilarAttractions = async (searchTerm) => {
-    const q = searchTerm?.trim() || "";
-
-    if (q.length < 2) {
-      setSearchResults([]);
-      setShowSuggestions(false);
-      return;
-    }
-
-    try {
-      setIsSearching(true);
-
-      const res = await fetch(`/api/attractions/similar?q=${encodeURIComponent(q)}`);
-
-      if (!res.ok) {
-        setSearchResults([]);
-        setShowSuggestions(false);
-        return;
-      }
-
-      const data = await res.json();
-      const list = data.attractions || [];
-
-      setSearchResults(list);
-      setShowSuggestions(list.length > 0);   // ✅ IMPORTANT
-    } catch (err) {
-      console.error("Error searching similar attractions:", err);
-      setSearchResults([]);
-      setShowSuggestions(false);
-    } finally {
-      setIsSearching(false);
-    }
-  };
-
-  // Parse Google Maps URL for coordinates
   const parseGoogleMapsUrl = (url) => {
-    if (!url || typeof url !== 'string') return null;
-    
+    if (!url || typeof url !== "string") return null;
     try {
-      // Match patterns like: @3.1529,101.7094 or q=place@lat,lng
       const coordMatch = url.match(/@(-?\d+\.?\d*),(-?\d+\.?\d*)/);
       if (coordMatch) {
         return {
           latitude: parseFloat(coordMatch[1]),
-          longitude: parseFloat(coordMatch[2])
+          longitude: parseFloat(coordMatch[2]),
         };
       }
-      
-      // Extract place name from q parameter
       const placeMatch = url.match(/[?&]q=([^&]+)/);
       if (placeMatch) {
         return { placeName: decodeURIComponent(placeMatch[1]) };
@@ -212,86 +209,6 @@ export default function StationSidePanel({
     }
     return null;
   };
-
-  // Auto-fill form from selected suggestion
-  const autofillFromSuggestion = (attraction) => {
-    const autofilledForm = {
-      name: attraction.atrname || "",
-      category: attraction.atrcategory || "",
-      address: attraction.atraddress || "",
-      website: attraction.atrwebsite || "",
-      mapLocation: attraction.atrmaplocation || "",
-      openingHours: attraction.openinghours || "",
-      atrLatitude: attraction.atrlatitude?.toString() || "",
-      atrLongitude: attraction.atrlongitude?.toString() || "",
-      // Leave blank for user to fill:
-      distanceMeters: "",
-      travelTimeMinutes: "",
-      commuteOption: "",
-    };
-    
-    setAddAttractionForm(autofilledForm);
-    setPhotoFile(null);
-    setPhotoPreview(attraction.coverimageurl || null);
-    setShowSuggestions(false);
-    setSearchResults([]);
-    setSelectedSuggestion(attraction);
-    
-    // Set photo preview if existing attraction has image
-    if (attraction.coverimageurl) {
-      setPhotoPreview(attraction.coverimageurl);
-    }
-  };
-
-  // Handle name input with debounced search
-  const handleNameChange = (e) => {
-    const value = e.target.value;
-    // update name
-    setAddAttractionForm((prev) => ({ ...prev, name: value }));
-    // if user types manually, stop treating it as an existing attraction
-    setSelectedSuggestion(null);
-    // Clear previous timeout
-    if (searchTimeout) clearTimeout(searchTimeout);
-    if (value.trim().length >= 2) setShowSuggestions(true);    // Debounced search
-    const newTimeout = setTimeout(() => {
-      searchSimilarAttractions(value);
-    }, 300);
-    setSearchTimeout(newTimeout);
-  };
-
-  // Handle map location input (check for Google Maps URL)
-  const handleMapLocationChange = (e) => {
-    const value = e.target.value;
-    setAddAttractionForm({ ...addAttractionForm, mapLocation: value });
-    
-    // Auto-parse coordinates if it's a Google Maps URL
-    const parsed = parseGoogleMapsUrl(value);
-    if (parsed) {
-      if (parsed.latitude && parsed.longitude) {
-        setAddAttractionForm(prev => ({
-          ...prev,
-          atrLatitude: parsed.latitude.toString(),
-          atrLongitude: parsed.longitude.toString()
-        }));
-      } else if (parsed.placeName && !addAttractionForm.name) {
-        // Use place name as attraction name if name is empty
-        setAddAttractionForm(prev => ({
-          ...prev,
-          name: parsed.placeName
-        }));
-      }
-    }
-  };
-
-  const ATTRACTION_CATEGORIES = [
-    "Mosque",
-    "Landmark",
-    "Shopping Mall",
-    "Restaurants & Cafe",
-    "Themepark",
-    "Stadium",
-    "Park",
-  ];
 
   const resetAddAttractionForm = () => {
     setAddAttractionForm({
@@ -313,6 +230,9 @@ export default function StationSidePanel({
     setShowSuggestions(false);
     setSelectedSuggestion(null);
     setIsSearching(false);
+    setShowMissingPrompt(false);
+    setMissingFields([]);
+    setSkipMissingPromptOnce(false);
   };
 
   const closeAddAttractionForm = () => {
@@ -324,14 +244,236 @@ export default function StationSidePanel({
     setShowAddAttractionForm(true);
   };
 
-  const openAttractionMenu = (attraction) => {
-    setMenuOpenAtrId(attraction.atrid);
+  const openAttractionMenu = (attraction) => setMenuOpenAtrId(attraction.atrid);
+  const closeAttractionMenu = () => setMenuOpenAtrId(null);
+
+  // -------------------- API CALLS --------------------
+  async function loadAttractionsForStation(stationID) {
+    try {
+      setIsLoadingAttractions(true);
+      setAttractionsError(null);
+      setStationAttractions([]);
+
+      const res = await fetch(`/api/stations/${stationID}/attractions`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      const data = await res.json();
+      setStationAttractions(data.attractions || []);
+    } catch (err) {
+      console.error("Failed to load attractions for station", stationID, err);
+      setAttractionsError("Failed to load nearby attractions.");
+    } finally {
+      setIsLoadingAttractions(false);
+    }
+  }
+
+  useEffect(() => {
+    if (selectedStation?.stationID) {
+      loadAttractionsForStation(selectedStation.stationID);
+    } else {
+      setStationAttractions([]);
+    }
+  }, [selectedStation?.stationID]);
+
+  // clear timer on unmount
+  useEffect(() => {
+    return () => {
+      if (nameSearchTimerRef.current) clearTimeout(nameSearchTimerRef.current);
+    };
+  }, []);
+
+  const searchSimilarAttractions = async (searchTerm) => {
+    const q = searchTerm?.trim() || "";
+    if (q.length < 2) {
+      setSearchResults([]);
+      setShowSuggestions(false);
+      return;
+    }
+
+    try {
+      setIsSearching(true);
+      const res = await fetch(`/api/attractions/similar?q=${encodeURIComponent(q)}`);
+      if (!res.ok) {
+        setSearchResults([]);
+        setShowSuggestions(false);
+        return;
+      }
+      const data = await res.json();
+      const list = data.attractions || [];
+      setSearchResults(list);
+      setShowSuggestions(list.length > 0);
+    } catch (err) {
+      console.error("Error searching similar attractions:", err);
+      setSearchResults([]);
+      setShowSuggestions(false);
+    } finally {
+      setIsSearching(false);
+    }
   };
 
-  const closeAttractionMenu = () => {
-    setMenuOpenAtrId(null);
+  const autofillFromSuggestion = (attraction) => {
+    setAddAttractionForm({
+      name: attraction.atrname || "",
+      category: attraction.atrcategory || "",
+      address: attraction.atraddress || "",
+      website: attraction.atrwebsite || "",
+      mapLocation: attraction.atrmaplocation || "",
+      openingHours: attraction.openinghours || "",
+      atrLatitude: attraction.atrlatitude?.toString() || "",
+      atrLongitude: attraction.atrlongitude?.toString() || "",
+      distanceMeters: "",
+      travelTimeMinutes: "",
+      commuteOption: "",
+    });
+
+    setPhotoFile(null);
+    setPhotoPreview(attraction.coverimageurl || null);
+
+    setSelectedSuggestion(attraction);
+    setShowSuggestions(false);
+    setSearchResults([]);
+    setShowMissingPrompt(false);
+    setMissingFields([]);
   };
 
+  const handleNameChange = (e) => {
+    const value = e.target.value;
+    setAddAttractionForm((prev) => ({ ...prev, name: value }));
+
+    // user typed -> it's no longer guaranteed to be existing
+    setSelectedSuggestion(null);
+
+    // debounce
+    if (nameSearchTimerRef.current) clearTimeout(nameSearchTimerRef.current);
+    if (value.trim().length >= 2) setShowSuggestions(true);
+
+    nameSearchTimerRef.current = setTimeout(() => {
+      searchSimilarAttractions(value);
+    }, 300);
+  };
+
+  const handleMapLocationChange = (e) => {
+    const value = e.target.value;
+    setAddAttractionForm((prev) => ({ ...prev, mapLocation: value }));
+
+    const parsed = parseGoogleMapsUrl(value);
+    if (!parsed) return;
+
+    if (parsed.latitude != null && parsed.longitude != null) {
+      setAddAttractionForm((prev) => ({
+        ...prev,
+        atrLatitude: parsed.latitude.toString(),
+        atrLongitude: parsed.longitude.toString(),
+      }));
+    } else if (parsed.placeName && !addAttractionForm.name) {
+      setAddAttractionForm((prev) => ({ ...prev, name: parsed.placeName }));
+    }
+  };
+
+  // keep photo locked for existing attraction
+  useEffect(() => {
+    if (selectedSuggestion) {
+      setPhotoFile(null);
+      setPhotoPreview(selectedSuggestion.coverimageurl || null);
+    }
+  }, [selectedSuggestion]);
+
+  // -------------------- SUBMIT: ADD ATTRACTION --------------------
+  const handleSubmitAddAttraction = async (e) => {
+    e.preventDefault();
+    if (!selectedStation) return;
+
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      alert("Please log in to suggest an attraction.");
+      return;
+    }
+
+    // if already linked, block and explain
+    if (disableSubmit) {
+      alert("ℹ️ This attraction is already linked to this station.");
+      return;
+    }
+
+    const isAutofill = Boolean(selectedSuggestion);
+    const isNewAttraction = !isAutofill;
+
+    // missing-field prompt only for NEW attraction
+    if (isNewAttraction && !skipMissingPromptOnce) {
+      const missing = getMissingImportantFields(addAttractionForm);
+
+      const requiredMissing = missing.filter((m) => m.required);
+      if (requiredMissing.length > 0) {
+        alert("❌ Please fill required fields:\n- " + requiredMissing.map((m) => m.label).join("\n- "));
+        return;
+      }
+
+      const recommendedMissing = missing.filter((m) => !m.required);
+      if (recommendedMissing.length > 0) {
+        setMissingFields(recommendedMissing);
+        setShowMissingPrompt(true);
+        return;
+      }
+    }
+
+    if (skipMissingPromptOnce) setSkipMissingPromptOnce(false);
+
+    const name = addAttractionForm.name?.trim();
+    if (!name) {
+      alert("❌ Please enter an attraction name before submitting.");
+      return;
+    }
+
+    try {
+      const payload = {
+        stationID: selectedStation.stationID,
+        name,
+        category: addAttractionForm.category.trim(),
+        address: addAttractionForm.address.trim(),
+        website: addAttractionForm.website.trim(),
+        mapLocation: addAttractionForm.mapLocation.trim(),
+        openingHours: addAttractionForm.openingHours.trim(),
+        distanceMeters: addAttractionForm.distanceMeters.trim(),
+        travelTimeMinutes: addAttractionForm.travelTimeMinutes.trim(),
+        commuteOption: addAttractionForm.commuteOption.trim(),
+        atrLatitude: addAttractionForm.atrLatitude.trim(),
+        atrLongitude: addAttractionForm.atrLongitude.trim(),
+        existingAtrId: selectedSuggestion?.atrid ?? null,
+      };
+
+      const formData = new FormData();
+      formData.append("data", JSON.stringify(payload));
+      if (photoFile && !selectedSuggestion) {
+        formData.append("photo", photoFile);
+      }
+
+      const res = await fetch(`/api/stations/${selectedStation.stationID}/attractions`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const errBody = await res.json().catch(() => ({}));
+        throw new Error(errBody.error || errBody.message || `HTTP ${res.status}`);
+      }
+
+      // ✅ Correct messaging (your requirement)
+      if (!selectedSuggestion) {
+        alert("✅ Submitted! Your attraction has been sent for admin approval.");
+      } else {
+        alert("✅ Added! This attraction is already approved and is now linked to this station.");
+      }
+
+      closeAddAttractionForm();
+      await loadAttractionsForStation(selectedStation.stationID);
+    } catch (err) {
+      console.error("Failed to submit attraction suggestion", err);
+      alert(err.message || "❌ Failed to send suggestion. Please try again later.");
+    }
+  };
+
+  // -------------------- REQUEST MODALS: EDIT/DELETE --------------------
   const openEditRequestModal = (attraction) => {
     setActiveAttractionForAction(attraction);
 
@@ -352,11 +494,12 @@ export default function StationSidePanel({
     setEditPhotoFile(null);
     setEditPhotoPreview(attraction.coverimageurl || null);
     setShowEditRequestModal(true);
-    setMenuOpenAtrId(null); // close menu only
+    setMenuOpenAtrId(null);
   };
 
   const closeEditRequestModal = () => {
     setShowEditRequestModal(false);
+    setActiveAttractionForAction(null);
     setEditRequestForm({
       name: "",
       category: "",
@@ -378,156 +521,15 @@ export default function StationSidePanel({
     setActiveAttractionForAction(attraction);
     setDeleteReason("");
     setShowDeleteRequestModal(true);
-    setMenuOpenAtrId(null); // close menu only
+    setMenuOpenAtrId(null);
   };
 
   const closeDeleteRequestModal = () => {
     setShowDeleteRequestModal(false);
+    setActiveAttractionForAction(null);
     setDeleteReason("");
   };
 
-  const openReviewForm = (attraction) => {
-    setReviewForm({
-      atrid: attraction.atrid,
-      rating: 5,
-      comment: "",
-      loading: false,
-      error: "",
-    });
-  };
-
-  // ---------- API calls (attractions & reviews) ----------
-
-  async function loadAttractionsForStation(stationID) {
-    try {
-      setIsLoadingAttractions(true);
-      setAttractionsError(null);
-      setStationAttractions([]);
-
-      const res = await fetch(`/api/stations/${stationID}/attractions`);
-
-      if (!res.ok) {
-        throw new Error(`HTTP ${res.status}`);
-      }
-
-      const data = await res.json();
-      setStationAttractions(data.attractions || []);
-    } catch (err) {
-      console.error("Failed to load attractions for station", stationID, err);
-      setAttractionsError("Failed to load nearby attractions.");
-    } finally {
-      setIsLoadingAttractions(false);
-    }
-  }
-
-  // whenever selectedStation changes, load its attractions
-  useEffect(() => {
-    if (selectedStation?.stationID) {
-      loadAttractionsForStation(selectedStation.stationID);
-    } else {
-      setStationAttractions([]);
-    }
-  }, [selectedStation]);
-
-  // whenever selectedSuggestion changes, lock photo upload + show shared photo
-  useEffect(() => {
-    if (selectedSuggestion) {
-      setPhotoFile(null);
-      setPhotoPreview(selectedSuggestion.coverimageurl || null);
-    }
-  }, [selectedSuggestion]);
-
-  const handleSubmitAddAttraction = async (e) => {
-    e.preventDefault();
-    if (!selectedStation) return;
-
-    const token = localStorage.getItem("authToken");
-    if (!token) {
-      alert("Please log in to suggest an attraction.");
-      return;
-    }
-
-    const isAutofill = !!selectedSuggestion; // existing attraction selected
-    const isNewAttraction = !isAutofill;
-
-    // ---- NEW: prompt missing important fields ONLY for new attractions ----
-    if (isNewAttraction && !skipMissingPromptOnce) {
-      const missing = getMissingImportantFields(addAttractionForm);
-
-      const requiredMissing = missing.filter((m) => m.required);
-      if (requiredMissing.length > 0) {
-        alert(
-          "❌ Please fill required fields:\n- " +
-            requiredMissing.map((m) => m.label).join("\n- ")
-        );
-        return;
-      }
-
-      const recommendedMissing = missing.filter((m) => !m.required);
-      if (recommendedMissing.length > 0) {
-        setMissingFields(recommendedMissing);
-        setShowMissingPrompt(true);
-        return;
-      }
-    }
-
-    // reset skip flag after using it once
-    if (skipMissingPromptOnce) setSkipMissingPromptOnce(false);
-
-    // Validate required fields before submission (keep your original name check)
-    const name = addAttractionForm.name?.trim();
-    if (!name) {
-      alert("❌ Please enter an attraction name before submitting.");
-      return;
-    }
-
-    try {
-      const payload = {
-        stationID: selectedStation.stationID,
-        name: name,
-        category: addAttractionForm.category.trim(),
-        address: addAttractionForm.address.trim(),
-        website: addAttractionForm.website.trim(),
-        mapLocation: addAttractionForm.mapLocation.trim(),
-        openingHours: addAttractionForm.openingHours.trim(),
-        distanceMeters: addAttractionForm.distanceMeters.trim(),
-        travelTimeMinutes: addAttractionForm.travelTimeMinutes.trim(),
-        commuteOption: addAttractionForm.commuteOption.trim(),
-        atrLatitude: addAttractionForm.atrLatitude.trim(),
-        atrLongitude: addAttractionForm.atrLongitude.trim(),
-        existingAtrId: selectedSuggestion?.atrid ?? null,
-      };
-
-      const formData = new FormData();
-      formData.append("data", JSON.stringify(payload));
-      if (photoFile && !selectedSuggestion) {
-        formData.append("photo", photoFile);
-      }
-
-      const res = await fetch(
-        `/api/stations/${selectedStation.stationID}/attractions`,
-        {
-          method: "POST",
-          headers: { Authorization: `Bearer ${token}` },
-          body: formData,
-        }
-      );
-
-      if (!res.ok) {
-        const errBody = await res.json().catch(() => ({}));
-        throw new Error(errBody.error || errBody.message || `HTTP ${res.status}`);
-      }
-
-      alert("✅ Your attraction suggestion has been sent for review.");
-      closeAddAttractionForm();
-      await loadAttractionsForStation(selectedStation.stationID);
-    } catch (err) {
-      console.error("Failed to submit attraction suggestion", err);
-      alert(err.message || "❌ Failed to send suggestion. Please try again later.");
-    }
-  };
-
-  // EDIT request submit
   const handleSubmitEditRequest = async (e) => {
     e.preventDefault();
     if (!selectedStation || !activeAttractionForAction) return;
@@ -538,14 +540,10 @@ export default function StationSidePanel({
       return;
     }
 
-    const distanceVal =
-      editRequestForm.distanceMeters !== "" ? Number(editRequestForm.distanceMeters) : null;
-    const travelTimeVal =
-      editRequestForm.travelTimeMinutes !== "" ? Number(editRequestForm.travelTimeMinutes) : null;
-    const latVal =
-      editRequestForm.atrLatitude !== "" ? Number(editRequestForm.atrLatitude) : null;
-    const lngVal =
-      editRequestForm.atrLongitude !== "" ? Number(editRequestForm.atrLongitude) : null;
+    const distanceVal = editRequestForm.distanceMeters !== "" ? Number(editRequestForm.distanceMeters) : null;
+    const travelTimeVal = editRequestForm.travelTimeMinutes !== "" ? Number(editRequestForm.travelTimeMinutes) : null;
+    const latVal = editRequestForm.atrLatitude !== "" ? Number(editRequestForm.atrLatitude) : null;
+    const lngVal = editRequestForm.atrLongitude !== "" ? Number(editRequestForm.atrLongitude) : null;
 
     const requestedChanges = {
       atrname: editRequestForm.name.trim() || null,
@@ -561,16 +559,12 @@ export default function StationSidePanel({
       atrlongitude: lngVal,
     };
 
-    // send a payload shape that your backend is most likely expecting
     const payload = {
       requestType: "edit",
       request_type: "edit",
-
       stationID: selectedStation.stationID,
       atrid: activeAttractionForAction.atrid,
-
       reason: null,
-
       requestedChanges,
       requested_changes: requestedChanges,
     };
@@ -582,10 +576,7 @@ export default function StationSidePanel({
         method: "POST",
         headers: useFormData
           ? { Authorization: `Bearer ${token}` }
-          : {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
+          : { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: useFormData
           ? (() => {
               const fd = new FormData();
@@ -609,8 +600,6 @@ export default function StationSidePanel({
     }
   };
 
-
-  // DELETE request submit
   const handleSubmitDeleteRequest = async (e) => {
     e.preventDefault();
     if (!selectedStation || !activeAttractionForAction) return;
@@ -624,10 +613,7 @@ export default function StationSidePanel({
     try {
       const res = await fetch("/api/attractions/requests", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({
           requestType: "delete",
           request_type: "delete",
@@ -636,7 +622,7 @@ export default function StationSidePanel({
           reason: deleteReason.trim() || null,
           requestedChanges: null,
           requested_changes: null,
-        })
+        }),
       });
 
       if (!res.ok) {
@@ -650,6 +636,17 @@ export default function StationSidePanel({
       console.error("Failed to send delete request", err);
       alert(err.message || "❌ Failed to send delete request. Please try again.");
     }
+  };
+
+  // -------------------- REVIEWS --------------------
+  const openReviewForm = (attraction) => {
+    setReviewForm({
+      atrid: attraction.atrid,
+      rating: 5,
+      comment: "",
+      loading: false,
+      error: "",
+    });
   };
 
   const handleSubmitReview = async (e) => {
@@ -667,10 +664,7 @@ export default function StationSidePanel({
 
       const res = await fetch(`/api/attractions/${reviewForm.atrid}/reviews`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({
           rating: Number(reviewForm.rating),
           review: reviewForm.comment.trim(),
@@ -706,11 +700,7 @@ export default function StationSidePanel({
   const toggleViewReviews = async (attraction) => {
     if (!attraction?.atrid) return;
 
-    if (
-      reviewsState.atrid === attraction.atrid &&
-      reviewsState.expanded &&
-      !reviewsState.loading
-    ) {
+    if (reviewsState.atrid === attraction.atrid && reviewsState.expanded && !reviewsState.loading) {
       setReviewsState((prev) => ({ ...prev, expanded: false }));
       return;
     }
@@ -729,7 +719,6 @@ export default function StationSidePanel({
         const errBody = await res.json().catch(() => ({}));
         throw new Error(errBody.message || `HTTP ${res.status}`);
       }
-
       const data = await res.json();
       setReviewsState((prev) => ({
         ...prev,
@@ -746,17 +735,14 @@ export default function StationSidePanel({
     }
   };
 
-  // ---------- render ----------
-
-  const sortedAttractions = React.useMemo(() => {
+  // -------------------- RENDER DERIVED --------------------
+  const sortedAttractions = useMemo(() => {
     if (!stationAttractions) return [];
     if (!selectedAttractionId) return stationAttractions;
 
-    // Selected first, others after
     return [...stationAttractions].sort((a, b) => {
       const aSel = a.atrid === selectedAttractionId;
       const bSel = b.atrid === selectedAttractionId;
-
       if (aSel && !bSel) return -1;
       if (!aSel && bSel) return 1;
       return 0;
@@ -766,12 +752,11 @@ export default function StationSidePanel({
   const sidePanelClass = "sidePanel" + (isOpen ? " sidePanel--open" : " sidePanel--collapsed");
 
   const lineNames = selectedStation?.lines?.map((l) => l.lineName) ?? [];
-  // if this station includes KTM, use the global KTM wording
   const isKtmStation = lineNames.some((n) => String(n).toLowerCase().includes("ktm"));
-  
+
+  // -------------------- UI --------------------
   return (
     <>
-      {/* main side panel */}
       <div className={sidePanelClass}>
         <button
           className="sidePanel-toggle"
@@ -786,18 +771,13 @@ export default function StationSidePanel({
             <>
               <div className="sidePanel-header">
                 <h2>🚆 {selectedStation.stationName}</h2>
-                <button
-                  className="sidePanel-close"
-                  onClick={onClearStation}
-                  title="Clear selection"
-                >
+                <button className="sidePanel-close" onClick={onClearStation} title="Clear selection">
                   ✕
                 </button>
               </div>
 
               <p>
-                <strong>Lines:</strong>{" "}
-                {selectedStation.lines.map((l) => l.lineName).join(" / ")}
+                <strong>Lines:</strong> {selectedStation.lines.map((l) => l.lineName).join(" / ")}
               </p>
 
               {Array.isArray(attractionNearbyStations) && attractionNearbyStations.length > 1 && (
@@ -832,14 +812,8 @@ export default function StationSidePanel({
 
               <hr className="sectionDivider" />
 
-              {/* chart section */}
               <div className="overlaySection">
-                <h4
-                  style={{
-                    marginBottom: "10px",
-                    lineHeight: 1.3,
-                  }}
-                >
+                <h4 style={{ marginBottom: "10px", lineHeight: 1.3 }}>
                   📈 Next 7 Days Ridership Prediction{" "}
                   {isKtmStation ? (
                     <>
@@ -852,26 +826,16 @@ export default function StationSidePanel({
                   ) : null}
                 </h4>
 
-                <RidershipNext7Chart
-                  predictions={next7Predictions}
-                  lineNames={lineNames}
-                />
-                <p
-                  style={{
-                    fontSize: "11px",
-                    color: "#777",
-                    marginTop: "6px",
-                    fontStyle: "italic",
-                  }}
-                >
-                  *Model trained on 2019–2024 historical ridership (data.gov.my), Malaysia holiday
-                  calendar (timeanddate.com)
+                <RidershipNext7Chart predictions={next7Predictions} lineNames={lineNames} />
+
+                <p style={{ fontSize: "11px", color: "#777", marginTop: "6px", fontStyle: "italic" }}>
+                  *Model trained on 2019–2024 historical ridership (data.gov.my), Malaysia holiday calendar
+                  (timeanddate.com)
                 </p>
               </div>
 
               <hr className="sectionDivider" />
 
-              {/* attractions section */}
               <div className="overlaySection--attractions">
                 <div className="overlaySectionHeader">
                   <h4>🎯 Nearby Attractions</h4>
@@ -886,25 +850,12 @@ export default function StationSidePanel({
                   )}
                 </div>
 
-                {isLoadingAttractions && (
-                  <p style={{ fontSize: 13, color: "#777" }}>
-                    Loading attractions…
-                  </p>
-                )}
+                {isLoadingAttractions && <p style={{ fontSize: 13, color: "#777" }}>Loading attractions…</p>}
+                {attractionsError && <p style={{ fontSize: 13, color: "crimson" }}>{attractionsError}</p>}
 
-                {attractionsError && (
-                  <p style={{ fontSize: 13, color: "crimson" }}>
-                    {attractionsError}
-                  </p>
+                {!isLoadingAttractions && !attractionsError && stationAttractions.length === 0 && (
+                  <p style={{ fontSize: 13, color: "#777" }}>No attractions have been added for this station yet.</p>
                 )}
-
-                {!isLoadingAttractions &&
-                  !attractionsError &&
-                  stationAttractions.length === 0 && (
-                    <p style={{ fontSize: 13, color: "#777" }}>
-                      No attractions have been added for this station yet.
-                    </p>
-                  )}
 
                 {!isLoadingAttractions && !attractionsError && sortedAttractions.length > 0 && (
                   <div className="attractionsList">
@@ -912,376 +863,270 @@ export default function StationSidePanel({
                       <div
                         key={a.atrid}
                         className={
-                          "attractionCard" +
-                          (a.atrid === selectedAttractionId
-                            ? " attractionCard--active"
-                            : "")
+                          "attractionCard" + (a.atrid === selectedAttractionId ? " attractionCard--active" : "")
                         }
-                        onClick={() =>
-                          onHighlightAttraction && onHighlightAttraction(a)
-                        }
+                        onClick={() => onHighlightAttraction && onHighlightAttraction(a)}
                       >
-                          {a.coverimageurl && (
-                            <div className="attractionImageWrapper">
-                              <img
-                                src={a.coverimageurl}
-                                alt={a.atrname}
-                                className="attractionImage"
-                              />
+                        {a.coverimageurl && (
+                          <div className="attractionImageWrapper">
+                            <img src={a.coverimageurl} alt={a.atrname} className="attractionImage" />
+                          </div>
+                        )}
+
+                        <div className="attractionContent">
+                          <div className="attractionHeaderRow">
+                            <h5 style={{ margin: 0 }}>{a.atrname}</h5>
+
+                            <div className="attractionHeaderActions">
+                              {a.isverified && (
+                                <span
+                                  style={{
+                                    fontSize: 11,
+                                    padding: "2px 6px",
+                                    borderRadius: "999px",
+                                    background: "#e0f7ec",
+                                    color: "#009645",
+                                    alignSelf: "flex-start",
+                                  }}
+                                >
+                                  Verified
+                                </span>
+                              )}
+
+                              <div className="attractionMenuWrapper">
+                                <button
+                                  type="button"
+                                  className="attractionMenuBtn"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    openAttractionMenu(a);
+                                  }}
+                                  title="Request edit/delete"
+                                >
+                                  <FaEllipsisV size={11} />
+                                </button>
+
+                                {menuOpenAtrId === a.atrid && (
+                                  <div className="attractionActionMenu" onClick={(e) => e.stopPropagation()}>
+                                    <button type="button" onClick={() => openEditRequestModal(a)}>
+                                      Request edit
+                                    </button>
+                                    <button type="button" onClick={() => openDeleteRequestModal(a)}>
+                                      Request delete
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className="attractionActionMenu-cancel"
+                                      onClick={closeAttractionMenu}
+                                    >
+                                      Cancel
+                                    </button>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+
+                          <p style={{ margin: "2px 0 4px", fontSize: 12, color: "#555" }}>{a.atrcategory}</p>
+
+                          {a.atraddress && (
+                            <p style={{ margin: 0, fontSize: 12, color: "#666" }}>📍 {a.atraddress}</p>
+                          )}
+
+                          <p style={{ margin: "4px 0 0", fontSize: 12, color: "#444" }}>
+                            {a.distance != null && <>🛣 {a.distance} m{" · "}</>}
+                            {a.traveltimeminutes != null && <>⏱ {a.traveltimeminutes} min{" · "}</>}
+                            {a.commuteoption && <> {a.commuteoption}</>}
+                          </p>
+
+                          {(a.averagerating || a.reviewcount) && (
+                            <p style={{ margin: "4px 0 0", fontSize: 12, color: "#444" }}>
+                              ⭐{Number(a.averagerating || 0).toFixed(1)} ({a.reviewcount} review
+                              {a.reviewcount === 1 ? "" : "s"})
+                            </p>
+                          )}
+
+                          <button
+                            type="button"
+                            className="attractionReviewsToggle"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleViewReviews(a);
+                            }}
+                          >
+                            {reviewsState.atrid === a.atrid && reviewsState.expanded
+                              ? "Hide reviews"
+                              : `View reviews${a.reviewcount ? ` (${a.reviewcount})` : ""}`}
+                          </button>
+
+                          {reviewsState.atrid === a.atrid && reviewsState.expanded && (
+                            <div className="attractionReviewsPanel" onClick={(e) => e.stopPropagation()}>
+                              {reviewsState.loading && (
+                                <div className="attractionReviewsLoading">Loading reviews…</div>
+                              )}
+                              {reviewsState.error && (
+                                <div className="attractionReviewsError">{reviewsState.error}</div>
+                              )}
+                              {!reviewsState.loading && !reviewsState.error && reviewsState.items.length === 0 && (
+                                <div className="attractionReviewsEmpty">No written comments yet. Be the first!</div>
+                              )}
+                              {!reviewsState.loading && !reviewsState.error && reviewsState.items.length > 0 && (
+                                <ul className="attractionReviewsList">
+                                  {reviewsState.items.map((r) => (
+                                    <li
+                                      key={r.reviewid || `${r.username || "anon"}-${r.created_at || Math.random()}`}
+                                      className="attractionReviewsItem"
+                                    >
+                                      <div className="attractionReviewsHeader">
+                                        <span className="attractionReviewsUser">{r.username || "Anonymous"}</span>
+                                        <span className="attractionReviewsStars">
+                                          {"★".repeat(r.rating || 0)}
+                                          {"☆".repeat(5 - (r.rating || 0))}
+                                        </span>
+                                      </div>
+
+                                      {r.review && <p className="attractionReviewsText">{r.review}</p>}
+
+                                      {r.created_at && (
+                                        <span className="attractionReviewsDate">
+                                          {new Date(r.created_at).toLocaleDateString()}
+                                        </span>
+                                      )}
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
                             </div>
                           )}
 
-                          <div className="attractionContent">
-                            <div className="attractionHeaderRow">
-                              <h5 style={{ margin: 0 }}>{a.atrname}</h5>
+                          <button
+                            type="button"
+                            className="attractionReviewTrigger"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              openReviewForm(a);
+                            }}
+                          >
+                            <span className="star">★</span>
+                            <span>Rate / review this place</span>
+                          </button>
 
-                              <div className="attractionHeaderActions">
-                                {a.isverified && (
-                                  <span
-                                    style={{
-                                      fontSize: 11,
-                                      padding: "2px 6px",
-                                      borderRadius: "999px",
-                                      background: "#e0f7ec",
-                                      color: "#009645",
-                                      alignSelf: "flex-start",
-                                    }}
-                                  >
-                                    Verified
-                                  </span>
-                                )}
-
-                                <div className="attractionMenuWrapper">
-                                  <button
-                                    type="button"
-                                    className="attractionMenuBtn"
-                                    onClick={(e) => {e.stopPropagation(); openAttractionMenu(a)}}
-                                    title="Request edit/delete"
-                                  >
-                                    <FaEllipsisV size={11} />
-                                  </button>
-
-                                  {menuOpenAtrId === a.atrid && (
-                                    a.atrid && (
-                                    <div className="attractionActionMenu">
-                                      <button
-                                        type="button"
-                                        onClick={() => openEditRequestModal(a)}
-                                      >
-                                        Request edit
-                                      </button>
-                                      <button
-                                        type="button"
-                                        onClick={() =>
-                                          openDeleteRequestModal(a)
-                                        }
-                                      >
-                                        Request delete
-                                      </button>
-                                      <button
-                                        type="button"
-                                        className="attractionActionMenu-cancel"
-                                        onClick={closeAttractionMenu}
-                                      >
-                                        Cancel
-                                      </button>
-                                    </div>
-                                  ))}
-                                </div>
-                              </div>
-                            </div>
-                            <p
-                              style={{
-                                margin: "2px 0 4px",
-                                fontSize: 12,
-                                color: "#555",
-                              }}
-                            >
-                              {a.atrcategory}
-                            </p>
-
-                            {a.atraddress && (
-                              <p
-                                style={{
-                                  margin: 0,
-                                  fontSize: 12,
-                                  color: "#666",
-                                }}
+                          <div style={{ marginTop: 6, display: "flex", gap: 8, flexWrap: "wrap" }}>
+                            {a.atrwebsite && (
+                              <a
+                                href={a.atrwebsite}
+                                target="_blank"
+                                rel="noreferrer"
+                                style={{ fontSize: 12, color: "#0066cc" }}
+                                onClick={(e) => e.stopPropagation()}
                               >
-                                📍 {a.atraddress}
-                              </p>
+                                🌐 Website
+                              </a>
                             )}
-
-                            <p
-                              style={{
-                                margin: "4px 0 0",
-                                fontSize: 12,
-                                color: "#444",
-                              }}
-                            >
-                              {a.distance != null && (
-                                <>
-                                  🛣 {a.distance} m{" · "}
-                                </>
-                              )}
-                              {a.traveltimeminutes != null && (
-                                <>
-                                  ⏱ {a.traveltimeminutes} min{" · "}
-                                </>
-                              )}
-                              {a.commuteoption && <> {a.commuteoption}</>}
-                            </p>
-
-                            {(a.averagerating || a.reviewcount) && (
-                              <p
-                                style={{
-                                  margin: "4px 0 0",
-                                  fontSize: 12,
-                                  color: "#444",
-                                }}
+                            {a.atrmaplocation && (
+                              <a
+                                href={a.atrmaplocation}
+                                target="_blank"
+                                rel="noreferrer"
+                                style={{ fontSize: 12, color: "#0066cc" }}
+                                onClick={(e) => e.stopPropagation()}
                               >
-                                ⭐
-                                {Number(a.averagerating || 0).toFixed(1)} (
-                                {a.reviewcount} review
-                                {a.reviewcount === 1 ? "" : "s"})
-                              </p>
-                            )}
-
-                            {/* view reviews */}
-                            <button
-                              type="button"
-                              className="attractionReviewsToggle"
-                              onClick={() => toggleViewReviews(a)}
-                            >
-                              {reviewsState.atrid === a.atrid &&
-                              reviewsState.expanded
-                                ? "Hide reviews"
-                                : `View reviews${
-                                    a.reviewcount
-                                      ? ` (${a.reviewcount})`
-                                      : ""
-                                  }`}
-                            </button>
-
-                            {reviewsState.atrid === a.atrid &&
-                              reviewsState.expanded && (
-                                <div className="attractionReviewsPanel">
-                                  {reviewsState.loading && (
-                                    <div className="attractionReviewsLoading">
-                                      Loading reviews…
-                                    </div>
-                                  )}
-
-                                  {reviewsState.error && (
-                                    <div className="attractionReviewsError">
-                                      {reviewsState.error}
-                                    </div>
-                                  )}
-
-                                  {!reviewsState.loading &&
-                                    !reviewsState.error &&
-                                    reviewsState.items.length === 0 && (
-                                      <div className="attractionReviewsEmpty">
-                                        No written comments yet. Be the first!
-                                      </div>
-                                    )}
-
-                                  {!reviewsState.loading &&
-                                    !reviewsState.error &&
-                                    reviewsState.items.length > 0 && (
-                                      <ul className="attractionReviewsList">
-                                        {reviewsState.items.map((r) => (
-                                          <li
-                                            key={
-                                              r.reviewid ||
-                                              `${r.username}-${r.created_at}`
-                                            }
-                                            className="attractionReviewsItem"
-                                          >
-                                            <div className="attractionReviewsHeader">
-                                              <span className="attractionReviewsUser">
-                                                {r.username || "Anonymous"}
-                                              </span>
-                                              <span className="attractionReviewsStars">
-                                                {"★".repeat(r.rating || 0)}
-                                                {"☆".repeat(
-                                                  5 - (r.rating || 0)
-                                                )}
-                                              </span>
-                                            </div>
-
-                                            {r.review && (
-                                              <p className="attractionReviewsText">
-                                                {r.review}
-                                              </p>
-                                            )}
-
-                                            {r.created_at && (
-                                              <span className="attractionReviewsDate">
-                                                {new Date(
-                                                  r.created_at
-                                                ).toLocaleDateString()}
-                                              </span>
-                                            )}
-                                          </li>
-                                        ))}
-                                      </ul>
-                                    )}
-                                </div>
-                              )}
-
-                            {/* review trigger */}
-                            <button
-                              type="button"
-                              className="attractionReviewTrigger"
-                              onClick={() => openReviewForm(a)}
-                            >
-                              <span className="star">★</span>
-                              <span>Rate / review this place</span>
-                            </button>
-
-                            {/* Website + map links */}
-                            <div
-                              style={{
-                                marginTop: 6,
-                                display: "flex",
-                                gap: 8,
-                                flexWrap: "wrap",
-                              }}
-                            >
-                              {a.atrwebsite && (
-                                <a
-                                  href={a.atrwebsite}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  style={{
-                                    fontSize: 12,
-                                    color: "#0066cc",
-                                  }}
-                                >
-                                  🌐 Website
-                                </a>
-                              )}
-                              {a.atrmaplocation && (
-                                <a
-                                  href={a.atrmaplocation}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  style={{
-                                    fontSize: 12,
-                                    color: "#0066cc",
-                                  }}
-                                >
-                                  🗺 Open in Maps
-                                </a>
-                              )}
-                            </div>
-
-                            {/* inline review form */}
-                            {reviewForm.atrid === a.atrid && (
-                              <form
-                                className="attractionReviewForm"
-                                onSubmit={handleSubmitReview}
-                              >
-                                <div className="attractionReviewForm-header">
-                                  <span>Your review</span>
-                                </div>
-
-                                <div className="attractionReviewForm-ratingRow">
-                                  <span className="attractionReviewForm-ratingLabel">
-                                    Rating:
-                                  </span>
-                                  <select
-                                    value={reviewForm.rating}
-                                    onChange={(e) =>
-                                      setReviewForm((prev) => ({
-                                        ...prev,
-                                        rating: e.target.value,
-                                      }))
-                                    }
-                                    disabled={reviewForm.loading}
-                                  >
-                                    <option value={5}>★★★★★ (5)</option>
-                                    <option value={4}>★★★★☆ (4)</option>
-                                    <option value={3}>★★★☆☆ (3)</option>
-                                    <option value={2}>★★☆☆☆ (2)</option>
-                                    <option value={1}>★☆☆☆☆ (1)</option>
-                                  </select>
-                                </div>
-
-                                <textarea
-                                  placeholder="Share a short comment (optional)"
-                                  value={reviewForm.comment}
-                                  onChange={(e) =>
-                                    setReviewForm((prev) => ({
-                                      ...prev,
-                                      comment: e.target.value,
-                                    }))
-                                  }
-                                  disabled={reviewForm.loading}
-                                />
-
-                                {reviewForm.error && (
-                                  <div className="attractionReviewForm-error">
-                                    {reviewForm.error}
-                                  </div>
-                                )}
-
-                                <div className="attractionReviewForm-actions">
-                                  <button
-                                    type="button"
-                                    className="btnGhost"
-                                    disabled={reviewForm.loading}
-                                    onClick={() =>
-                                      setReviewForm({
-                                        atrid: null,
-                                        rating: 5,
-                                        comment: "",
-                                        loading: false,
-                                        error: "",
-                                      })
-                                    }
-                                  >
-                                    Cancel
-                                  </button>
-                                  <button
-                                    type="submit"
-                                    className="btnPrimary"
-                                    disabled={reviewForm.loading}
-                                  >
-                                    {reviewForm.loading
-                                      ? "Saving…"
-                                      : "Submit review"}
-                                  </button>
-                                </div>
-                              </form>
+                                🗺 Open in Maps
+                              </a>
                             )}
                           </div>
+
+                          {reviewForm.atrid === a.atrid && (
+                            <form
+                              className="attractionReviewForm"
+                              onSubmit={(ev) => {
+                                ev.stopPropagation();
+                                handleSubmitReview(ev);
+                              }}
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <div className="attractionReviewForm-header">
+                                <span>Your review</span>
+                              </div>
+
+                              <div className="attractionReviewForm-ratingRow">
+                                <span className="attractionReviewForm-ratingLabel">Rating:</span>
+                                <select
+                                  value={reviewForm.rating}
+                                  onChange={(e) =>
+                                    setReviewForm((prev) => ({ ...prev, rating: e.target.value }))
+                                  }
+                                  disabled={reviewForm.loading}
+                                >
+                                  <option value={5}>★★★★★ (5)</option>
+                                  <option value={4}>★★★★☆ (4)</option>
+                                  <option value={3}>★★★☆☆ (3)</option>
+                                  <option value={2}>★★☆☆☆ (2)</option>
+                                  <option value={1}>★☆☆☆☆ (1)</option>
+                                </select>
+                              </div>
+
+                              <textarea
+                                placeholder="Share a short comment (optional)"
+                                value={reviewForm.comment}
+                                onChange={(e) =>
+                                  setReviewForm((prev) => ({ ...prev, comment: e.target.value }))
+                                }
+                                disabled={reviewForm.loading}
+                              />
+
+                              {reviewForm.error && (
+                                <div className="attractionReviewForm-error">{reviewForm.error}</div>
+                              )}
+
+                              <div className="attractionReviewForm-actions">
+                                <button
+                                  type="button"
+                                  className="btnGhost"
+                                  disabled={reviewForm.loading}
+                                  onClick={() =>
+                                    setReviewForm({
+                                      atrid: null,
+                                      rating: 5,
+                                      comment: "",
+                                      loading: false,
+                                      error: "",
+                                    })
+                                  }
+                                >
+                                  Cancel
+                                </button>
+                                <button type="submit" className="btnPrimary" disabled={reviewForm.loading}>
+                                  {reviewForm.loading ? "Saving…" : "Submit review"}
+                                </button>
+                              </div>
+                            </form>
+                          )}
                         </div>
-                      ))}
-                    </div>
-                  )}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </>
           ) : (
-            // empty state
             <ExplorePanel
-                nearestStationFromUser={nearestStationFromUser}
-                requestUserLocation={requestUserLocation}
-                isLocLoading={isLocLoading}
-                locError={locError}
-                onStationClick={onStationClick}
-                allStations={allStations}
-                onAttractionSearchResults={onAttractionSearchResults}
-                onToggleAttractionMarkers={onToggleAttractionMarkers}
-                onFitAttractions={onFitAttractions} 
-                onHighlightAttraction={onHighlightAttraction} 
+              nearestStationFromUser={nearestStationFromUser}
+              requestUserLocation={requestUserLocation}
+              isLocLoading={isLocLoading}
+              locError={locError}
+              onStationClick={onStationClick}
+              allStations={allStations}
+              onAttractionSearchResults={onAttractionSearchResults}
+              onToggleAttractionMarkers={onToggleAttractionMarkers}
+              onFitAttractions={onFitAttractions}
+              onHighlightAttraction={onHighlightAttraction}
             />
           )}
         </div>
       </div>
 
-      {/* modal for add-attraction */}
+      {/* -------------------- ADD ATTRACTION MODAL -------------------- */}
       {showAddAttractionForm && selectedStation && (
         <div className="addAttractionOverlay">
           <div className="addAttractionModal">
@@ -1318,26 +1163,42 @@ export default function StationSidePanel({
               </button>
             </div>
 
-            <form
-              className="addAttractionForm"
-              onSubmit={handleSubmitAddAttraction}
-            >
+            <form className="addAttractionForm" onSubmit={handleSubmitAddAttraction}>
               {selectedSuggestion && (
-                <div style={{
-                  padding: "6px 8px",
-                  background: "#eff6ff",
-                  border: "1px solid #bfdbfe",
-                  borderRadius: "6px",
-                  fontSize: "11px",
-                  color: "#1e40af",
-                  marginBottom: "12px"
-                }}>
-                  🎯 Form auto-filled from existing attraction: <strong>{selectedSuggestion.atrname}</strong><br/>
-                  <span style={{fontSize: "10px", color: "#64748b"}}>
+                <div
+                  style={{
+                    padding: "6px 8px",
+                    background: "#eff6ff",
+                    border: "1px solid #bfdbfe",
+                    borderRadius: "6px",
+                    fontSize: "11px",
+                    color: "#1e40af",
+                    marginBottom: "12px",
+                  }}
+                >
+                  🎯 Form auto-filled from existing attraction: <strong>{selectedSuggestion.atrname}</strong>
+                  <br />
+                  <span style={{ fontSize: "10px", color: "#64748b" }}>
                     Edit any field if needed, then add station-specific info below.
                   </span>
                 </div>
               )}
+
+              {/* hint about what will happen */}
+              <div
+                style={{
+                  marginBottom: 10,
+                  padding: "8px 10px",
+                  borderRadius: 10,
+                  border: "1px solid #e2e8f0",
+                  background: "#f8fafc",
+                  fontSize: 12,
+                  color: "#475569",
+                }}
+              >
+                {submitHint}
+              </div>
+
               <div className="formRow">
                 <label>Name</label>
                 <div className="form-field-wrapper">
@@ -1348,25 +1209,20 @@ export default function StationSidePanel({
                     onChange={handleNameChange}
                     placeholder="Attraction Name"
                   />
+
                   {showSuggestions && searchResults.length > 0 && (
                     <div className="suggestions-dropdown">
-                      <div className="suggestions-header">
-                        🎯 Similar attractions found:
-                      </div>
-                      {searchResults.map((attraction, index) => (
+                      <div className="suggestions-header">🎯 Similar attractions found:</div>
+                      {searchResults.map((attraction) => (
                         <div
                           key={attraction.atrid}
                           className="suggestion-item"
                           onClick={() => autofillFromSuggestion(attraction)}
                         >
-                          <div className="suggestion-name">
-                            {attraction.atrname}
-                          </div>
+                          <div className="suggestion-name">{attraction.atrname}</div>
                           <div className="suggestion-meta">
                             {attraction.atrcategory && (
-                              <span className="suggestion-category">
-                                {attraction.atrcategory}
-                              </span>
+                              <span className="suggestion-category">{attraction.atrcategory}</span>
                             )}
                             {attraction.averagerating > 0 && (
                               <span className="suggestion-rating">
@@ -1376,19 +1232,15 @@ export default function StationSidePanel({
                           </div>
                         </div>
                       ))}
-                      {isSearching && (
-                        <div className="suggestion-loading">
-                          Searching...
-                        </div>
-                      )}
+                      {isSearching && <div className="suggestion-loading">Searching...</div>}
                     </div>
                   )}
 
-                  {!isSearching && addAttractionForm.name.trim().length >= 2 && searchResults.length === 0 && (
-                    <div className="no-suggestions-inline">
-                      No similar attractions found
-                    </div>
-                  )}
+                  {!isSearching &&
+                    addAttractionForm.name.trim().length >= 2 &&
+                    searchResults.length === 0 && (
+                      <div className="no-suggestions-inline">No similar attractions found</div>
+                    )}
                 </div>
               </div>
 
@@ -1396,12 +1248,7 @@ export default function StationSidePanel({
                 <label>Category</label>
                 <select
                   value={addAttractionForm.category}
-                  onChange={(e) =>
-                    setAddAttractionForm((prev) => ({
-                      ...prev,
-                      category: e.target.value,
-                    }))
-                  }
+                  onChange={(e) => setAddAttractionForm((prev) => ({ ...prev, category: e.target.value }))}
                 >
                   <option value="">Select category</option>
                   {ATTRACTION_CATEGORIES.map((c) => (
@@ -1417,12 +1264,7 @@ export default function StationSidePanel({
                 <input
                   type="text"
                   value={addAttractionForm.address}
-                  onChange={(e) =>
-                    setAddAttractionForm({
-                      ...addAttractionForm,
-                      address: e.target.value,
-                    })
-                  }
+                  onChange={(e) => setAddAttractionForm((prev) => ({ ...prev, address: e.target.value }))}
                   placeholder="Full address"
                   className={selectedSuggestion?.atraddress ? "autofilled" : ""}
                 />
@@ -1433,12 +1275,7 @@ export default function StationSidePanel({
                 <input
                   type="url"
                   value={addAttractionForm.website}
-                  onChange={(e) =>
-                    setAddAttractionForm({
-                      ...addAttractionForm,
-                      website: e.target.value,
-                    })
-                  }
+                  onChange={(e) => setAddAttractionForm((prev) => ({ ...prev, website: e.target.value }))}
                   placeholder="https://..."
                   className={selectedSuggestion?.atrwebsite ? "autofilled" : ""}
                 />
@@ -1454,7 +1291,8 @@ export default function StationSidePanel({
                 />
                 {(addAttractionForm.atrLatitude || addAttractionForm.atrLongitude) && (
                   <div className="coordinate-info">
-                    📍 Parsed coordinates: {addAttractionForm.atrLatitude || "?"}, {addAttractionForm.atrLongitude || "?"}
+                    📍 Parsed coordinates: {addAttractionForm.atrLatitude || "?"},{" "}
+                    {addAttractionForm.atrLongitude || "?"}
                   </div>
                 )}
               </div>
@@ -1467,12 +1305,7 @@ export default function StationSidePanel({
                     step="0.000001"
                     style={{ flex: 1 }}
                     value={addAttractionForm.atrLatitude}
-                    onChange={(e) =>
-                      setAddAttractionForm({
-                        ...addAttractionForm,
-                        atrLatitude: e.target.value,
-                      })
-                    }
+                    onChange={(e) => setAddAttractionForm((prev) => ({ ...prev, atrLatitude: e.target.value }))}
                     placeholder="Latitude"
                     className={selectedSuggestion?.atrlatitude ? "autofilled" : ""}
                     required
@@ -1482,29 +1315,20 @@ export default function StationSidePanel({
                     step="0.000001"
                     style={{ flex: 1 }}
                     value={addAttractionForm.atrLongitude}
-                    onChange={(e) =>
-                      setAddAttractionForm({
-                        ...addAttractionForm,
-                        atrLongitude: e.target.value,
-                      })
-                    }
+                    onChange={(e) => setAddAttractionForm((prev) => ({ ...prev, atrLongitude: e.target.value }))}
                     placeholder="Longitude"
                     className={selectedSuggestion?.atrlongitude ? "autofilled" : ""}
                     required
                   />
                 </div>
               </div>
+
               <div className="formRow">
                 <label>Opening hours (optional)</label>
                 <input
                   type="text"
                   value={addAttractionForm.openingHours}
-                  onChange={(e) =>
-                    setAddAttractionForm({
-                      ...addAttractionForm,
-                      openingHours: e.target.value,
-                    })
-                  }
+                  onChange={(e) => setAddAttractionForm((prev) => ({ ...prev, openingHours: e.target.value }))}
                   placeholder="E.g. Daily 10:00 AM – 10:00 PM"
                   className={selectedSuggestion?.openinghours ? "autofilled" : ""}
                 />
@@ -1519,12 +1343,7 @@ export default function StationSidePanel({
                     step="1"
                     style={{ flex: 1 }}
                     value={addAttractionForm.distanceMeters}
-                    onChange={(e) =>
-                      handleAddAttractionChange(
-                        "distanceMeters",
-                        e.target.value
-                      )
-                    }
+                    onChange={(e) => handleAddAttractionChange("distanceMeters", e.target.value)}
                     placeholder="Distance (meters)"
                   />
                   <input
@@ -1533,12 +1352,7 @@ export default function StationSidePanel({
                     step="1"
                     style={{ flex: 1 }}
                     value={addAttractionForm.travelTimeMinutes}
-                    onChange={(e) =>
-                      handleAddAttractionChange(
-                        "travelTimeMinutes",
-                        e.target.value
-                      )
-                    }
+                    onChange={(e) => handleAddAttractionChange("travelTimeMinutes", e.target.value)}
                     placeholder="Travel time (minutes)"
                   />
                 </div>
@@ -1549,16 +1363,13 @@ export default function StationSidePanel({
                 <input
                   type="text"
                   value={addAttractionForm.commuteOption}
-                  onChange={(e) =>
-                    handleAddAttractionChange("commuteOption", e.target.value)
-                  }
+                  onChange={(e) => handleAddAttractionChange("commuteOption", e.target.value)}
                   placeholder="E.g. 5-min covered walk, via link bridge"
                 />
               </div>
 
               <div className="formRow">
                 <label>Photo (optional, 1 image)</label>
-
                 {selectedSuggestion ? (
                   <div
                     style={{
@@ -1576,11 +1387,7 @@ export default function StationSidePanel({
                   </div>
                 ) : (
                   <>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handlePhotoChange}
-                    />
+                    <input type="file" accept="image/*" onChange={handlePhotoChange} />
                     <div style={{ fontSize: 11, color: "#6b7280", marginTop: 6 }}>
                       Tip: keep the photo small (compressed) to avoid upload errors.
                     </div>
@@ -1593,7 +1400,6 @@ export default function StationSidePanel({
                 )}
               </div>
 
-              {/* Missing-fields prompt (recommended fields only) */}
               {showMissingPrompt && (
                 <div
                   style={{
@@ -1606,9 +1412,7 @@ export default function StationSidePanel({
                     fontSize: 12,
                   }}
                 >
-                  <div style={{ fontWeight: 700, marginBottom: 6 }}>
-                    ⚠️ Some recommended details are empty
-                  </div>
+                  <div style={{ fontWeight: 700, marginBottom: 6 }}>⚠️ Some recommended details are empty</div>
 
                   <ul style={{ margin: 0, paddingLeft: 18 }}>
                     {missingFields.map((m) => (
@@ -1616,14 +1420,7 @@ export default function StationSidePanel({
                     ))}
                   </ul>
 
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: 8,
-                      marginTop: 10,
-                      justifyContent: "flex-end",
-                    }}
-                  >
+                  <div style={{ display: "flex", gap: 8, marginTop: 10, justifyContent: "flex-end" }}>
                     <button
                       type="button"
                       className="btnSecondary"
@@ -1642,9 +1439,7 @@ export default function StationSidePanel({
                         setShowMissingPrompt(false);
                         setMissingFields([]);
                         setSkipMissingPromptOnce(true);
-                        // re-trigger submit
-                        const fakeEvent = { preventDefault: () => {} };
-                        handleSubmitAddAttraction(fakeEvent);
+                        handleSubmitAddAttraction({ preventDefault: () => {} });
                       }}
                     >
                       Submit anyway
@@ -1655,15 +1450,11 @@ export default function StationSidePanel({
 
               {!showMissingPrompt && (
                 <div className="formActions">
-                  <button
-                    type="button"
-                    className="btnSecondary"
-                    onClick={closeAddAttractionForm}
-                  >
+                  <button type="button" className="btnSecondary" onClick={closeAddAttractionForm}>
                     Cancel
                   </button>
-                  <button type="submit" className="btnPrimary">
-                    Send suggestion
+                  <button type="submit" className="btnPrimary" disabled={disableSubmit} title={disableSubmit ? submitHint : ""}>
+                    {submitLabel}
                   </button>
                 </div>
               )}
@@ -1672,7 +1463,7 @@ export default function StationSidePanel({
         </div>
       )}
 
-      {/* modal for EDIT REQUEST */}
+      {/* -------------------- EDIT REQUEST MODAL -------------------- */}
       {showEditRequestModal && activeAttractionForAction && (
         <div className="addAttractionOverlay">
           <div className="addAttractionModal">
@@ -1680,33 +1471,23 @@ export default function StationSidePanel({
               <div>
                 <h3>Request edit</h3>
                 <p>
-                  Editing request for{" "}
-                  <strong>{activeAttractionForAction?.atrname}</strong> near{" "}
+                  Editing request for <strong>{activeAttractionForAction?.atrname}</strong> near{" "}
                   <strong>{selectedStation?.stationName}</strong>
                 </p>
               </div>
-
               <button className="modalClose" onClick={closeEditRequestModal}>
                 ✕
               </button>
             </div>
 
-            <form
-              className="addAttractionForm"
-              onSubmit={handleSubmitEditRequest}
-            >
+            <form className="addAttractionForm" onSubmit={handleSubmitEditRequest}>
               <div className="formRow">
                 <label>Name</label>
                 <input
                   type="text"
                   required
                   value={editRequestForm.name}
-                  onChange={(e) =>
-                    setEditRequestForm((prev) => ({
-                      ...prev,
-                      name: e.target.value,
-                    }))
-                  }
+                  onChange={(e) => setEditRequestForm((prev) => ({ ...prev, name: e.target.value }))}
                   placeholder="Attraction Name"
                 />
               </div>
@@ -1715,12 +1496,7 @@ export default function StationSidePanel({
                 <label>Category</label>
                 <select
                   value={editRequestForm.category}
-                  onChange={(e) =>
-                    setEditRequestForm((prev) => ({
-                      ...prev,
-                      category: e.target.value,
-                    }))
-                  }
+                  onChange={(e) => setEditRequestForm((prev) => ({ ...prev, category: e.target.value }))}
                 >
                   <option value="">Select category</option>
                   {ATTRACTION_CATEGORIES.map((c) => (
@@ -1736,12 +1512,7 @@ export default function StationSidePanel({
                 <input
                   type="text"
                   value={editRequestForm.address}
-                  onChange={(e) =>
-                    setEditRequestForm((prev) => ({
-                      ...prev,
-                      address: e.target.value,
-                    }))
-                  }
+                  onChange={(e) => setEditRequestForm((prev) => ({ ...prev, address: e.target.value }))}
                   placeholder="Full address"
                 />
               </div>
@@ -1751,12 +1522,7 @@ export default function StationSidePanel({
                 <input
                   type="url"
                   value={editRequestForm.website}
-                  onChange={(e) =>
-                    setEditRequestForm((prev) => ({
-                      ...prev,
-                      website: e.target.value,
-                    }))
-                  }
+                  onChange={(e) => setEditRequestForm((prev) => ({ ...prev, website: e.target.value }))}
                   placeholder="https://..."
                 />
               </div>
@@ -1766,12 +1532,7 @@ export default function StationSidePanel({
                 <input
                   type="url"
                   value={editRequestForm.mapLocation}
-                  onChange={(e) =>
-                    setEditRequestForm((prev) => ({
-                      ...prev,
-                      mapLocation: e.target.value,
-                    }))
-                  }
+                  onChange={(e) => setEditRequestForm((prev) => ({ ...prev, mapLocation: e.target.value }))}
                   placeholder="Google Maps link"
                 />
               </div>
@@ -1784,12 +1545,7 @@ export default function StationSidePanel({
                     step="0.000001"
                     style={{ flex: 1 }}
                     value={editRequestForm.atrLatitude}
-                    onChange={(e) =>
-                      setEditRequestForm((prev) => ({
-                        ...prev,
-                        atrLatitude: e.target.value,
-                      }))
-                    }
+                    onChange={(e) => setEditRequestForm((prev) => ({ ...prev, atrLatitude: e.target.value }))}
                     placeholder="Latitude"
                     required
                   />
@@ -1798,12 +1554,7 @@ export default function StationSidePanel({
                     step="0.000001"
                     style={{ flex: 1 }}
                     value={editRequestForm.atrLongitude}
-                    onChange={(e) =>
-                      setEditRequestForm((prev) => ({
-                        ...prev,
-                        atrLongitude: e.target.value,
-                      }))
-                    }
+                    onChange={(e) => setEditRequestForm((prev) => ({ ...prev, atrLongitude: e.target.value }))}
                     placeholder="Longitude"
                     required
                   />
@@ -1815,12 +1566,7 @@ export default function StationSidePanel({
                 <input
                   type="text"
                   value={editRequestForm.openingHours}
-                  onChange={(e) =>
-                    setEditRequestForm((prev) => ({
-                      ...prev,
-                      openingHours: e.target.value,
-                    }))
-                  }
+                  onChange={(e) => setEditRequestForm((prev) => ({ ...prev, openingHours: e.target.value }))}
                 />
               </div>
 
@@ -1854,12 +1600,7 @@ export default function StationSidePanel({
                     step="1"
                     style={{ flex: 1 }}
                     value={editRequestForm.distanceMeters}
-                    onChange={(e) =>
-                      setEditRequestForm((prev) => ({
-                        ...prev,
-                        distanceMeters: e.target.value,
-                      }))
-                    }
+                    onChange={(e) => setEditRequestForm((prev) => ({ ...prev, distanceMeters: e.target.value }))}
                     placeholder="Distance (meters)"
                   />
                   <input
@@ -1868,12 +1609,7 @@ export default function StationSidePanel({
                     step="1"
                     style={{ flex: 1 }}
                     value={editRequestForm.travelTimeMinutes}
-                    onChange={(e) =>
-                      setEditRequestForm((prev) => ({
-                        ...prev,
-                        travelTimeMinutes: e.target.value,
-                      }))
-                    }
+                    onChange={(e) => setEditRequestForm((prev) => ({ ...prev, travelTimeMinutes: e.target.value }))}
                     placeholder="Travel time (minutes)"
                   />
                 </div>
@@ -1884,22 +1620,13 @@ export default function StationSidePanel({
                 <input
                   type="text"
                   value={editRequestForm.commuteOption}
-                  onChange={(e) =>
-                    setEditRequestForm((prev) => ({
-                      ...prev,
-                      commuteOption: e.target.value,
-                    }))
-                  }
+                  onChange={(e) => setEditRequestForm((prev) => ({ ...prev, commuteOption: e.target.value }))}
                   placeholder="E.g. 5-min covered walk, via link bridge"
                 />
               </div>
 
               <div className="formActions">
-                <button
-                  type="button"
-                  className="btnSecondary"
-                  onClick={closeEditRequestModal}
-                >
+                <button type="button" className="btnSecondary" onClick={closeEditRequestModal}>
                   Cancel
                 </button>
                 <button type="submit" className="btnPrimary">
@@ -1911,7 +1638,7 @@ export default function StationSidePanel({
         </div>
       )}
 
-      {/* modal for DELETE REQUEST */}
+      {/* -------------------- DELETE REQUEST MODAL -------------------- */}
       {showDeleteRequestModal && activeAttractionForAction && (
         <div className="addAttractionOverlay">
           <div className="addAttractionModal">
@@ -1927,10 +1654,7 @@ export default function StationSidePanel({
               </button>
             </div>
 
-            <form
-              className="addAttractionForm"
-              onSubmit={handleSubmitDeleteRequest}
-            >
+            <form className="addAttractionForm" onSubmit={handleSubmitDeleteRequest}>
               <div className="formRow">
                 <label>Why should this place be removed?</label>
                 <textarea
@@ -1943,11 +1667,7 @@ export default function StationSidePanel({
               </div>
 
               <div className="formActions">
-                <button
-                  type="button"
-                  className="btnSecondary"
-                  onClick={closeDeleteRequestModal}
-                >
+                <button type="button" className="btnSecondary" onClick={closeDeleteRequestModal}>
                   Cancel
                 </button>
                 <button type="submit" className="btnPrimary">
