@@ -805,25 +805,32 @@ router.post("/attractions/requests", requireAuth, upload.single("photo"), async 
       }
     }
 
-    const { type, data } = payload || {};
-    const requestTypeRaw = (type || "").toLowerCase();  // e.g. "EDIT" -> "edit"
+    // Determine request type from multiple possible fields
+    const requestTypeRaw = (
+      payload.type ||
+      payload.requestType ||
+      payload.request_type ||
+      ""
+    ).toLowerCase();
 
     if (!["edit", "delete"].includes(requestTypeRaw)) {
       return res.status(400).json({ message: "Invalid request type." });
     }
 
-    if (!data || !data.atrid) {
-      return res.status(400).json({ message: "Attraction id is required." });
-    }
+    // Build normalized data object
+    const data = payload.data ?? payload;
 
-    const atrId = Number(data.atrid);
+    // Remove type-related fields from data if present
+    const { type, requestType, request_type, ...cleanData } = data;
+
+    const atrId = Number(cleanData.atrid);
     if (!Number.isInteger(atrId) || atrId <= 0) {
       return res.status(400).json({ message: "Invalid attraction id." });
     }
 
-    const stationId = data.stationID || null;      // optional, but nice for indexing
-    const reason    = data.reason || null;         // for delete / general
-    const changes   = data.requestedChanges || null; // for edit (we'll hook this later)
+    const stationId = cleanData.stationID || cleanData.stationId || null;
+    const reason = cleanData.reason || null;
+    const changes = cleanData.requestedChanges || cleanData.requested_changes || null;
     const coverImageUrl = req.file ? req.file.path : null;
 
     // Optional: snapshot current attraction row for admin context
@@ -1408,15 +1415,15 @@ router.patch('/admin/users/:userId', requireAuth, requireAdmin, async (req, res)
 
 // Admin: list all attractions (with creator, station & reviews)
 // GET /api/admin/attractions?status=pending|approved|rejected|all
-router.get('/admin/attractions', requireAuth, requireAdmin, async (req, res) => {
+router.get("/admin/attractions", requireAuth, requireAdmin, async (req, res) => {
   try {
-    const { status = 'pending' } = req.query;
+    const { status = "pending" } = req.query;
 
     const params = [];
-    let whereClause = '1=1';
-    if (status !== 'all') {
+    let whereClause = "1=1";
+    if (status !== "all") {
       params.push(status);
-      whereClause = 'a.status = $1';
+      whereClause = `a.status = $1`;
     }
 
     const sql = `
@@ -1438,34 +1445,39 @@ router.get('/admin/attractions', requireAuth, requireAdmin, async (req, res) => 
         a.reviewed_at,
 
         -- creator
-        cu.userid      AS creator_id,
-        cu.username    AS creator_username,
+        cu.userid   AS creator_id,
+        cu.username AS creator_username,
 
         -- reviewer
-        ru.userid      AS reviewer_id,
-        ru.username    AS reviewer_username,
+        ru.userid   AS reviewer_id,
+        ru.username AS reviewer_username,
 
-        -- station (first linked station)
-        s.stationid,
-        s.stationname,
-        ast.distance,
-        ast.traveltimeminutes,
-        ast.commuteoption,
+        -- reviews overview (avoid double count)
+        COALESCE(AVG(r.rating), 0)        AS avg_rating,
+        COUNT(DISTINCT r.revid)           AS review_count,
 
-        -- reviews overview
-        COALESCE(AVG(r.rating), 0) AS avg_rating,
-        COUNT(r.revid)            AS review_count
+        -- ✅ all nearby stations for this attraction
+        COALESCE(
+          JSONB_AGG(
+            DISTINCT JSONB_BUILD_OBJECT(
+              'stationid', s.stationid,
+              'stationname', s.stationname,
+              'distance', ast.distance,
+              'traveltimeminutes', ast.traveltimeminutes,
+              'commuteoption', ast.commuteoption
+            )
+          ) FILTER (WHERE s.stationid IS NOT NULL),
+          '[]'::jsonb
+        ) AS stations
 
       FROM attraction a
       LEFT JOIN "USER" cu
         ON cu.userid = a.userid
-
       LEFT JOIN "USER" ru
         ON ru.userid = a.reviewed_by
 
       LEFT JOIN attraction_station ast
         ON ast.atrid = a.atrid
-
       LEFT JOIN station s
         ON s.stationid = ast.stationid
 
@@ -1473,22 +1485,20 @@ router.get('/admin/attractions', requireAuth, requireAdmin, async (req, res) => 
         ON r.atrid = a.atrid
 
       WHERE ${whereClause}
+
       GROUP BY
         a.atrid,
         cu.userid, cu.username,
-        ru.userid, ru.username,
-        s.stationid, s.stationname,
-        ast.distance,
-        ast.traveltimeminutes,
-        ast.commuteoption
+        ru.userid, ru.username
+
       ORDER BY a.created_at DESC;
     `;
 
     const { rows } = await query(sql, params);
     res.json({ attractions: rows });
   } catch (err) {
-    console.error('Error loading admin attractions:', err);
-    res.status(500).json({ message: 'Failed to load attractions.' });
+    console.error("Error loading admin attractions:", err);
+    res.status(500).json({ message: "Failed to load attractions." });
   }
 });
 

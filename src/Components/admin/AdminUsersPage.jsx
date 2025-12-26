@@ -4,6 +4,7 @@ import "../admin/AdminPage.css"; // reuse same background + card styles
 export default function AdminUsersPage() {
   const [users, setUsers] = useState([]);
   const [filterRole, setFilterRole] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -112,10 +113,15 @@ export default function AdminUsersPage() {
     setConfirmData(null);
   }
 
-  const filteredUsers =
-    filterRole === "all"
-      ? users
-      : users.filter((u) => u.role === filterRole);
+const filteredUsers = users
+    .filter((u) => {
+      // Filter by role
+      const roleMatch = filterRole === "all" || u.role === filterRole;
+      // Filter by username (case-insensitive)
+      const nameMatch = searchQuery === "" || 
+        u.username.toLowerCase().includes(searchQuery.toLowerCase());
+      return roleMatch && nameMatch;
+    });
 
     const ROLE_LABELS = {
         commuter: "Commuter",
@@ -145,8 +151,18 @@ export default function AdminUsersPage() {
 
         {!loading && !error && (
           <section className="profile-section admin-users-section">
-            <div className="admin-users-toolbar">
+<div className="admin-users-toolbar">
               <h2>User Accounts</h2>
+
+              <div className="admin-users-search">
+                <input
+                  type="text"
+                  placeholder="Search by username..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="admin-search-input"
+                />
+              </div>
 
               <div className="admin-users-filters">
                 <button

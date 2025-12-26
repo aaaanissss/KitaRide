@@ -21,6 +21,31 @@
   margin: 0;
 }
 
+.admin-users-search {
+  flex: 1;
+  max-width: 300px;
+}
+
+.admin-search-input {
+  width: 100%;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  background: rgba(15, 23, 42, 0.02);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.admin-search-input:focus {
+  border-color: #0284c7;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.admin-search-input::placeholder {
+  color: #94a3b8;
+}
+
 .admin-users-filters {
   display: flex;
   gap: 8px;
@@ -518,4 +543,64 @@
 
 .admin-form-section a:hover {
   text-decoration: underline;
+}
+
+/* ===== Pagination ===== */
+
+.admin-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.admin-page-btn {
+  min-width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  background: rgba(15, 23, 42, 0.02);
+  color: #374151;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+}
+
+.admin-page-btn:hover:not(:disabled) {
+  background: rgba(15, 23, 42, 0.08);
+  border-color: rgba(148, 163, 184, 0.8);
+}
+
+.admin-page-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.admin-page-btn--active {
+  background: #0f172a;
+  color: #f9fafb;
+  border-color: #0f172a;
+}
+
+.admin-page-btn--active:hover {
+  background: #1e293b;
+}
+
+.admin-page-btn--nav {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.admin-page-ellipsis {
+  padding: 0 4px;
+  color: #94a3b8;
+  font-size: 12px;
+  user-select: none;
 }

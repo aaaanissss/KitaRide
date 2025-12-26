@@ -527,7 +527,6 @@ export default function StationSidePanel({
     }
   };
 
-
   // EDIT request submit
   const handleSubmitEditRequest = async (e) => {
     e.preventDefault();
@@ -539,50 +538,46 @@ export default function StationSidePanel({
       return;
     }
 
-    // normalise numbers
     const distanceVal =
-      editRequestForm.distanceMeters !== ""
-        ? Number(editRequestForm.distanceMeters)
-        : null;
+      editRequestForm.distanceMeters !== "" ? Number(editRequestForm.distanceMeters) : null;
     const travelTimeVal =
-      editRequestForm.travelTimeMinutes !== ""
-        ? Number(editRequestForm.travelTimeMinutes)
-        : null;
+      editRequestForm.travelTimeMinutes !== "" ? Number(editRequestForm.travelTimeMinutes) : null;
     const latVal =
-      editRequestForm.atrLatitude !== ""
-        ? Number(editRequestForm.atrLatitude)
-        : null;
+      editRequestForm.atrLatitude !== "" ? Number(editRequestForm.atrLatitude) : null;
     const lngVal =
-      editRequestForm.atrLongitude !== ""
-        ? Number(editRequestForm.atrLongitude)
-        : null;
+      editRequestForm.atrLongitude !== "" ? Number(editRequestForm.atrLongitude) : null;
+
+    const requestedChanges = {
+      atrname: editRequestForm.name.trim() || null,
+      atrcategory: editRequestForm.category.trim() || null,
+      atraddress: editRequestForm.address.trim() || null,
+      atrwebsite: editRequestForm.website.trim() || null,
+      atrmaplocation: editRequestForm.mapLocation.trim() || null,
+      openinghours: editRequestForm.openingHours.trim() || null,
+      distance: distanceVal,
+      traveltimeminutes: travelTimeVal,
+      commuteoption: editRequestForm.commuteOption.trim() || null,
+      atrlatitude: latVal,
+      atrlongitude: lngVal,
+    };
+
+    // send a payload shape that your backend is most likely expecting
+    const payload = {
+      requestType: "edit",
+      request_type: "edit",
+
+      stationID: selectedStation.stationID,
+      atrid: activeAttractionForAction.atrid,
+
+      reason: null,
+
+      requestedChanges,
+      requested_changes: requestedChanges,
+    };
 
     try {
-      const requestedChanges = {
-        atrname: editRequestForm.name.trim() || null,
-        atrcategory: editRequestForm.category.trim() || null,
-        atraddress: editRequestForm.address.trim() || null,
-        atrwebsite: editRequestForm.website.trim() || null,
-        atrmaplocation: editRequestForm.mapLocation.trim() || null,
-        openinghours: editRequestForm.openingHours.trim() || null,
-        distance: distanceVal,
-        traveltimeminutes: travelTimeVal,
-        commuteoption: editRequestForm.commuteOption.trim() || null,
-        atrlatitude: latVal,
-        atrlongitude: lngVal,
-      };
-
-      const payload = {
-        type: "EDIT",
-        data: {
-          stationID: selectedStation.stationID,
-          atrid: activeAttractionForAction.atrid,
-          reason: null,
-          requestedChanges,
-        },
-      };
-
       const useFormData = Boolean(editPhotoFile);
+
       const res = await fetch("/api/attractions/requests", {
         method: "POST",
         headers: useFormData
@@ -593,17 +588,17 @@ export default function StationSidePanel({
             },
         body: useFormData
           ? (() => {
-              const formData = new FormData();
-              formData.append("data", JSON.stringify(payload));
-              formData.append("photo", editPhotoFile);
-              return formData;
+              const fd = new FormData();
+              fd.append("data", JSON.stringify(payload));
+              fd.append("photo", editPhotoFile);
+              return fd;
             })()
           : JSON.stringify(payload),
       });
 
       if (!res.ok) {
         const errBody = await res.json().catch(() => ({}));
-        throw new Error(errBody.message || `HTTP ${res.status}`);
+        throw new Error(errBody.error || errBody.message || `HTTP ${res.status}`);
       }
 
       alert("✅ Your edit request has been sent to the admin.");
@@ -613,6 +608,7 @@ export default function StationSidePanel({
       alert(err.message || "❌ Failed to send edit request. Please try again.");
     }
   };
+
 
   // DELETE request submit
   const handleSubmitDeleteRequest = async (e) => {
@@ -633,14 +629,14 @@ export default function StationSidePanel({
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          type: "DELETE",
-          data: {
-            stationID: selectedStation.stationID,
-            atrid: activeAttractionForAction.atrid,
-            reason: deleteReason.trim() || null,
-            requestedChanges: null,
-          },
-        }),
+          requestType: "delete",
+          request_type: "delete",
+          stationID: selectedStation.stationID,
+          atrid: activeAttractionForAction.atrid,
+          reason: deleteReason.trim() || null,
+          requestedChanges: null,
+          requested_changes: null,
+        })
       });
 
       if (!res.ok) {
@@ -1297,6 +1293,7 @@ export default function StationSidePanel({
                     Near <strong>{selectedStation.stationName}</strong>
                   </p>
                 </div>
+
                 {selectedSuggestion && (
                   <button
                     type="button"
@@ -1308,13 +1305,14 @@ export default function StationSidePanel({
                       color: "#b91c1c",
                       border: "1px solid #fecaca",
                       borderRadius: "6px",
-                      cursor: "pointer"
+                      cursor: "pointer",
                     }}
                   >
                     Clear Auto-fill
                   </button>
                 )}
               </div>
+
               <button className="modalClose" onClick={closeAddAttractionForm}>
                 ✕
               </button>
@@ -1462,7 +1460,7 @@ export default function StationSidePanel({
               </div>
 
               <div className="formRow">
-                <label>Attraction coordinates (optional)</label>
+                <label>Attraction coordinates</label>
                 <div style={{ display: "flex", gap: 8 }}>
                   <input
                     type="number"
@@ -1679,31 +1677,15 @@ export default function StationSidePanel({
         <div className="addAttractionOverlay">
           <div className="addAttractionModal">
             <div className="modalHeader">
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <div>
-                  <h3>Suggest an attraction</h3>
-                  <p>
-                    Near <strong>{selectedStation.stationName}</strong>
-                  </p>
-                </div>
-                {selectedSuggestion && (
-                  <button
-                    type="button"
-                    onClick={resetAddAttractionForm}
-                    style={{
-                      padding: "4px 8px",
-                      fontSize: "11px",
-                      background: "#fef2f2",
-                      color: "#b91c1c",
-                      border: "1px solid #fecaca",
-                      borderRadius: "6px",
-                      cursor: "pointer"
-                    }}
-                  >
-                    Clear Auto-fill
-                  </button>
-                )}
+              <div>
+                <h3>Request edit</h3>
+                <p>
+                  Editing request for{" "}
+                  <strong>{activeAttractionForAction?.atrname}</strong> near{" "}
+                  <strong>{selectedStation?.stationName}</strong>
+                </p>
               </div>
+
               <button className="modalClose" onClick={closeEditRequestModal}>
                 ✕
               </button>
