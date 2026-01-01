@@ -53,12 +53,12 @@ function Header() {
           {!isAdmin && (
             <>
               <NavLink
-                to="/insight-board"
+                to="/powerbi-dashboard"
                 className={({ isActive }) =>
                   isActive ? "nav-link active" : "nav-link"
                 }
               >
-                Insight Board
+                PowerBI Dashboard
               </NavLink>
               <NavLink
                 to="/ktm-dashboard"
@@ -69,12 +69,12 @@ function Header() {
                 KTM Dashboard
               </NavLink>
               <NavLink
-                to="/powerbi-dashboard"
+                to="/insight-board"
                 className={({ isActive }) =>
                   isActive ? "nav-link active" : "nav-link"
                 }
               >
-                PowerBI Dashboard
+                Insight Board
               </NavLink>
             </>
           )}

@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { Link } from "react-router-dom";
 import {
   LineChart,
   Line,
@@ -178,48 +179,77 @@ export default function RidershipNext7Chart({ predictions, lineNames }) {
   }
 
   return (
-    <div
-      className="chart-container"
-      style={{
-        width: "100%",
-        height: "180px",
-        minWidth: "0",
-        minHeight: "0",
-        position: "relative",
-      }}
-    >
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart
-          data={chartData}
-          margin={{ top: 5, right: 10, left: 25, bottom: 5 }}
-        >
-          <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-          <XAxis
-            dataKey="day_name"
-            tick={{ fontSize: 11 }}
-            axisLine={false}
-            tickLine={false}
-            tickFormatter={(value) =>
-              value ? value.substring(0, 3) : ""
-            }
-          />
-          <YAxis
-            tick={{ fontSize: 11 }}
-            axisLine={false}
-            tickLine={false}
-            tickFormatter={(value) => value.toLocaleString()}
-          />
-          <Tooltip content={<CustomTooltip />} />
-          <Line
-            type="monotone"
-            dataKey="expected_line_ridership"
-            stroke="#009645"
-            strokeWidth={2}
-            dot={{ fill: "#009645", r: 3, strokeWidth: 0 }}
-            activeDot={{ r: 5, fill: "#007a38" }}
-          />
-        </LineChart>
-      </ResponsiveContainer>
+    <div style={{ width: "100%" }}>
+      <div
+        className="chart-container"
+        style={{
+          width: "100%",
+          height: "180px",
+          minWidth: "0",
+          minHeight: "0",
+          position: "relative",
+        }}
+      >
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart
+            data={chartData}
+            margin={{ top: 5, right: 10, left: 25, bottom: 5 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+            <XAxis
+              dataKey="day_name"
+              tick={{ fontSize: 11 }}
+              axisLine={false}
+              tickLine={false}
+              tickFormatter={(value) =>
+                value ? value.substring(0, 3) : ""
+              }
+            />
+            <YAxis
+              tick={{ fontSize: 11 }}
+              axisLine={false}
+              tickLine={false}
+              tickFormatter={(value) => value.toLocaleString()}
+            />
+            <Tooltip content={<CustomTooltip />} />
+            <Line
+              type="monotone"
+              dataKey="expected_line_ridership"
+              stroke="#009645"
+              strokeWidth={2}
+              dot={{ fill: "#009645", r: 3, strokeWidth: 0 }}
+              activeDot={{ r: 5, fill: "#007a38" }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+      <div
+        style={{
+          marginTop: 8,
+          fontSize: 12,
+          color: "#555",
+          lineHeight: 1.4,
+        }}
+      >
+        <div style={{ fontWeight: 600, marginBottom: 4 }}>
+          Common patterns (MRT/LRT/Monorail ridership):
+        </div>
+        <ul style={{ margin: 0, paddingLeft: 18 }}>
+          <li>
+            Ridership is higher on weekdays due to work and school commuting.
+          </li>
+          <li>
+            Ridership is usually lower on public holidays due to reduced commuting.
+          </li>
+        </ul>
+        <div style={{ marginTop: 6 }}>
+          Go to{" "}
+          <Link to="/insight-board" style={{ color: "#007a38" }}>
+            Insight Board
+          </Link>{" "}
+          for more insights.
+        </div>
+      </div>
     </div>
   );
 }
