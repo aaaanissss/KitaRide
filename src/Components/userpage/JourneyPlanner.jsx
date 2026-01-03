@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { FaExchangeAlt, FaSearch } from "react-icons/fa";
 import "./JourneyPlanner.css";
+import { apiFetch } from "../../lib/api";
 
 const stationTypes = ["LRT", "MRT", "Monorail", "ERL", "KTM"];
 
@@ -278,7 +279,7 @@ export default function JourneyPlanner({
     setToSuggestions([]);
 
     try {
-      const res = await fetch(
+      const res = await apiFetch(
         `/api/shortest-path?from=${fromStationId}&to=${toStationId}` +
           `&fromType=${fromType}&toType=${toType}`
       );

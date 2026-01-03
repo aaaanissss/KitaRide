@@ -5,6 +5,7 @@ import KtmNext7Chart from "./KtmNext7Chart.jsx";
 import Header from "./Header.jsx";
 import Footer from "../../Footer.jsx";
 import "./KtmDashboard.css";
+import { apiFetch } from "../../lib/api";
 
 const DOW_LABELS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -25,7 +26,7 @@ export default function KtmDashboard() {
   useEffect(() => {
     async function loadStations() {
       try {
-        const res = await fetch("/api/ktm/stations");
+        const res = await apiFetch("/api/ktm/stations");
         const json = await res.json();
         const list = Array.isArray(json) ? json : [];
         setStations(list);

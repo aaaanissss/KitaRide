@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import RidershipNext7Chart from "./RidershipNext7Chart.jsx";
+import { apiFetch } from "../../lib/api";
 
 export default function KtmNext7Chart() {
   const [predictions, setPredictions] = useState([]);
@@ -13,7 +14,7 @@ export default function KtmNext7Chart() {
         setError("");
 
         // Same API as exploration panel (works)
-        const res = await fetch("/api/ridership/expected-pattern");
+        const res = await apiFetch("/api/ridership/expected-pattern");
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
         const json = await res.json();

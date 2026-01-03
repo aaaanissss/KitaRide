@@ -14,6 +14,7 @@ import endMarkerIcon from "../../assets/markers/marker-red.svg";
 import interchangeMarkerIcon from "../../assets/markers/marker-yellow-interchange.svg";
 import startInterchangeMarkerIcon from "../../assets/markers/marker-green-interchange.svg";
 import endInterchangeMarkerIcon from "../../assets/markers/marker-red-interchange.svg";
+import { apiFetch } from "../../lib/api";
 
 // Fix Leaflet default icon paths
 delete L.Icon.Default.prototype._getIconUrl;
@@ -360,7 +361,7 @@ export default function HomePage() {
 // Load predictions function (make it reusable)
 const loadPredictions = async () => {
   try {
-    const res = await fetch("/api/ridership/expected-pattern");
+    const res = await apiFetch("/api/ridership/expected-pattern");
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
     const data = await res.json();
@@ -501,7 +502,7 @@ const loadPredictions = async () => {
     if (!showHeatmap && heatmapRaw.length === 0) {
       try {
         setIsLoadingHeatmap(true);
-        const res = await fetch("/api/heatmap/today-forecast"); // 👈 NEW ENDPOINT
+        const res = await apiFetch("/api/heatmap/today-forecast"); // 👈 NEW ENDPOINT
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
 
@@ -739,7 +740,7 @@ const loadPredictions = async () => {
   async function loadStationsIfNeeded() {
     if (stationsRaw.length > 0) return; // already loaded
 
-    const res = await fetch("/api/stations");
+    const res = await apiFetch("/api/stations");
     const data = await res.json();
     setStationsRaw(data);
   }

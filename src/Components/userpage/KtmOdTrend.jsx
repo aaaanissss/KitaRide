@@ -8,6 +8,7 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
+import { apiFetch } from "../../lib/api";
 
 export default function KtmOdTrend({ originId, destinationId, viewType }) {
   const [data, setData] = useState([]);
@@ -28,7 +29,7 @@ export default function KtmOdTrend({ originId, destinationId, viewType }) {
                 ? `/api/ktm/daily?origin=${originId}&destination=${destinationId}`
                 : `/api/ktm/monthly?origin=${originId}&destination=${destinationId}`;
 
-            const res = await fetch(endpoint);
+            const res = await apiFetch(endpoint);
             if (!res.ok) throw new Error("HTTP " + res.status);
 
             const json = await res.json();

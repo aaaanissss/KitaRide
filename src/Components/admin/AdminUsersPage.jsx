@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../admin/AdminPage.css"; // reuse same background + card styles
+import { apiFetch } from "../../lib/api";
 
 export default function AdminUsersPage() {
   const [users, setUsers] = useState([]);
@@ -29,7 +30,7 @@ export default function AdminUsersPage() {
         setLoading(true);
         setError("");
 
-        const res = await fetch("/api/admin/users", {
+        const res = await apiFetch("/api/admin/users", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -69,7 +70,7 @@ export default function AdminUsersPage() {
     );
 
     try {
-      const res = await fetch(`/api/admin/users/${userId}`, {
+      const res = await apiFetch(`/api/admin/users/${userId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

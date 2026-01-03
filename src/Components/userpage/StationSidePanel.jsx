@@ -4,6 +4,7 @@ import { FaPlus, FaEllipsisV } from "react-icons/fa";
 import RidershipNext7Chart from "./RidershipNext7Chart.jsx";
 import ExplorePanel from "./ExplorePanel.jsx";
 import "./StationSidePanelAutofill.css";
+import { apiFetch } from "../../lib/api";
 
 export default function StationSidePanel({
   isOpen,
@@ -254,7 +255,7 @@ export default function StationSidePanel({
       setAttractionsError(null);
       setStationAttractions([]);
 
-      const res = await fetch(`/api/stations/${stationID}/attractions`);
+      const res = await apiFetch(`/api/stations/${stationID}/attractions`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
       const data = await res.json();
@@ -292,7 +293,7 @@ export default function StationSidePanel({
 
     try {
       setIsSearching(true);
-      const res = await fetch(`/api/attractions/similar?q=${encodeURIComponent(q)}`);
+      const res = await apiFetch(`/api/attractions/similar?q=${encodeURIComponent(q)}`);
       if (!res.ok) {
         setSearchResults([]);
         setShowSuggestions(false);
@@ -447,7 +448,7 @@ export default function StationSidePanel({
         formData.append("photo", photoFile);
       }
 
-      const res = await fetch(`/api/stations/${selectedStation.stationID}/attractions`, {
+      const res = await apiFetch(`/api/stations/${selectedStation.stationID}/attractions`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
@@ -572,7 +573,7 @@ export default function StationSidePanel({
     try {
       const useFormData = Boolean(editPhotoFile);
 
-      const res = await fetch("/api/attractions/requests", {
+      const res = await apiFetch("/api/attractions/requests", {
         method: "POST",
         headers: useFormData
           ? { Authorization: `Bearer ${token}` }
@@ -611,7 +612,7 @@ export default function StationSidePanel({
     }
 
     try {
-      const res = await fetch("/api/attractions/requests", {
+      const res = await apiFetch("/api/attractions/requests", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({
@@ -662,7 +663,7 @@ export default function StationSidePanel({
     try {
       setReviewForm((prev) => ({ ...prev, loading: true, error: "" }));
 
-      const res = await fetch(`/api/attractions/${reviewForm.atrid}/reviews`, {
+      const res = await apiFetch(`/api/attractions/${reviewForm.atrid}/reviews`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({
@@ -714,7 +715,7 @@ export default function StationSidePanel({
     });
 
     try {
-      const res = await fetch(`/api/attractions/${attraction.atrid}/reviews`);
+      const res = await apiFetch(`/api/attractions/${attraction.atrid}/reviews`);
       if (!res.ok) {
         const errBody = await res.json().catch(() => ({}));
         throw new Error(errBody.message || `HTTP ${res.status}`);

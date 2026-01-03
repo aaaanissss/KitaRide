@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import Header from "./Header";
 import Footer from "../../Footer.jsx";
 import "./InsightBoard.css";
+import { apiFetch } from "../../lib/api";
 
 import {
   ResponsiveContainer,
@@ -20,7 +21,7 @@ export default function InsightBoard() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("/api/ridership/insights-overview")
+    apiFetch("/api/ridership/insights-overview")
       .then((res) => {
         if (!res.ok) throw new Error("Failed to load insights: " + res.status);
         return res.json();

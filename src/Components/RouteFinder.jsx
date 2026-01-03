@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { apiFetch } from "../lib/api";
 
 export default function RouteFinder() {
   const [from, setFrom] = useState("");
@@ -16,7 +17,7 @@ export default function RouteFinder() {
     setResult(null);
 
     try {
-      const res = await fetch(`/api/shortest-path?from=${from}&to=${to}`);
+      const res = await apiFetch(`/api/shortest-path?from=${from}&to=${to}`);
       const data = await res.json();
       if (res.ok) {
         setResult(data);

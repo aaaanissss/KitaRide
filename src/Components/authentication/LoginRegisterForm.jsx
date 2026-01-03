@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './LoginRegisterForm.css';
 import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
+import { apiFetch } from '../../lib/api';
 
 export const LoginRegisterForm = () => {
   // controls which side is visible ('' or ' active')
@@ -61,7 +62,7 @@ export const LoginRegisterForm = () => {
     setLoginLoading(true);
 
     try {
-      const res = await fetch('/api/login', {
+      const res = await apiFetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -120,7 +121,7 @@ export const LoginRegisterForm = () => {
     setRegLoading(true);
 
     try {
-      const res = await fetch('/api/register', {
+      const res = await apiFetch('/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -169,7 +170,7 @@ export const LoginRegisterForm = () => {
 
     setForgotLoading(true);
     try {
-      const res = await fetch('/api/forgot-password', {
+      const res = await apiFetch('/api/forgot-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

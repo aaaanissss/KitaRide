@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import "./ExplorePanel.css";
+import { apiFetch } from "../../lib/api";
 
 // Simple category chips – filter client-side using atrcategory text
 const ATTRACTION_CATEGORY_OPTIONS = [
@@ -72,7 +73,7 @@ export default function ExplorePanel({
     if (!stationId) return;
 
     try {
-      const res = await fetch(`/api/stations/${stationId}/attractions`);
+      const res = await apiFetch(`/api/stations/${stationId}/attractions`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
       const data = await res.json();
@@ -157,7 +158,7 @@ export default function ExplorePanel({
       if (attractionQuery.trim()) params.set("q", attractionQuery.trim());
       if (selectedCategoryId !== "ALL") params.set("category", selectedCategoryId);
 
-      const res = await fetch(`/api/attractions/search?${params.toString()}`);
+      const res = await apiFetch(`/api/attractions/search?${params.toString()}`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
       const data = await res.json();

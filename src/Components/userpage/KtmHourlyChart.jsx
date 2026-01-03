@@ -8,6 +8,7 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
+import { apiFetch } from "../../lib/api";
 
 export default function KtmHourlyChart({ stationId, dow }) {
   const [data, setData] = useState([]);
@@ -23,7 +24,7 @@ export default function KtmHourlyChart({ stationId, dow }) {
         setLoading(true);
         setError("");
 
-        const res = await fetch(`/api/ktm/hourly?station=${stationId}&dow=${dow}`);
+        const res = await apiFetch(`/api/ktm/hourly?station=${stationId}&dow=${dow}`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
         const json = await res.json();

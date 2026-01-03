@@ -2,6 +2,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "../userpage/ProfilePage.css";
 import "./AdminPage.css";
+import { apiFetch } from "../../lib/api";
 
 /**
  * AdminAttractionsPage (corrected)
@@ -163,7 +164,7 @@ export default function AdminAttractionsPage() {
       setLoadingAttractions(true);
       setAttractionsError("");
 
-      const res = await fetch(`/api/admin/attractions?status=${status}`, {
+      const res = await apiFetch(`/api/admin/attractions?status=${status}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -193,7 +194,7 @@ export default function AdminAttractionsPage() {
       setLoadingRequests(true);
       setRequestsError("");
 
-      const res = await fetch(`/api/admin/attraction-requests?status=${status}`, {
+      const res = await apiFetch(`/api/admin/attraction-requests?status=${status}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -238,7 +239,7 @@ export default function AdminAttractionsPage() {
     if (!token || !atrid) return;
 
     try {
-      const res = await fetch(`/api/admin/attractions/${atrid}/decision`, {
+      const res = await apiFetch(`/api/admin/attractions/${atrid}/decision`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -279,7 +280,7 @@ export default function AdminAttractionsPage() {
     if (!selectedRequest || !token) return;
 
     try {
-      const res = await fetch(
+      const res = await apiFetch(
         `/api/admin/attraction-requests/${selectedRequest.requestid}/decision`,
         {
           method: "POST",

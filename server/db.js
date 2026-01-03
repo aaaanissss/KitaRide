@@ -3,14 +3,21 @@ config({ path: new URL('../.env', import.meta.url) });
 import pkg from 'pg';
 const { Pool } = pkg;
 
-const pool = new Pool({
-  host: process.env.PGHOST,
-  port: Number(process.env.PGPORT ?? 5432),
-  database: process.env.PGDATABASE,
-  user: process.env.PGUSER,
-  password: process.env.PGPASSWORD,
-  ssl: process.env.PGSSLMODE === 'require' ? { rejectUnauthorized: false } : false,
-});
+const ssl =
+  process.env.PGSSLMODE === 'require' ? { rejectUnauthorized: false } : false;
+
+const poolConfig = process.env.DATABASE_URL
+  ? { connectionString: process.env.DATABASE_URL, ssl }
+  : {
+      host: process.env.PGHOST,
+      port: Number(process.env.PGPORT ?? 5432),
+      database: process.env.PGDATABASE,
+      user: process.env.PGUSER,
+      password: process.env.PGPASSWORD,
+      ssl,
+    };
+
+const pool = new Pool(poolConfig);
 
 // Export a reusable query helper
 export async function query(text, params) {

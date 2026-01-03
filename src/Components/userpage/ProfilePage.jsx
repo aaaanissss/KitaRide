@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "./ProfilePage.css";
+import { apiFetch } from "../../lib/api";
 
 const PAGE_SIZE = 10;
 
@@ -104,9 +105,9 @@ export default function ProfilePage() {
         const authHeaders = token ? { Authorization: `Bearer ${token}` } : undefined;
 
         const [attrRes, reviewRes, reqRes] = await Promise.all([
-          fetch(`/api/users/${userId}/attractions`, { headers: authHeaders }),
-          fetch(`/api/users/${userId}/reviews`),
-          fetch(`/api/users/${userId}/attraction-requests`, { headers: authHeaders }),
+          apiFetch(`/api/users/${userId}/attractions`, { headers: authHeaders }),
+          apiFetch(`/api/users/${userId}/reviews`),
+          apiFetch(`/api/users/${userId}/attraction-requests`, { headers: authHeaders }),
         ]);
 
         if (!attrRes.ok) throw new Error(`Failed to load attractions (${attrRes.status})`);
