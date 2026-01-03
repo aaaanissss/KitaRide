@@ -4,6 +4,10 @@
 
 A comprehensive transit management system for Kuala Lumpur's public transportation network, featuring real-time data visualization, journey planning, and administrative tools.
 
+## Live Site
+
+https://kitaride-frontend.onrender.com/login
+
 ## Prerequisites
 
 - Node.js (v18 or higher)
@@ -32,6 +36,7 @@ npm install
 4. Set up environment variables:
 Create a `.env` file in the project root with your PostgreSQL configuration:
 ```env
+DATABASE_URL=postgresql://user:pass@host:5432/dbname
 PGHOST=localhost
 PGPORT=5432
 PGDATABASE=your_database_name
@@ -203,6 +208,24 @@ npm run build
 
 This will create an optimized production build in the `dist` folder.
 
+### Render + Railway (Split Services)
+
+1. Backend (Render Web Service)
+   - Root: `server`
+   - Build command: `npm install`
+   - Start command: `npm start`
+   - Health check: `/api/health`
+2. Database (Railway Postgres)
+   - Use the **public** `DATABASE_URL` in Render
+   - Set `PGSSLMODE=require` if SSL is required
+3. Frontend (Render Static Site)
+   - Root: `.`
+   - Build command: `npm install && npm run build`
+   - Publish directory: `dist`
+   - Environment: `VITE_API_BASE=https://<your-backend>.onrender.com`
+4. CORS (Backend)
+   - Set `CORS_ORIGINS=https://<your-frontend>.onrender.com`
+
 ## API Endpoints
 
 ### Authentication
@@ -251,7 +274,8 @@ npm run dev         # Start development server
 ### Environment Variables
 Create `.env` file in project root:
 ```env
-# PostgreSQL Database
+# PostgreSQL Database (one of)
+DATABASE_URL=postgresql://user:pass@host:5432/dbname
 PGHOST=localhost
 PGPORT=5432
 PGDATABASE=your_database_name
@@ -262,11 +286,17 @@ PGSSLMODE=disable
 # Server Configuration
 PORT=3001
 JWT_SECRET=your-jwt-secret-key
+CORS_ORIGINS=http://localhost:5173
 
 # Cloudinary (optional)
 CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
+```
+
+Frontend (Vite) environment variables:
+```env
+VITE_API_BASE=http://localhost:3001
 ```
 
 ### Database Setup
