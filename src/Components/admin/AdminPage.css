@@ -604,3 +604,48 @@
   font-size: 12px;
   user-select: none;
 }
+
+@media (max-width: 768px) {
+  .admin-users-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-users-search {
+    max-width: none;
+    width: 100%;
+  }
+
+  .admin-users-filters {
+    justify-content: flex-start;
+  }
+
+  .admin-modal {
+    max-width: 92vw;
+    margin: 0 16px;
+  }
+
+  .admin-request-photos-row {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-detail-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-change-table {
+    overflow-x: auto;
+  }
+
+  .admin-change-header,
+  .admin-change-row {
+    min-width: 520px;
+  }
+
+  .admin-toast {
+    left: 16px;
+    right: 16px;
+    top: 76px;
+  }
+}

@@ -25,11 +25,13 @@ export default function PowerBIDashboard() {
         </header>
 
         <main className="powerbi-dashboard-grid">
+          {/* ===== PowerBI Embed ===== */}
           <section className="powerbi-card powerbi-card--wide">
             <div className="powerbi-title-wrap">
               <div className="powerbi-title-chip">KitaRide Ridership Insight</div>
               <p className="powerbi-title-sub">
-                Live PowerBI report • Optimized for full-screen viewing • Click on the Heatmap Value to Filter
+                Live PowerBI report • Optimized for full-screen viewing • Click on
+                the Heatmap Value to Filter
               </p>
             </div>
 
@@ -43,6 +45,76 @@ export default function PowerBIDashboard() {
               />
             </div>
           </section>
+
+          {/* ===== NEW: Commuter Recommendations ===== */}
+          <section className="powerbi-card powerbi-card--wide">
+            <div className="powerbi-title-wrap">
+              <div className="powerbi-title-chip">
+                Commuter Travel Recommendations
+              </div>
+              <p className="powerbi-title-sub">
+                Suggested best days and periods to commute, based on predicted
+                ridership patterns.
+              </p>
+            </div>
+
+            <div className="powerbi-reco-grid">
+              <RecoCard
+                title="LRT Kelana Jaya"
+                bullets={[
+                  "Best on midweek weekdays (Tue–Thu).",
+                  "Fridays and October are usually more crowded.",
+                ]}
+              />
+
+              <RecoCard
+                title="MRT Kajang Line"
+                bullets={[
+                  "Midweek mornings are generally smoother.",
+                  "Expect heavier crowds from July to October.",
+                ]}
+              />
+
+              <RecoCard
+                title="LRT Ampang + Sri Petaling"
+                bullets={[
+                  "Weekdays are consistent; avoid Friday peaks.",
+                  "October shows the highest overall demand.",
+                ]}
+              />
+
+              <RecoCard
+                title="MRT Putrajaya Line"
+                bullets={[
+                  "January–June weekdays are less busy.",
+                  "Crowding increases from August onward.",
+                ]}
+              />
+
+              <RecoCard
+                title="KL Monorail"
+                bullets={[
+                  "Weekday mornings are the most comfortable.",
+                  "Late evenings and October are busier.",
+                ]}
+              />
+
+              <RecoCard
+                title="KTM Komuter Klang Valley"
+                bullets={[
+                  "Usually quiet on normal weekdays.",
+                  "Check for special dates when sudden spikes occur.",
+                ]}
+              />
+            </div>
+
+            <div className="powerbi-reco-summary">
+              <strong>Overall tip:</strong> For most lines,{" "}
+              <strong>midweek weekdays (Tue–Thu)</strong> and{" "}
+              <strong>non-peak months</strong> provide a more comfortable commute,
+              while <strong>October</strong> tends to be the busiest.
+            </div>
+          </section>
         </main>
       </div>
       <Footer />
@@ -50,3 +122,15 @@ export default function PowerBIDashboard() {
   );
 }
 
+function RecoCard({ title, bullets }) {
+  return (
+    <div className="powerbi-reco-card">
+      <h3 className="powerbi-reco-title">{title}</h3>
+      <ul className="powerbi-reco-list">
+        {bullets.map((b, i) => (
+          <li key={i}>{b}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}

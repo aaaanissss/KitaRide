@@ -28,6 +28,7 @@
    so it doesn't double-count header height */
 .with-fixed-header {
   margin-top: 0;
+  padding-top: 0;
 }
 
 /* Subtle big blurred blobs for depth (same hue family) */
@@ -658,4 +659,93 @@
   margin-top: 12px;
   border-top: 1px dashed #e5e7eb;
   padding-top: 8px;
+}
+
+@media (max-width: 768px) {
+  .profilePage {
+    padding: 88px 0 40px;
+  }
+
+  .profile-container {
+    padding: 72px 16px 32px;
+  }
+
+  .profile-header-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 18px 20px;
+  }
+
+  .profile-avatar {
+    width: 52px;
+    height: 52px;
+    font-size: 22px;
+  }
+
+  .profile-header-text h1 {
+    font-size: 20px;
+  }
+
+  .profile-grid {
+    gap: 16px;
+  }
+
+  .profile-section {
+    padding: 16px;
+    border-radius: 18px;
+  }
+
+  .profile-search {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .profile-search-input {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .profile-search-select {
+    width: 100%;
+  }
+
+  .profile-table {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .profile-table-header,
+  .profile-table-row {
+    min-width: 520px;
+  }
+
+  .profile-change-table {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .profile-change-header,
+  .profile-change-row {
+    min-width: 520px;
+  }
+
+  .profile-detail-links {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .profile-pagination {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-table-header,
+  .profile-table-row,
+  .profile-change-header,
+  .profile-change-row {
+    min-width: 460px;
+  }
 }

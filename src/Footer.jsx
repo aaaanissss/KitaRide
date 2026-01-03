@@ -6,12 +6,16 @@ function Footer() {
         <footer className="footer-minimal">
             <div className="footer-container">
                 <div className="footer-text">
-                    <p>&copy; {new Date().getFullYear()} Transit App. All rights reserved.</p>
+                    <p>&copy; {new Date().getFullYear()} KitaRide. All rights reserved.</p>
                 </div>
                 <div className="footer-links">
-                    <a href="/privacy">Privacy</a>
-                    <a href="/terms">Terms</a>
-                    <a href="/contact">Contact</a>
+                    <a
+                        href="https://myrapid.com.my/wp-content/uploads/2023/03/20230211_integrated_kv_transit_map.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Klang Valley Integrated Transit Map
+                    </a>
                 </div>
             </div>
         </footer>

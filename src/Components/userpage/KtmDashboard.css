@@ -368,3 +368,33 @@ body.dashboard-body {
   border-radius: 10px;
   background: white;
 }
+
+@media (max-width: 768px) {
+  .ktm-dashboard {
+    padding: 5rem 1rem 1.5rem;
+  }
+
+  .ktm-dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .ktm-card {
+    padding: 1rem;
+  }
+
+  .ktm-chart-wrapper {
+    height: 240px;
+  }
+
+  .filter-group select {
+    min-width: 140px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ktm-dashboard {
+    padding-top: 4.75rem;
+  }
+}

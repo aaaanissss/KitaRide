@@ -74,12 +74,12 @@ export default function InsightBoard() {
           <ThaipusamStory holidayByLine={insights.holiday_effect_by_line} />
         </ArticleSection>
 
-        <ArticleSection title="Not All Lines Behave the Same">
-          <LinePersonalityStory lines={insights.line_personalities} />
-        </ArticleSection>
-
-        <ArticleSection title="Stability, Not Chaos">
-          <AnomaliesStory anomalies={insights.anomalies} />
+        {/* ✅ COMBINED SECTION */}
+        <ArticleSection title="Different Lines, Predictable Patterns">
+          <LinesAndStabilityStory
+            lines={insights.line_personalities}
+            anomalies={insights.anomalies}
+          />
         </ArticleSection>
 
         <ArticleConclusion />
@@ -99,8 +99,7 @@ function ArticleHero() {
       <h1>Klang Valley Rail Ridership Is Still a Weekday Story</h1>
       <p className="insights-lede">
         Weekday commuting continues to dominate the rail network, with demand far
-        higher than weekends. But once public holidays arrive — especially
-        Thaipusam — familiar patterns break down in surprising ways.
+        higher than weekends. But once public holidays arrive familiar patterns break down in surprising ways.
       </p>
     </div>
   );
@@ -121,14 +120,20 @@ function PullQuote({ children }) {
 
 /**
  * FYP-safe interpretation box:
- * - keeps language cautious (likely / possible / suggests)
- * - separates “data result” vs “explanation”
+ * - cautious language (likely / suggests)
+ * - easy to read: bullets
  */
-function Interpretation({ children }) {
+function Interpretation({ title = "Interpretation (likely reason)", bullets = [] }) {
+  if (!bullets?.length) return null;
+
   return (
     <div className="insights-interpretation">
-      <div className="insights-interpretation-title">Interpretation (likely reason)</div>
-      <div className="insights-interpretation-body">{children}</div>
+      <div className="insights-interpretation-title">{title}</div>
+      <ul className="insights-bullets">
+        {bullets.map((b, i) => (
+          <li key={i}>{b}</li>
+        ))}
+      </ul>
     </div>
   );
 }
@@ -181,9 +186,8 @@ function WeeklyStory({ weekly }) {
       <h3>What a “normal week” looks like</h3>
 
       <p className="insights-paragraph">
-        On a typical week, ridership follows a predictable commuter rhythm. Demand
-        concentrates on weekdays and falls sharply over the weekend as routine
-        travel slows down.
+        On a typical week, ridership follows a predictable rhythm: weekdays are
+        busy, and weekends are quieter.
       </p>
 
       <p className="insights-paragraph">
@@ -232,16 +236,18 @@ function WeeklyStory({ weekly }) {
         </ResponsiveContainer>
       </div>
 
-      <Interpretation>
-        This weekday-heavy pattern is consistent with <strong>work and school commuting</strong>.
-        Weekend demand is lower because many routine trips pause, and travel becomes more
-        discretionary (shopping, leisure, social visits).
-      </Interpretation>
+      <Interpretation
+        bullets={[
+          <>
+            Weekdays are higher because many people travel for <strong>work and school</strong>.
+          </>,
+          <>
+            Weekends are lower because <strong>daily routines slow down</strong> (more leisure trips).
+          </>,
+        ]}
+      />
 
-      <DetailsToggle
-        label="Show daily breakdown"
-        hideLabel="Hide daily breakdown"
-      >
+      <DetailsToggle label="Show daily breakdown" hideLabel="Hide daily breakdown">
         <ul className="insight-list">
           {by_day.map((d) => (
             <li key={d.dow}>
@@ -283,16 +289,14 @@ function SeasonalityStory({ seasonality }) {
       <h3>Ridership changes across the year</h3>
 
       <p className="insights-paragraph">
-        Beyond the weekly cycle, ridership also “breathes” across the calendar.
-        Demand softens in the middle months before strengthening again toward the
-        later part of the year.
+        Ridership also changes across the year, with some months quieter and some
+        months busier.
       </p>
 
       <p className="insights-paragraph">
         The lowest month is{" "}
         <strong>{String(low.month).padStart(2, "0")}</strong> and the highest is{" "}
-        <strong>{String(high.month).padStart(2, "0")}</strong>, suggesting a
-        mid-year dip followed by a stronger July–October stretch.
+        <strong>{String(high.month).padStart(2, "0")}</strong>.
       </p>
 
       <PullQuote>
@@ -325,17 +329,15 @@ function SeasonalityStory({ seasonality }) {
         </ResponsiveContainer>
       </div>
 
-      <Interpretation>
-        This seasonal movement may reflect changes in city activity across the year —
-        for example, periods where <strong>routine commuting reduces</strong> (e.g., school
-        breaks, travel periods, or fewer office days), followed by months with more
-        consistent weekday movement.
-      </Interpretation>
+      <Interpretation
+        bullets={[
+          "Mid-year dips may happen when commuting reduces (e.g., school breaks or travel periods).",
+          "Ridership rises again when normal routines return in later months.",
+          "Hypothesis: April is quieter when routines slow down (holidays, leave, Ramadan in SOME years), while October is busier when work and school schedules are most consistent."
+        ]}
+      />
 
-      <DetailsToggle
-        label="Show month-by-month values"
-        hideLabel="Hide month-by-month values"
-      >
+      <DetailsToggle label="Show month-by-month values" hideLabel="Hide month-by-month values">
         <ul className="insight-list">
           {byMonth.map((m) => (
             <li key={m.month}>
@@ -365,7 +367,6 @@ function HolidayStory({ holidays }) {
     .sort((a, b) => b.effect_pct - a.effect_pct)
     .slice(0, 3);
 
-  // helpful for interpretation text
   const hasHariRaya =
     items.find((x) => /Hari Raya Puasa/i.test(x.label)) ||
     items.find((x) => /Hari Raya Haji/i.test(x.label));
@@ -378,9 +379,8 @@ function HolidayStory({ holidays }) {
       <h3>Holidays bend the baseline</h3>
 
       <p className="insights-paragraph">
-        Public holidays consistently change ridership, but the impact varies.
-        Major festive periods tend to produce the steepest drops, while a handful
-        of dates behave more like “event days” with higher-than-usual travel.
+        Holidays change travel behaviour. Most holidays reduce commuting, but some
+        special days increase leisure trips.
       </p>
 
       <div className="insights-two-col">
@@ -413,41 +413,22 @@ function HolidayStory({ holidays }) {
       </div>
 
       <PullQuote>
-        Big picture: holidays usually reduce demand — but a few dates behave like
-        event-driven travel days.
+        Key takeaway: most holidays reduce ridership, but event-style days can
+        increase it.
       </PullQuote>
 
-      <Interpretation>
-        Large drops during major festive holidays are consistent with{" "}
-        <strong>reduced commuting</strong> and “balik kampung” travel, where
-        people take leave or travel out of Klang Valley.{" "}
-        {hasCNY ? (
-          <>
-            Events like <strong>Chinese New Year</strong> commonly reduce city commuting
-            and daily routines, lowering rail usage.
-          </>
-        ) : null}{" "}
-        {hasHariRaya ? (
-          <>
-            For <strong>Hari Raya</strong>, the reduction is likely driven by leave-taking,
-            family travel, and fewer work/school trips.
-          </>
-        ) : null}{" "}
-        {hasNYE || hasVal ? (
-          <>
-            In contrast, days like{" "}
-            {hasNYE ? <strong>New Year’s Eve</strong> : null}
-            {hasNYE && hasVal ? " and " : null}
-            {hasVal ? <strong>Valentine’s Day</strong> : null}{" "}
-            can create more leisure trips (malls, dining, events), increasing ridership.
-          </>
-        ) : null}
-      </Interpretation>
+      <Interpretation
+        bullets={[
+          "Big festive holidays often drop because fewer people commute and many travel (“balik kampung”).",
+          hasCNY ? "Chinese New Year usually lowers city travel because routines pause." : null,
+          hasHariRaya ? "Hari Raya tends to drop because people take leave and travel out of the city." : null,
+          (hasNYE || hasVal)
+            ? "Days like New Year’s Eve or Valentine’s Day may rise due to leisure trips (malls, dining, events)."
+            : null,
+        ].filter(Boolean)}
+      />
 
-      <DetailsToggle
-        label="View full holiday table"
-        hideLabel="Hide full holiday table"
-      >
+      <DetailsToggle label="View full holiday table" hideLabel="Hide full holiday table">
         <ul className="insight-list">
           {items.map((h) => (
             <li key={h.label}>
@@ -465,14 +446,13 @@ function HolidayStory({ holidays }) {
 }
 
 /* =======================
-   SECTION 4 — THAIPUSAM BY LINE (HERO)
+   SECTION 4 — THAIPUSAM BY LINE
 ======================= */
 
 function ThaipusamStory({ holidayByLine }) {
   const thaipusam = holidayByLine?.thaipusam;
   const linesRaw = thaipusam?.per_line || [];
 
-  // stable order: negatives first, surge last
   const lines = linesRaw
     .slice()
     .sort((a, b) => a.effect_pct - b.effect_pct)
@@ -499,18 +479,16 @@ function ThaipusamStory({ holidayByLine }) {
       <h3>Thaipusam rewrites the map</h3>
 
       <p className="insights-paragraph">
-        Most holidays follow the same pattern — ridership drops across nearly every
-        rail line. Thaipusam is the exception.
+        Thaipusam is different from most holidays: one line can become much busier
+        while others drop.
       </p>
 
       <p className="insights-paragraph">
         The largest drop appears on <strong>{biggestDrop.line_name}</strong>{" "}
         ({biggestDrop.effect_pct.toFixed(1)}%), while{" "}
-        <strong>{topSurge.line_name}</strong> spikes sharply at{" "}
+        <strong>{topSurge.line_name}</strong> spikes at{" "}
         <strong>+{topSurge.effect_pct.toFixed(1)}%</strong>.
       </p>
-
-      <PullQuote>Plot twist: one line surges while the rest drop.</PullQuote>
 
       <div className="insight-chart">
         <ResponsiveContainer width="100%" height={260}>
@@ -543,17 +521,14 @@ function ThaipusamStory({ holidayByLine }) {
         </ResponsiveContainer>
       </div>
 
-      <Interpretation>
-        Thaipusam is strongly destination-driven. The surge is consistent with
-        pilgrimage travel toward <strong>Batu Caves</strong>, where KTM Komuter
-        provides direct access. Meanwhile, many other lines drop because routine
-        commuting reduces and demand concentrates on specific religious routes.
-      </Interpretation>
+      <Interpretation
+        bullets={[
+          "Thaipusam is destination-based travel (many people go to Batu Caves).",
+          "KTM Komuter provides direct access, so it can surge while other lines become quieter.",
+        ]}
+      />
 
-      <DetailsToggle
-        label="Show per-line breakdown"
-        hideLabel="Hide per-line breakdown"
-      >
+      <DetailsToggle label="Show per-line breakdown" hideLabel="Hide per-line breakdown">
         <ul className="insight-list">
           {lines
             .slice()
@@ -584,27 +559,24 @@ function shortenLineName(name) {
 }
 
 /* =======================
-   SECTION 5 — LINE PERSONALITIES
+  COMBINED STORY — LINES + STABILITY
 ======================= */
 
-function LinePersonalityStory({ lines }) {
+function LinesAndStabilityStory({ lines, anomalies }) {
   const list = Array.isArray(lines) ? lines : [];
+  const anom = Array.isArray(anomalies) ? anomalies : [];
 
-  if (list.length === 0) {
-    return (
-      <div className="insight-card">
-        <h3>Line personalities</h3>
-        <p>No line personality data available.</p>
-      </div>
-    );
-  }
+  const mostCommuter = list.length
+    ? list.reduce((a, b) =>
+        a.weekday_weekend_ratio > b.weekday_weekend_ratio ? a : b
+      )
+    : null;
 
-  const mostCommuter = list.reduce((a, b) =>
-    a.weekday_weekend_ratio > b.weekday_weekend_ratio ? a : b
-  );
-  const mostBalanced = list.reduce((a, b) =>
-    a.weekday_weekend_ratio < b.weekday_weekend_ratio ? a : b
-  );
+  const mostBalanced = list.length
+    ? list.reduce((a, b) =>
+        a.weekday_weekend_ratio < b.weekday_weekend_ratio ? a : b
+      )
+    : null;
 
   const grouped = useMemo(() => {
     const map = new Map();
@@ -618,31 +590,21 @@ function LinePersonalityStory({ lines }) {
 
   return (
     <div className="insight-card">
-      <h3>The network has characters</h3>
+      <h3>Different lines, but the network is steady</h3>
 
       <p className="insights-paragraph">
-        Each rail line behaves a little differently. Most are commuter-led, while
-        a few serve more balanced, mixed travel needs.
+        Not all rail lines are used the same way. Some are mostly used for
+        weekday commuting, while others are more balanced for daily activities.
       </p>
 
-      <p className="insights-paragraph">
-        The most commuter-heavy line is <strong>{mostCommuter.line_name}</strong>{" "}
-        ({mostCommuter.weekday_weekend_ratio.toFixed(2)}×), while the most balanced
-        is <strong>{mostBalanced.line_name}</strong> (
-        {mostBalanced.weekday_weekend_ratio.toFixed(2)}×).
-      </p>
-
-      <PullQuote>
-        “Personality” here is simply the weekday vs weekend ratio — higher means
-        more commuter-driven behaviour.
-      </PullQuote>
-
-      <Interpretation>
-        Lines serving major employment corridors tend to show stronger weekday
-        dependence (commuter-heavy). More central or leisure-oriented lines can
-        look more balanced because trips include shopping, tourism, and social travel
-        across both weekdays and weekends.
-      </Interpretation>
+      {mostCommuter && mostBalanced ? (
+        <PullQuote>
+          Most commuter-heavy: <strong>{mostCommuter.line_name}</strong> (
+          {mostCommuter.weekday_weekend_ratio.toFixed(2)}×) • Most balanced:{" "}
+          <strong>{mostBalanced.line_name}</strong> (
+          {mostBalanced.weekday_weekend_ratio.toFixed(2)}×)
+        </PullQuote>
+      ) : null}
 
       {grouped.map(([tag, group]) => (
         <div className="insight-pill-group" key={tag}>
@@ -656,66 +618,17 @@ function LinePersonalityStory({ lines }) {
           </p>
         </div>
       ))}
-    </div>
-  );
-}
 
-/* =======================
-   SECTION 6 — ANOMALIES
-======================= */
-
-function AnomaliesStory({ anomalies }) {
-  const list = Array.isArray(anomalies) ? anomalies : [];
-
-  return (
-    <div className="insight-card">
-      <h3>Stability, not chaos</h3>
-
-      {list.length === 0 ? (
-        <>
-          <p className="insights-paragraph">
-            Despite seasonal shifts and holiday disruptions, extreme anomalies are
-            rare. Overall demand remains stable when compared against surrounding
-            trends.
-          </p>
-
-          <Interpretation>
-            This suggests ridership is largely explained by predictable factors
-            (weekday rhythm, seasonality, and holidays), rather than frequent
-            sudden disruptions.
-          </Interpretation>
-
-          <PullQuote>
-            Good news: no extreme outliers were detected in the period analysed.
-          </PullQuote>
-        </>
-      ) : (
-        <>
-          <p className="insights-paragraph">
-            A small number of dates show unusual spikes or dips compared to the
-            surrounding 30-day trend.
-          </p>
-
-          <Interpretation>
-            These outliers may reflect special events, disruptions, or unusual
-            circumstances that are not captured by typical calendar patterns.
-          </Interpretation>
-
-          <DetailsToggle label="Show unusual days" hideLabel="Hide unusual days">
-            <ul className="insight-list">
-              {list.map((a) => (
-                <li key={a.date}>
-                  <span>{a.date}</span>
-                  <span>
-                    z = {a.z_score_30.toFixed(2)} •{" "}
-                    {a.total_ridership.toLocaleString()} trips
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </DetailsToggle>
-        </>
-      )}
+      <Interpretation
+        title="Simple conclusion"
+        bullets={[
+          "Commuter-heavy lines serve work/school corridors, so weekdays are much busier.",
+          "More central lines stay busier across the week because they serve shopping and leisure trips.",
+          anom.length === 0
+            ? "Overall demand is stable, with no extreme outliers were detected in the analysed period."
+            : "Overall demand is mostly stable, with only a small number of unusual days.",
+        ]}
+      />
     </div>
   );
 }
@@ -731,7 +644,7 @@ function ArticleConclusion() {
       <div className="insight-card">
         <p className="insights-paragraph">
           Understanding the “normal” helps planners and passengers interpret what
-          happens when the network behaves differently — and why.
+          happens when the network behaves differently and why.
         </p>
 
         <ul className="insights-bullets">

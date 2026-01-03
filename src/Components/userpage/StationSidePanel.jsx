@@ -762,6 +762,8 @@ export default function StationSidePanel({
           className="sidePanel-toggle"
           onClick={onToggle}
           aria-label={isOpen ? "Collapse panel" : "Expand panel"}
+          data-state={isOpen ? "open" : "closed"}
+          type="button"
         >
           {isOpen ? "‹" : "›"}
         </button>

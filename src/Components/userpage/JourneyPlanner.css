@@ -595,7 +595,7 @@
 
 /* ========== RESPONSIVE ========== */
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .plannerWrapper {
     top: 44px;
     width: min(100%, 95vw);
@@ -616,12 +616,38 @@
   }
 
   .resultsSidePanel {
-    left: 16px;
-    right: 16px;
+    left: 12px;
+    right: 12px;
     width: auto;
     top: auto;
     bottom: 16px;
-    max-height: 50vh;
+    max-height: 45svh;
+  }
+
+  .resultsSidePanel--stacked {
+    top: 76px;
+    bottom: auto;
+    max-height: 38svh;
+  }
+
+  .resultsToggleFab {
+    position: absolute;
+    top: 112px;
+    right: 14px;
+    z-index: 1400;
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.6);
+    background: #111827;
+    color: #f9fafb;
+    font-size: 12px;
+    font-weight: 600;
+    box-shadow: 0 10px 22px rgba(15, 23, 42, 0.28);
+    cursor: pointer;
+  }
+
+  .resultsToggleFab:hover {
+    background: #0b1120;
   }
 
   .stationTypeSelect {

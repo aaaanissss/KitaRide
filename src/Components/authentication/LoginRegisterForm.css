@@ -275,3 +275,35 @@ form .register-link {
   color: #9ca3af;
   text-align: center;
 }
+
+@media (max-width: 480px) {
+  .auth-screen {
+    padding: 16px;
+  }
+
+  .wrapper {
+    width: min(92vw, 360px);
+    min-height: 0;
+    border-radius: 20px;
+  }
+
+  .wrapper .form-box {
+    padding: 32px 24px 24px;
+  }
+
+  form h1 {
+    font-size: 24px;
+    margin-top: 20px;
+  }
+
+  form .input-box {
+    height: 46px;
+    margin: 14px 0;
+  }
+
+  .wrapper .remember-forgot {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}

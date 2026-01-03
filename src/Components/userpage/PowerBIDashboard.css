@@ -108,12 +108,91 @@ body.dashboard-body {
     padding: 5rem 1.25rem 2rem;
   }
 
+  .powerbi-dashboard-header {
+    align-items: flex-start;
+  }
+
   .powerbi-dashboard-header h1 {
     font-size: 1.4rem;
+  }
+
+  .powerbi-card {
+    padding: 1.1rem;
   }
 
   .powerbi-embed-frame {
     height: 60vh;
     min-height: 420px;
+  }
+}
+
+@media (max-width: 480px) {
+  .powerbi-dashboard {
+    padding: 4.75rem 1rem 1.5rem;
+  }
+
+  .powerbi-title-chip {
+    font-size: 1rem;
+    padding: 0.4rem 1rem;
+  }
+
+  .powerbi-embed-frame {
+    height: 52vh;
+    min-height: 320px;
+  }
+}
+
+.powerbi-reco-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columns */
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+.powerbi-reco-card {
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+  background: #fff;
+  box-shadow: 0 10px 16px -14px rgba(15, 23, 42, 0.25);
+}
+
+.powerbi-reco-title {
+  margin: 0 0 0.55rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.powerbi-reco-list {
+  margin: 0;
+  padding-left: 1.05rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  color: #334155;
+  line-height: 1.35;
+}
+
+.powerbi-reco-note {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  background: rgba(239, 246, 255, 0.8);
+  border: 1px solid rgba(191, 219, 254, 0.9);
+  color: #1d4ed8;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 1024px) {
+  .powerbi-reco-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2x3 on tablets */
+  }
+}
+
+@media (max-width: 640px) {
+  .powerbi-reco-grid {
+    grid-template-columns: 1fr; /* 1x6 on mobile */
   }
 }

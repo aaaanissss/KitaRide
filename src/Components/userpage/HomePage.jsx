@@ -792,6 +792,10 @@ const loadPredictions = async () => {
   const [selectedStation, setSelectedStation] = useState(null);
   const [isPanelOpen, setIsPanelOpen] = useState(false); // left panel open/closed
 
+  const closeInfoPanel = () => {
+    setIsPanelOpen(false);
+  };
+
   const handleStationClick = (station, options = {}) => {
     if (!station) return;
 
@@ -1302,6 +1306,8 @@ const loadPredictions = async () => {
             selectedRouteIdx={selectedRouteIdx}
             stations={stationsList} 
             heatmapOn={showHeatmap}
+            isInfoPanelOpen={isPanelOpen}
+            onRequestCloseInfoPanel={closeInfoPanel}
           />
 
           {/* Heatmap button overlay */}

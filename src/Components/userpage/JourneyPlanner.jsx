@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { FaExchangeAlt, FaSearch } from "react-icons/fa";
 import "./JourneyPlanner.css";
 
@@ -27,8 +27,12 @@ export default function JourneyPlanner({
   selectedRouteIdx,
   stations = [], // from HomePage
   heatmapOn = false, 
+  isInfoPanelOpen = false,
+  onRequestCloseInfoPanel,
 }) {
   const [expanded, setExpanded] = useState(false);
+  const [showResults, setShowResults] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
 
   // what user sees in the inputs
   const [fromInput, setFromInput] = useState("");
@@ -57,6 +61,32 @@ export default function JourneyPlanner({
 
   // which route card is expanded
   const [expandedRouteIdx, setExpandedRouteIdx] = useState(0);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const media = window.matchMedia("(max-width: 768px)");
+    const update = () => setIsMobile(media.matches);
+    update();
+    if (media.addEventListener) {
+      media.addEventListener("change", update);
+      return () => media.removeEventListener("change", update);
+    }
+    media.addListener(update);
+    return () => media.removeListener(update);
+  }, []);
+
+  useEffect(() => {
+    if (!result) return;
+    if (!isMobile) {
+      setShowResults(true);
+      return;
+    }
+    if (isInfoPanelOpen) {
+      setShowResults(false);
+    } else {
+      setShowResults(true);
+    }
+  }, [isInfoPanelOpen, isMobile, result]);
 
   // ---------- lookup maps from stations ----------
 
@@ -455,8 +485,8 @@ export default function JourneyPlanner({
       </div>
 
       {/* RIGHT SIDE RESULTS PANEL */}
-      {result && !heatmapOn && (
-        <aside className="resultsSidePanel">
+      {result && !heatmapOn && showResults && (
+        <aside className={`resultsSidePanel${isInfoPanelOpen ? " resultsSidePanel--stacked" : ""}`}>
           <button
             className="closeSideBtn"
             onClick={() => {
@@ -627,6 +657,21 @@ export default function JourneyPlanner({
             })}
           </div>
         </aside>
+      )}
+
+      {result && !heatmapOn && !showResults && isMobile && (
+        <button
+          type="button"
+          className="resultsToggleFab"
+          onClick={() => {
+            if (isInfoPanelOpen && onRequestCloseInfoPanel) {
+              onRequestCloseInfoPanel();
+            }
+            setShowResults(true);
+          }}
+        >
+          Show routes
+        </button>
       )}
     </>
   );

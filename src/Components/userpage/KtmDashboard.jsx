@@ -65,7 +65,7 @@ export default function KtmDashboard() {
           <section className="ktm-card ktm-card--wide">
             <div className="ktm-card-header">
               <div>
-                <h2>7-Day Ridership Prediction – KTM Komuter linesD</h2>
+                <h2>7-Day Ridership Prediction – KTM Komuter lines</h2>
                 <p className="ktm-subtext">
                   Covers KTM Komuter Klang Valley.
                 </p>

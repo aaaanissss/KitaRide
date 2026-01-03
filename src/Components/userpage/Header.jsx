@@ -15,6 +15,7 @@ function Header() {
   const isAdmin = role === "admin";
 
   const [open, setOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
@@ -24,7 +25,17 @@ function Header() {
     navigate("/login");
   };
 
-  const toggleDropdown = () => setOpen((o) => !o);
+  const toggleDropdown = () => {
+    setOpen((o) => !o);
+    setMenuOpen(false);
+  };
+
+  const toggleMenu = () => {
+    setMenuOpen((o) => !o);
+    setOpen(false);
+  };
+
+  const closeMenu = () => setMenuOpen(false);
 
   const goToProfile = () => {
     setOpen(false);
@@ -38,13 +49,24 @@ function Header() {
       </NavLink>
 
       <div className="header-right">
-        <nav className="navbar">
+        <button
+          type="button"
+          className="menu-toggle"
+          onClick={toggleMenu}
+          aria-expanded={menuOpen}
+          aria-controls="primary-nav"
+        >
+          {menuOpen ? "Close" : "Menu"}
+        </button>
+
+        <nav className={`navbar${menuOpen ? " navbar--open" : ""}`} id="primary-nav">
           {/* Always show Exploration */}
           <NavLink
             to="/"
             className={({ isActive }) =>
               isActive ? "nav-link active" : "nav-link"
             }
+            onClick={closeMenu}
           >
             Exploration
           </NavLink>
@@ -57,6 +79,7 @@ function Header() {
                 className={({ isActive }) =>
                   isActive ? "nav-link active" : "nav-link"
                 }
+                onClick={closeMenu}
               >
                 PowerBI Dashboard
               </NavLink>
@@ -65,6 +88,7 @@ function Header() {
                 className={({ isActive }) =>
                   isActive ? "nav-link active" : "nav-link"
                 }
+                onClick={closeMenu}
               >
                 KTM Dashboard
               </NavLink>
@@ -73,6 +97,7 @@ function Header() {
                 className={({ isActive }) =>
                   isActive ? "nav-link active" : "nav-link"
                 }
+                onClick={closeMenu}
               >
                 Insight Board
               </NavLink>
@@ -87,6 +112,7 @@ function Header() {
                 className={({ isActive }) =>
                   isActive ? "nav-link active" : "nav-link"
                 }
+                onClick={closeMenu}
               >
                 Review Users
               </NavLink>
@@ -96,6 +122,7 @@ function Header() {
                 className={({ isActive }) =>
                   isActive ? "nav-link active" : "nav-link"
                 }
+                onClick={closeMenu}
               >
                 Review Attractions
               </NavLink>
