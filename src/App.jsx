@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
+import { apiFetch } from "./lib/api";
 import LoginRegisterForm from "./Components/authentication/LoginRegisterForm.jsx";
 import HomePage from "./Components/userpage/HomePage";
 import InsightBoard from "./Components/userpage/InsightBoard.jsx";
@@ -42,6 +43,30 @@ function CommuterRoute({ children, token }) {
 function App() {
   // 🔑 keep token in React state so UI updates when it changes
   const [token, setToken] = useState(() => localStorage.getItem("authToken"));
+  const [isApiWarm, setIsApiWarm] = useState(false);
+
+  useEffect(() => {
+    let isActive = true;
+
+    const warmApi = async () => {
+      try {
+        const res = await apiFetch("/api/health");
+        if (res.ok && isActive) {
+          setIsApiWarm(true);
+        }
+      } catch {
+        // ignore warm-up failures
+      }
+    };
+
+    warmApi();
+    const intervalId = window.setInterval(warmApi, 12 * 60 * 1000);
+
+    return () => {
+      isActive = false;
+      window.clearInterval(intervalId);
+    };
+  }, []);
 
   // listen for custom "auth-changed" events and update token from localStorage
   useEffect(() => {
@@ -64,7 +89,7 @@ function App() {
           <Route
             path="/login"
             element={
-              token ? <Navigate to="/" replace /> : <LoginRegisterForm />
+              token ? <Navigate to="/" replace /> : <LoginRegisterForm isApiWarm={isApiWarm} />
             }
           />
 

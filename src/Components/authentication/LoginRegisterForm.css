@@ -269,6 +269,12 @@ form .register-link {
   margin-top: 4px;
 }
 
+.form-hint {
+  color: #93c5fd;
+  font-size: 12px;
+  margin-top: 6px;
+}
+
 .admin-hint {
   margin-top: 8px;
   font-size: 12px;

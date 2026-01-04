@@ -39,10 +39,12 @@ app.use(
 app.use(express.json());
 app.use('/attraction-icons', express.static(path.join(__dirname, 'attraction_icon')));
 
+app.get("/api/health", (req, res) => {
+  res.json({ ok: true, ts: Date.now() });
+});
+
 // API routes
 app.use('/api', routes);
-
-app.get("/api/health", (req, res) => res.json({ ok: true }));
 
 const port = process.env.PORT || 3001;
 app.listen(port, async () => {

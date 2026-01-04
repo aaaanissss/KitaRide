@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './LoginRegisterForm.css';
 import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import { apiFetch } from '../../lib/api';
 
-export const LoginRegisterForm = () => {
+export const LoginRegisterForm = ({ isApiWarm = false }) => {
   // controls which side is visible ('' or ' active')
   const [action, setAction] = useState('');
 
@@ -13,6 +13,8 @@ export const LoginRegisterForm = () => {
   const [loginPassword, setLoginPassword] = useState('');
   const [loginError, setLoginError] = useState('');
   const [loginLoading, setLoginLoading] = useState(false);
+  const [loginSlow, setLoginSlow] = useState(false);
+  const loginSlowTimerRef = useRef(null);
 
   // register state
   const [regUsername, setRegUsername] = useState('');
@@ -31,6 +33,29 @@ export const LoginRegisterForm = () => {
   const [forgotError, setForgotError] = useState('');
   const [forgotSuccess, setForgotSuccess] = useState('');
   const [forgotLoading, setForgotLoading] = useState(false);
+
+  const clearLoginSlowTimer = () => {
+    if (loginSlowTimerRef.current) {
+      clearTimeout(loginSlowTimerRef.current);
+      loginSlowTimerRef.current = null;
+    }
+  };
+
+  const startLoginSlowTimer = () => {
+    clearLoginSlowTimer();
+    loginSlowTimerRef.current = setTimeout(() => {
+      setLoginSlow(true);
+    }, 2000);
+  };
+
+  useEffect(() => {
+    return () => {
+      clearLoginSlowTimer();
+    };
+  }, []);
+
+  const showWarmHint = !forgotMode && loginLoading && (!isApiWarm || loginSlow);
+  const showSlowHint = !forgotMode && loginLoading && loginSlow;
 
   
   const registerLink = (e) => {
@@ -60,6 +85,8 @@ export const LoginRegisterForm = () => {
     e.preventDefault();
     setLoginError('');
     setLoginLoading(true);
+    setLoginSlow(false);
+    startLoginSlowTimer();
 
     try {
       const res = await apiFetch('/api/login', {
@@ -110,6 +137,8 @@ export const LoginRegisterForm = () => {
       console.error('Login error:', err);
       setLoginError('Login failed. Please try again.');
     } finally {
+      clearLoginSlowTimer();
+      setLoginSlow(false);
       setLoginLoading(false);
     }
   };
@@ -244,6 +273,16 @@ export const LoginRegisterForm = () => {
                   <p className="form-success">
                     {regSuccess}
                   </p>
+                )}
+
+                {showWarmHint && (
+                  <p className="form-hint">
+                    Waking server... first load can take ~10 seconds on free hosting.
+                  </p>
+                )}
+
+                {showSlowHint && (
+                  <p className="form-hint">Still waking server...</p>
                 )}
               </>
             )}
