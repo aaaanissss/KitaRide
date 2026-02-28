@@ -1,5 +1,3 @@
-# This Project is still under Development
-
 # Transit Application
 
 A comprehensive transit management system for Kuala Lumpur's public transportation network, featuring real-time data visualization, journey planning, and administrative tools.
